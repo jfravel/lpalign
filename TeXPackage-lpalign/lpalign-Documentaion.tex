@@ -1,0 +1,665 @@
+\documentclass{article}
+
+\usepackage{lpalign}
+
+\usepackage{tcolorbox}
+\usepackage{parskip}
+    \setlength{\parskip}{13pt}
+\usepackage{multicol}
+\usepackage{hyperref}
+    \hypersetup{colorlinks=true, linkcolor=blue!70!black}
+\usepackage{authblk}
+\usepackage{amssymb}
+\usepackage{enumitem}
+	\setlist[itemize]{noitemsep, topsep=-0.7em}
+
+
+\title{The \textsf{lpalign} Package}
+\date{Corresponds to \textsf{lpalign} v$1.1$, dated January $30^\textrm{th}$ 2026}
+\author{Jamie Fravel}
+\affil{jamiefravel@me.com}
+
+
+\begin{document}
+\maketitle
+\begin{abstract}
+    This is a collection of macros that I developed while writing my dissertation. They are mostly focused around displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and  sub-equations macros will be useful in any document which defines and references multiple problems, algorithms or multi-lined environments. 
+\end{abstract}
+
+\tableofcontents
+
+\section{Installation}
+
+Copy \textsf{lpalign.sty} to the same directory as your main \textsf{.tex} file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and  \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
+
+
+
+
+\section{The \textsf{lpalign} Environment}
+
+\textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package which helps to format mathematical programming problems aestetically so that they are legible in code as well as in the final pdf. Its primary function is to automatically embed the objective function in a zero-width box so that it's width does not interfere with the constraints spacing or centering.
+
+
+The \textsf{lpalign} environment takes a few arguments:
+    \begin{itemize}
+    \item[\texttt M.] Objective Direction: Maximize, Minimize, max or min.
+    \item[\texttt M.] Objective Function: the mathematical expression to be optimized over.
+    \item[\texttt O.] The optional distance to raise the ``s.t'' clause above vertical center of the first constraint. Defaults to \verb|0pt|.
+    \item[\texttt O.] The optional distance to raise the objective clause above vertical center of the first constraint. Defaults to \verb|0pt|.
+    \item[\texttt B.] Constraint Body: the constraints are given, in \textsf{alignat} format, between \verb|\begin| and \verb|\end|. Importantly, a double ampersand \verb|&&| should be placed after every line break \verb|\\| to preserve spacing.
+    \item[\texttt S.] The \textsf{lpalign*} environment is identical without printing equation reference tags unless explicitly called for by the \verb|\tag| command.
+    \end{itemize}
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{lpalign}{Maximize}{\mathbf{c}^\top\mathbf{x}}
+    A\mathbf{x} &\le \mathbf{b}                   \\&&
+     \mathbf{x} &\ge \mathbf{0} 
+  \end{lpalign} 
+  \end{verbatim}
+\Vtrg
+\begin{center}$\downarrow$\end{center}
+    \begin{lpalign}{Maximize}{\mathbf{c}^\top\mathbf{x}}
+      A\mathbf{x} &\le \mathbf{b}                   \\&&
+       \mathbf{x} &\ge \mathbf{0} 
+    \end{lpalign}
+\end{tcolorbox}
+
+
+The ampersand \verb|&| controls alignment; the constraint rows will be aligned at the ampersand.
+\begin{tcolorbox}
+  \Vskp
+  \begin{verbatim}
+ &Ax+s = b+0 \\&&    Ax+s &= b+0 \\&&    Ax+s = b+0& \\&&
+ &x,s \ge 0           x,s &\ge 0          x,s \ge 0& 
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\begin{multicols}{3}
+    ~\VTRg
+    \begin{lpalign*}{max}{c^\top x}
+      &Ax+s = b+0 \\&&
+      &x,s \ge 0 
+    \end{lpalign*} 
+    \begin{lpalign*}{max}{c^\top x}
+      Ax+s &= b+0 \\&&
+       x,s &\ge 0 
+    \end{lpalign*} 
+    \begin{lpalign*}{max}{c^\top x}
+      Ax+s = b+0& \\&&
+       x,s \ge 0& 
+    \end{lpalign*} 
+\end{multicols}
+\end{tcolorbox}
+
+
+\subsection*{Indexed Constraints}
+Indexed constraints are also possible. An additional double-ampersand \verb|&&| will properly space and align a for-all $\forall$ statement.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{lpalign*}{Maximize}{\sum_{i=1}^Ic_ix_i}
+    \mathbf{a}_i^\top\mathbf{x} &\le b_i  
+                    && \forall\ i\in [\![I]\!]     \\&&
+       x_i &\ge 0   && \forall\ i\in \{1,2,...,I\}  
+  \end{lpalign*}
+  \end{verbatim}
+\Vtrg
+\begin{center}$\downarrow$\end{center}
+    \begin{lpalign*}{Maximize}{\sum_{j=1}^Jc_jx_j}
+      \mathbf{a}_i^\top\mathbf{x} &\le b_i  
+                      && \forall\ i\in [\![I]\!]     \\&&
+         x_i &\ge 0   && \forall\ i\in \{1,2,...,I\}  
+    \end{lpalign*}
+\end{tcolorbox}
+
+
+\textsf{amsmath}'s \textsf{aligned} environment can be used to format too-long objectives or constraints. Equation tags will be placed correctly.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{lpalign}{Maximize}
+    {
+    \begin{aligned}
+      c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+         &+c_5x_5+...+c_Jx_J
+    \end{aligned}
+    }
+    \begin{aligned}
+      a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3\\
+            &+a_{i4}x_4+...+a_{IJ}x_J \le b_i
+    \end{aligned}&   && \forall\ i\in [\![I]\!]   \\&&
+     \mathbf{x} \ge \mathbf{0}& 
+  \end{lpalign}
+  \end{verbatim}
+\Vtrg
+\begin{center}$\downarrow$\end{center}
+    \begin{lpalign}{Maximize}
+      {
+      \begin{aligned}
+        c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+           &+c_5x_5+...+c_Jx_J
+      \end{aligned}
+      }
+      \begin{aligned}
+        a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3\\
+              &+a_{i4}x_4+...+a_{IJ}x_J \le b_i
+      \end{aligned}&   && \forall\ i\in [\![I]\!]   \\&&
+       \mathbf{x} \ge \mathbf{0}& 
+    \end{lpalign}
+\end{tcolorbox}
+
+
+
+\subsection*{Clause Alignment}
+Some may think that the placement of ``s.t.'' is a little bit awkward in the above example. It can be raised or lowered with the use of the optional third argument.
+
+\begin{tcolorbox}
+\begin{verbatim}
+	\begin{lpalign}{...}{...}
+		...
+	\end{lpalign}
+	
+		        \begin{lpalign}{...}{...}[4\straise][-4\objraise]
+		            ...
+	            \end{lpalign}
+\end{verbatim}	
+\Vskp
+\begin{center}$\downarrow$\end{center}	
+\begin{multicols}{2}~\VTRg\vtrg
+	\begin{lpalign*}{max}{
+			\begin{bmatrix}c_1\\c_2\\\vdots\\c_n\end{bmatrix}^\top
+			\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}}[0pt][0pt]
+		\begin{bmatrix}
+		a_{11} & \dots & a_{1n} \\
+		a_{21} & \dots & a_{2n} \\
+		\vdots & \vdots& \vdots \\
+		a_{m1} & \dots & a_{mn} \\
+		\end{bmatrix}
+		\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}
+	\end{lpalign*}
+	\begin{lpalign*}{max}{
+		\begin{bmatrix}c_1\\c_2\\\vdots\\c_n\end{bmatrix}^\top
+		\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}}[4\straise][-4\objraise]
+	\begin{bmatrix}
+		a_{11} & \dots & a_{1n} \\
+		a_{21} & \dots & a_{2n} \\
+		\vdots & \vdots& \vdots \\
+		a_{m1} & \dots & a_{mn} \\
+	\end{bmatrix}
+	\begin{bmatrix}x_1\\x_2\\\vdots\\x_n\end{bmatrix}
+	\end{lpalign*}
+\end{multicols}
+\end{tcolorbox}
+
+The lengths \verb|\straise| and \verb|\objraise| are \verb|1/4\baselinskip| so that, if the corresponding vector has $n$ entries, \verb|n\straise| should be about halfway above vertical center of the matrix.
+
+Default raising lengths---in addition to the spacing between the constraints and indexing statement---can be altered via the following commands:
+\begin{itemize}
+	\item \verb|\setlength{\straisedefault}{0pt}|
+	\item \verb|\setlength{\objraisedefault}{0pt}|
+	\item \verb|\setlength{\forallspace}{2em}|
+\end{itemize} 
+
+\begin{tcolorbox}
+\verb|\setlength{\forallspace}{0.5em}|
+\setlength{\forallspace}{0.5em}
+\begin{lpalign*}{Maximize}{\sum_{j=1}^Jc_jx_j}
+	\mathbf{a}_i^\top\mathbf{x} &\le b_i  
+	&& \forall\ i\in [\![I]\!]     \\&&
+	x_i &\ge 0   && \forall\ i\in \{1,2,...,I\}  
+\end{lpalign*}
+\verb|\setlength{\forallspace}{10em}|
+\setlength{\forallspace}{10em}
+\begin{lpalign*}{Maximize}{\sum_{j=1}^Jc_jx_j}
+	\mathbf{a}_i^\top\mathbf{x} &\le b_i  
+	&& \forall\ i\in [\![I]\!]     \\&&
+	x_i &\ge 0   && \forall\ i\in \{1,2,...,I\}  
+\end{lpalign*}
+\end{tcolorbox}
+	
+
+\subsection*{Tags and Labels}
+Use the \verb|\tag| and \verb|\label| commands to customize tags and to reference particular constraints. \verb|\notag| will mute a particular tag. Neither \verb|\tag| nor \verb|\notag| should interfere with the numbering of other equation tags.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{lpalign}{Maximize}{c^\top x    \label{obj}}
+    Ax+s &= b      \tag{Cons}\label{cons}       \\&&
+     s &\ge 0      \notag                       \\&&
+     x &\ge 0                \label{nneg}
+  \end{lpalign} 
+  
+  \eqref{obj} is the objective function.
+  \eqref{cons} encodes the body constraints.
+  Non-negetivity is enforced by \eqref{nneg}.
+  The slack constraints are not tagged.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+    \begin{lpalign}{Maximize}{c^\top x    \label{obj}}
+      Ax+s &= b      \tag{Cons}\label{cons}       \\&&
+       s &\ge 0      \notag                       \\&&
+       x &\ge 0                \label{nneg}
+    \end{lpalign} 
+\eqref{obj} is the objective function.
+\eqref{cons} encodes the body constraints.
+Non-negetivity is enforced by \eqref{nneg}.
+The slack constraints are not tagged.
+\end{tcolorbox}
+
+
+
+
+
+
+
+
+\section{Named Paragraphs}
+The \verb|paratitle| command displays a paragraph marker that takes
+    \begin{itemize}
+    \item[\texttt O.] an optional extra indent.
+    \item[\texttt M.] a title.
+    \item[\texttt O.] an optional abbreviation.
+    \end{itemize}
+If the paragraph is labeled, then any reference to it will give the abbreviation rather than a counter number.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \paratitle{Named Paragraph}[NPg]\label{npara} \\
+  Paragraph \ref{npara} is a named paragraph.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\paratitle{Named Paragraph}[NPg]\label{npara} \\
+Paragraph \ref{npara} is a named paragraph.
+\end{tcolorbox}
+
+
+The first optional argument is a sort of preamble. It is intended to be used for custom indent spacing.
+\begin{tcolorbox}
+  \begin{verbatim}
+\paratitle[\HSKP]{Named Paragraph}[NPg]\label{npara2} \\
+Paragraph \ref{npara2} is a named paragraph.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\paratitle[\HSKP]{Named Paragraph}[NPg]\label{npara2} \\
+Paragraph \ref{npara2} is a named paragraph.
+\end{tcolorbox}
+
+
+
+\section{Named Sub-equation}
+The \verb|namedsubeqs| environment will use a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
+    \begin{itemize}
+    \item[M.] a name or abbreviation.
+    \item[O.] an optional style for the second index (defaults to \verb|\alph|).
+    \end{itemize}
+
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{namedsubeqs}{EQ}
+  \begin{align}
+    A\mathbf{x} = \mathbf{b}   \label{eq:1}   \\
+    C\mathbf{y} = \mathbf{d}   \label{eq:2}
+  \end{align}
+  \end{namedsubeqs}
+  
+  Equations \ref{eq:1} and \ref{eq:2} are equations.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+    \begin{namedsubeqs}{EQ}
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \label{eq:1}   \\
+      C\mathbf{y} = \mathbf{d}   \label{eq:2}
+    \end{align}
+    \end{namedsubeqs}
+    Equations \ref{eq:1} and \ref{eq:2} are equations.
+\end{tcolorbox}
+
+
+Other common tag styles include \verb|\roman| and \verb|\arabic|.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{namedsubeqs}{EQ}[\roman]
+  
+                          \begin{namedsubeqs}{EQ}[\arabic]
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\VTrg
+\begin{multicols}{2}
+    \begin{namedsubeqs}{EQ}[\roman]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \\
+      C\mathbf{y} = \mathbf{d}
+    \end{align}
+    \end{namedsubeqs}
+    \begin{namedsubeqs}{EQ}[\arabic]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \\
+      C\mathbf{y} = \mathbf{d}
+    \end{align}
+    \end{namedsubeqs}
+  \end{multicols}
+\end{tcolorbox}
+
+
+Fonts can be changed using the the appropriate switch commands.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{namedsubeqs}[\itshape\roman]{EQ}
+  
+                    \begin{namedsubeqs}[\scshape\alph]{EQ}
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\VTrg
+\begin{multicols}{2}
+    \begin{namedsubeqs}{EQ}[\itshape\roman]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \\
+      C\mathbf{y} = \mathbf{d}
+    \end{align}
+    \end{namedsubeqs}
+    \begin{namedsubeqs}{EQ}[\scshape\alph]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \\
+      C\mathbf{y} = \mathbf{d}
+    \end{align}
+    \end{namedsubeqs}
+  \end{multicols}
+\end{tcolorbox}
+
+
+Also available is \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| which work like \verb|\label|, \verb|\ref| and \verb|\eqref| but only reference the secondary, sub-index of the tag. The \verb|\sublabel| macro includes \verb|\label|, so we don't need both.
+\begin{tcolorbox}
+  \begin{verbatim}
+    \begin{namedsubeqs}{SQ}[\itshape\roman]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \sublabel{sq:1}\\
+      C\mathbf{y} = \mathbf{d}   \sublabel{sq:2}
+    \end{align}
+    \end{namedsubeqs}
+
+We can reference both (\subref{qs:1}-\subref{qs:2})
+or just \subeqref{sq:1} or even \eqref{sq:2}.
+  \end{verbatim}
+\Vtrg
+\begin{center}$\downarrow$\end{center}
+\vtrg
+    \begin{namedsubeqs}{SQ}[\itshape\roman]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \sublabel{sq:1}\\
+      C\mathbf{y} = \mathbf{d}   \sublabel{sq:2}
+    \end{align}
+    \end{namedsubeqs}
+We can reference both (\subref{sq:1}-\subref{sq:2}) 
+or just \subeqref{sq:1} or even \eqref{sq:2}.
+\end{tcolorbox}
+Unfortunately, the \textsf{hyperref} links seem to be broken sometimes. I haven't been able to find this bug. The \verb|\sublabel| macro is designed around the \verb|namedsubeq| environment; it will not work properly in a traditional \verb|subequations| environment. Users should probably only use \verb|\sublabel| on equations they actually intend to \verb|\subref|.
+
+
+
+
+\section{Combining Macros}
+Each of these macros may be combined for a nicely named, labeled, formatted and tagged mathematical programming problem
+\begin{tcolorbox}
+  \begin{verbatim}
+\paratitle{Non-Linear Program}[NLP]\label{para:NLP}
+\begin{namedsubeqs}{NLP}
+\begin{lpalign}{Minimize}{f(\mathbf{x})    \label{NLP.0}}
+  g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
+  h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
+      \mathbf{x}  &\GE 0                \sublabel{NLP.3}
+\end{lpalign}
+\end{namedsubeqs}
+
+Problem \eqref{para:NLP} is a nonlinear program.
+Equations \eqref{NLP.0} is the objective function.
+Equations (\ref{NLP.1}-\ref{NLP.3}) are the constraints.
+Non-negativity is enforced by constraint \subeqref{NLP.3}.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+    \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
+    \begin{namedsubeqs}{NLP}[\itshape\roman]
+    \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
+        g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
+        h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
+            \mathbf{x}  &\GE 0                \sublabel{NLP.3}
+    \end{lpalign}
+    \end{namedsubeqs}
+    
+Problem \eqref{para:NLP} is a nonlinear program.
+Equations \eqref{NLP.0} is the objective function.
+Equations (\ref{NLP.1}-\subref{NLP.3}) are the constraints. 
+Non-negativity is enforced by constraint \subeqref{NLP.3}.
+\end{tcolorbox}
+
+
+
+
+
+
+
+
+
+\section{Spacing Macros}
+
+\subsection*{Quick Spacing}
+
+Also included are font-relative version of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
+    \vtrg\begin{multicols}{2}
+    \begin{itemize}
+        \item\verb|\hskp|  = 0.5em \hspace{5pt}$\vert\hskp\vert$
+        \item\verb|\Hskp|  = 1em   \hspace{13pt}$\vert\Hskp\vert$
+        \item\verb|\HSkp|  = 2em   \hspace{13pt}$\vert\HSkp\vert$
+        \item\verb|\HSKp|  = 3em   \hspace{5pt}$\vert\HSKp\vert$
+        \item\verb|\HSKP|  = 4em   \hspace{5pt}$\vert\HSKP\vert$
+    \end{itemize}
+    \end{multicols}\Vtrg\vtrg
+    
+Negative versions of the above spacing macros:
+	\vtrg\begin{multicols}{2}
+	\begin{itemize}
+		\item\verb|\htrg|  = -0.5em
+		\item\verb|\Htrg|  = -1em
+		\item\verb|\HTrg|  = -2em
+		\item\verb|\HTRg|  = -3em
+		\item\verb|\HTRG|  = -4em
+	\end{itemize}
+	\end{multicols}\Vtrg\vtrg
+   
+Vertical versions of the above horizontal spacing macros:
+    \vtrg\begin{multicols}{2}
+	\begin{itemize}
+		\item\verb|\vskp| = 0.5em 
+		\item\verb|\Vskp| = 1em 
+		\item\verb|\VSkp| = 2em 
+		\item\verb|\VSKp| = 3em 
+		\item\verb|\VSKP| = 4em 
+		
+		\item\verb|\vtrg| = -0.5em 
+		\item\verb|\Vtrg| = -1em 
+		\item\verb|\VTrg| = -2em 
+		\item\verb|\VTRg| = -3em 
+		\item\verb|\VTRG| = -4em 
+	\end{itemize}
+	\end{multicols}\Vtrg\vtrg
+
+These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip| correctly, but I find them more convenient.
+\begin{tcolorbox}
+	\begin{verbatim}
+	Some horizontal spacing between these \HHSKP words \\
+
+	Some vertical spacing between these \VSKp lines \\
+
+	Some negative-horizontal spacing between these \HTrg words \\
+	
+	Some negative-vertical space between these \Vtrg
+	lines, so that they overlap.
+	\end{verbatim}
+	\begin{center}$\downarrow$\end{center}
+	\Vskp
+	Some horizontal spacing between these \HSKP words \\
+	
+	Some vertical spacing between these \VSKp lines \\
+	
+	Some negative-horizontal spacing between these \HTrg words \\
+	
+	Some negative-vertical space between these \Vtrg
+	lines, so that they overlap.
+\end{tcolorbox}
+
+
+
+\subsection*{Summation Spacing}
+
+Some macros for correctly spacing display-style summation notation when the lower index set is overfull. This is done by placing the subscript in a zero-width box and should not be used in inline math.
+	\vtrg\begin{multicols}{3}
+	\begin{itemize}
+	\item \verb|\SUM|   = $\displaystyle\sum$
+	\item \verb|\PROD|  = $\displaystyle\prod$
+	\item \verb|\CUP|   = $\displaystyle\bigcup$
+	\item \verb|\CAP|   = $\displaystyle\bigcap$
+	\item \verb|\VEE|   = $\displaystyle\bigvee$
+	\item \verb|\WEDGE| = $\displaystyle\bigwedge$
+	\end{itemize}
+	\end{multicols}\Vtrg\vtrg
+These each take two arguments
+	\begin{itemize}
+		\item[\texttt M.] The lower index set
+		\item[\texttt O.] The upper index
+	\end{itemize}
+	
+This spacing is a personal preference; I think it makes things more consistent and legible. The below example is comically exaggerated, please use \verb|\substack| to illuminate any \emph{really} long indexing.
+\begin{tcolorbox}
+	\begin{verbatim}
+	X=\sum_{i\in way too much indexing} x_i
+	
+	                    X=\SUM{i\in way too much indexing}x_i
+	                    
+	X=\SUM{\substack{i\in way to \\ much indexing}}x_i
+	   
+	                        X=\SUM{i=1,300,000}[1,300,001]x_i
+	\end{verbatim}
+	\begin{center}$\downarrow$\end{center}
+	\begin{multicols}{2}~\VTRg\vtrg
+	$$
+	X=\sum_{i\in way too much indexing} x_i
+	$$
+	$$
+	X=\SUM{\substack{i\in way to \\ much indexing}}x_i
+	$$
+	$$
+	X=\SUM{i\in way too much indexing}x_i
+	$$
+	$$
+	X=\SUM{i=1,300,000}[1,300,001]x_i
+	$$
+	\end{multicols}
+\end{tcolorbox}
+
+
+
+\subsection*{Equation Spacing}
+
+A few binary relations with extra space on either side. I like these for aligned inequality constraints.
+    \vtrg\begin{multicols}{4}
+    \begin{itemize}
+    	\item\verb|\EQ| $\EQ$ 
+        \item\verb|\LS| $\LS$ 
+        \item\verb|\GS| $\GS$ 
+        
+        \item\verb|\IN| $\IN$ 
+        \item\verb|\LE| $\LE$ 
+        \item\verb|\GE| $\GE$ 
+        
+        \item\verb|\NEQ| $\NEQ$
+        \item\verb|\SUB| $\SUB$
+        \item\verb|\SUP| $\SUP$
+        
+        \item\verb|\NIN| $\NIN$
+        \item\verb|\SEQ| $\SEQ$
+        \item\verb|\SPQ| $\SPQ$
+    \end{itemize}
+    \end{multicols}\Vtrg\vtrg
+
+\begin{tcolorbox}
+  \Vskp
+  \begin{verbatim}
+     Ax+s &\eq b \\&&              Ax+s &\EQ b \\&& 
+      x,s &\ge 0                    x,s &\GE 0
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\begin{multicols}{2}
+    ~\VTRG
+    \begin{lpalign*}{max}{c^\top x}
+      Ax+s &\eq b+0 \\&&
+      x,s &\ge 0 
+    \end{lpalign*} 
+    \begin{lpalign*}{max}{c^\top x}
+      Ax+s &\EQ b+0 \\&&
+       x,s &\GE 0 
+    \end{lpalign*}
+\end{multicols}
+\end{tcolorbox}
+
+
+
+
+
+
+
+\section{Known Bugs}
+\begin{itemize}
+	\item[$\boxtimes$] Spacing macros \verb|\quad|and \verb|\qquad| overwrite default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
+	
+	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of environment object. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
+	
+	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros do not work properly without the \textsf{hyperref} package 
+	
+	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros do not work outside of a \textsf{namedsubeqs} environment.
+	
+	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros sometimes hyperlink to the wrong tag.
+\end{itemize}
+
+\section{Feature Wishlist}
+\begin{itemize}
+	\item[$\boxdot$] Enclose an \textsf{lpalign} environment in a figure-like structure which will move to the next page without interrupting prose if space doesn't allow for it without a page break. 
+	\item[$\boxdot$] Remove required double-ampersands \verb|&&| from the end of lines in the \textsf{lpalign} environment.
+\end{itemize}
+
+
+
+
+\section{Version History}
+	\begin{itemize}
+	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
+	\item[v1.1] Jan. 30, 2026. Bug Fix. Renamed quick spacing macros to maintain compatability with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
+	\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

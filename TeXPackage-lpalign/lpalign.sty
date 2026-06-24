@@ -1,0 +1,201 @@
+\ProvidesPackage{lpalign}[Jan 30, 2026: v1.1 of Jamie Fravel's lpalign macro package]
+
+\RequirePackage{amsmath, expl3, makecell, vcell}
+%%begin novalidate
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Horizontal Spacing  %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A few spacing macros that I use often.
+
+\def\hskp{\hskip.5em\relax}
+\def\Hskp{\hskip1em\relax}
+\def\HSkp{\hskip2em\relax}
+\def\HSKp{\hskip3em\relax}
+\def\HSKP{\hskip4em\relax}
+
+\def\htrg{\hskip-.5em\relax}
+\def\Htrg{\hskip-1em\relax}
+\def\HTrg{\hskip-2em\relax}
+\def\HTRg{\hskip-3em\relax}
+\def\HTRG{\hskip-4em\relax}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Vertical Spacing  %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vertical versions of the above spacing macros.
+
+\def\vskp{\par\vspace{.5em}\relax}
+\def\Vskp{\par\vspace{1em}\relax}
+\def\VSkp{\par\vspace{2em}\relax}
+\def\VSKp{\par\vspace{3em}\relax}
+\def\VSKP{\par\vspace{4em}\relax}
+
+\def\vtrg{\par\vspace{-.5em}\relax}
+\def\Vtrg{\par\vspace{-1em}\relax}
+\def\VTrg{\par\vspace{-2em}\relax}
+\def\VTRg{\par\vspace{-3em}\relax}
+\def\VTRG{\par\vspace{-4em}\relax}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Spaced Evaluaters  %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A few binary evaluaters with extra space on either side. I like these for aligned inequality constraints.
+
+\newcommand{\eq}{=}
+
+\newcommand{\EQ}{\hskp=\hskp}
+\newcommand{\LS}{\hskp<\hskp}
+\newcommand{\GS}{\hskp>\hskp}
+\newcommand{\LE}{\hskp\leq\hskp}
+\newcommand{\GE}{\hskp\geq\hskp}
+\newcommand{\IN}{\hskp\in\hskp}
+
+\newcommand{\NEQ}{\hskp\neq\hskp}
+\newcommand{\SUB}{\hskp\subset\hskp}
+\newcommand{\SUP}{\hskp\supset\hskp}
+\newcommand{\SEQ}{\hskp\subseteq\hskp}
+\newcommand{\SPQ}{\hskp\supseteq\hskp}
+\newcommand{\NIN}{\hskp\notin\hskp}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Overindexed Delimiters  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A correction (personal preference) for the spacing display style summation notation when the indexing term is over-long.
+
+\NewDocumentCommand{\SUM}{mo}{
+	\IfNoValueTF{#2}
+	{\sum_{\rlap{\scriptsize$#1$}}}
+	{\sum_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+\NewDocumentCommand{\PROD}{mo}{
+	\IfNoValueTF{#2}
+	{\prod_{\rlap{\scriptsize$#1$}}}
+	{\prod_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+\NewDocumentCommand{\CUP}{mo}{
+	\IfNoValueTF{#2}
+	{\bigcup_{\rlap{\scriptsize$#1$}}}
+	{\bigcup_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+\NewDocumentCommand{\CAP}{mo}{
+	\IfNoValueTF{#2}
+	{\bigcap_{\rlap{\scriptsize$#1$}}}
+	{\bigcap_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+\NewDocumentCommand{\VEE}{mo}{
+	\IfNoValueTF{#2}
+	{\bigvee_{\rlap{\scriptsize$#1$}}}
+	{\bigvee_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+\NewDocumentCommand{\WEDGE}{mo}{
+	\IfNoValueTF{#2}
+	{\bigwedge_{\rlap{\scriptsize$#1$}}}
+	{\bigwedge_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+	
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  lpalign  %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aestetically. Takes an optimization direction (#1) [Maximize, Minimize, max, min] and an objective function (#2). The constraints are given, in alignat format, between \begin and \end. Importantly, a double ampersand && should be placed after every line break \\ to preserve spacing. The starred version mutes equation reference tags.
+
+
+\newlength{\straise}
+\setlength{\straise}{.25\baselineskip}
+\newlength{\straisedefault}
+\setlength{\straisedefault}{0pt}
+
+\newlength{\objraise}
+\setlength{\objraise}{.25\baselineskip}
+\newlength{\objraisedefault}
+\setlength{\objraisedefault}{0pt}
+
+\newlength{\forallspace}
+\setlength{\forallspace}{2em}
+
+\NewDocumentEnvironment{lpalign}{mmO{\straisedefault}O{\objraisedefault} +b}
+    {\begin{alignat}{4}
+     \raisebox{#4}{\text{#1}}\rlap{\hskp$#2$}  &\hskp&  &&  \hspace{\forallspace}  \\
+     \raisebox{#3}{\text{s.t.}}  &&  #5
+     \end{alignat}}
+    {\ignorespacesafterend}
+\NewDocumentEnvironment{lpalign*}{mmO{\straisedefault}O{\objraisedefault} +b}
+    {\begin{alignat*}{4}
+     \raisebox{#4}{\text{#1}}\rlap{\hskp$#2$}  &\hskp&  &&  \hspace{\forallspace}  \\
+     \raisebox{#3}{\text{s.t.}}  &&  #5
+    \end{alignat*}}
+    {\ignorespacesafterend}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Named Paragraphs  %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A paragraph marker that takes a title (#1) and an optional abbreviation (#2). If the paragraph is labeled, then any reference to it will give the abbreviation (#2) rather than a counter number.
+
+\makeatletter
+\newcounter{Para}
+\newcounter{NamedPara}
+\NewDocumentCommand\paratitle{O{}mo}
+    {\hfill\break\indent#1\textbf{#2}
+        \IfValueTF{#3}
+            {\textbf{(#3)}\refstepcounter{NamedPara}\def\@currentlabel{#3}}
+            {\refstepcounter{Para}}
+    }
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Named SubEquations  %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A subequations-style environment will use a (#1) as the first index in any enclosed equation reference tag. A second index is appended and iterated on. (#2) can be used to change the style of the second index.
+
+\newcounter{NamedEq}
+\NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
+  {\begin{subequations}
+     \refstepcounter{NamedEq}
+     \def\@currentlabel{#1}
+     \renewcommand{\theequation}{#1.{#2{equation}}}}
+  {\end{subequations}
+     \ignorespacesafterend
+     \unskip
+     \addtocounter{equation}{-1}
+  }
+
+% \sublabel, \subref and \subeqref which work like \label, \ref and \eqref but only reference the secondary, sub-index of the tag. The \sublabel macro includes \label.
+\makeatletter
+\newcommand{\sublabel}[1]{%
+  \label{#1}% stores \@currentlabel for hyperref
+  \addtocounter{equation}{1}%
+  \expandafter\xdef\csname subeqref@#1\endcsname{\theequation}% save for subeqref
+  \addtocounter{equation}{-1}%
+}
+\makeatother
+\ExplSyntaxOn
+\NewDocumentCommand{\subref}{m}
+ {
+  \hyperref[#1]{%
+    \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname } % stored number
+    % extract last component after last dot
+    \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
+    \l_tmpa_tl % just print the subindex without parentheses
+  }
+ }
+\NewDocumentCommand{\subeqref}{m}
+ {
+  \hyperref[#1]{
+    \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname } % stored number
+    % extract last component after last dot
+    \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
+    \csname tagform@\endcsname { \l_tmpa_tl }
+  }
+ }
+\ExplSyntaxOff
