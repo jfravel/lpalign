@@ -1,9 +1,0 @@
-\contentsline {section}{\numberline {1}Installation}{2}{section.1}%
-\contentsline {section}{\numberline {2}The \textsf {lpalign} Environment}{2}{section.2}%
-\contentsline {section}{\numberline {3}Named Paragraphs}{6}{section.3}%
-\contentsline {section}{\numberline {4}Named Sub-equation}{7}{section.4}%
-\contentsline {section}{\numberline {5}Combining Macros}{9}{section.5}%
-\contentsline {section}{\numberline {6}Spacing Macros}{9}{section.6}%
-\contentsline {section}{\numberline {7}Known Bugs}{12}{section.7}%
-\contentsline {section}{\numberline {8}Feature Wishlist}{12}{section.8}%
-\contentsline {section}{\numberline {9}Version History}{12}{section.9}%
