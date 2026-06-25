@@ -164,39 +164,96 @@
   {\begin{subequations}
      \refstepcounter{NamedEq}
      \def\@currentlabel{#1}
+     \def\lpalign@storesublabelcurrent##1{\lpalign@storesublabel{##1}{#2{equation}}}%
      \renewcommand{\theequation}{#1.{#2{equation}}}
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
   {\end{subequations}
      \ignorespacesafterend
      \unskip
-     \addtocounter{equation}{-1}
   }
 \makeatother
 
-% \sublabel, \subref and \subeqref which work like \label, \ref and \eqref but only reference the secondary, sub-index of the tag. The \sublabel macro includes \label.
+% \subref and \subeqref work like \ref and \eqref but only reference the
+% secondary, sub-index of the tag. \sublabel remains as a compatibility alias
+% for \label.
 \makeatletter
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }
+\newcommand{\lpalignrawref}[1]{%
+  \@ifundefined{hyperref}{\ref{#1}}{\ref*{#1}}%
+}
+\newcommand{\lpalign@newsubref}[2]{%
+  \expandafter\gdef\csname subeqref@#1\endcsname{#2}%
+}
+\let\lpalignauxout\@auxout
+\newcommand{\lpalignnewsubref}[2]{%
+  \lpalign@newsubref{#1}{#2}%
+}
+\newcommand{\lpalign@storesublabel}[2]{%
+  \lpalignstoresublabel{#1}{#2}%
+}
+\newcommand{\lpalign@storestandardsublabel}[1]{%
+  \begingroup
+  \edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \xdef\noexpand\lpalign@tmp{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
+  \immediate\write\lpalignauxout{\string\lpalignnewsubref{#1}{\lpalign@tmp}}%
+  \endgroup
+}
+\let\lpalign@origsubequations\subequations
+\let\lpalign@endorigsubequations\endsubequations
+\RenewDocumentEnvironment{subequations}{}%
+  {\lpalign@origsubequations
+   \let\lpalign@origlabel\label
+   \let\lpalign@origltxlabel\ltx@label
+   \def\lpalign@storesublabelcurrent##1{\lpalign@storestandardsublabel{##1}}%
+   \@ifundefined{theHequation}{}%
+     {\renewcommand{\theHequation}{lpalign.subequation.\arabic{parentequation}.\arabic{equation}}}%
+   \RenewDocumentCommand{\label}{m}{%
+     \lpalign@origlabel{##1}%
+     \lpalign@storesublabelcurrent{##1}%
+   }%
+   \renewcommand{\ltx@label}[1]{%
+     \lpalign@origltxlabel{##1}%
+     \lpalign@storesublabelcurrent{##1}%
+   }}
+  {\lpalign@endorigsubequations}
 \newcommand{\sublabel}[1]{%
-  \label{#1}% stores \@currentlabel for hyperref
-  \lpalignstoresublabel{#1}%
+  \label{#1}%
 }
 \makeatother
 \ExplSyntaxOn
-\cs_new_protected:Npn \lpalignstoresublabel #1
+\cs_new_protected:Npn \lpalignstoresublabel #1#2
  {
-  \addtocounter{equation}{1}
-  \tl_set:Nx \l_tmpa_tl { \theequation }
-  \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
+  \group_begin:
+  \tl_set:Nx \l_tmpa_tl { #2 }
   \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpa_tl }
-  \addtocounter{equation}{-1}
+  \tl_set:Nx \l_tmpb_tl { \string\lpalignnewsubref{#1}{\tl_use:N \l_tmpa_tl} }
+  \immediate\write\lpalignauxout{\tl_use:N \l_tmpb_tl}%
+  \group_end:
  }
 \cs_new:Npn \lpalignsubreftext #1
  {
   \cs_if_exist:cTF { subeqref@#1 }
    { \use:c { subeqref@#1 } }
+   { \lpalignsubreffallback{#1} }
+ }
+\cs_new:Npn \lpalignsubreffallback #1
+ {
+  \tl_set:Nx \l_tmpa_tl { \lpalignrawref{#1} }
+  \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
+  \regex_replace_once:nnN { ^\{(.*)\}$ } { \1 } \l_tmpa_tl
+  \regex_extract_once:nnNTF { ([[:alnum:]]+)$ } { \l_tmpa_tl } \l_tmpa_seq
+   { \seq_item:Nn \l_tmpa_seq { 1 } }
    { ?? }
  }
 \NewDocumentCommand{\subref}{m}
