@@ -15,7 +15,7 @@
 
 
 \title{The \textsf{lpalign} Package}
-\date{Corresponds to \textsf{lpalign} v$1.1$, dated January $30^\textrm{th}$ 2026}
+\date{Corresponds to \textsf{lpalign} v$1.2$, dated June $25^\textrm{th}$ 2026}
 \author{Jamie Fravel}
 \affil{jamiefravel@me.com}
 
@@ -30,14 +30,14 @@
 
 \section{Installation}
 
-Copy \textsf{lpalign.sty} to the same directory as your main \textsf{.tex} file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and  \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
+Copy \textsf{lpalign.sty} to the same directory as your main \textsf{.tex} file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
 
 
 
 
 \section{The \textsf{lpalign} Environment}
 
-\textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package which helps to format mathematical programming problems aestetically so that they are legible in code as well as in the final pdf. Its primary function is to automatically embed the objective function in a zero-width box so that it's width does not interfere with the constraints spacing or centering.
+\textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package which helps to format mathematical programming problems aesthetically so that they are legible in code as well as in the final pdf. Its primary function is to automatically embed the objective function in a zero-width box so that its width does not interfere with the constraints spacing or centering.
 
 
 The \textsf{lpalign} environment takes a few arguments:
@@ -188,7 +188,7 @@ Some may think that the placement of ``s.t.'' is a little bit awkward in the abo
 \end{multicols}
 \end{tcolorbox}
 
-The lengths \verb|\straise| and \verb|\objraise| are \verb|1/4\baselinskip| so that, if the corresponding vector has $n$ entries, \verb|n\straise| should be about halfway above vertical center of the matrix.
+The lengths \verb|\straise| and \verb|\objraise| are \verb|1/4\baselineskip| so that, if the corresponding vector has $n$ entries, \verb|n\straise| should be about halfway above vertical center of the matrix.
 
 Default raising lengths---in addition to the spacing between the constraints and indexing statement---can be altered via the following commands:
 \begin{itemize}
@@ -227,7 +227,7 @@ Use the \verb|\tag| and \verb|\label| commands to customize tags and to referenc
   
   \eqref{obj} is the objective function.
   \eqref{cons} encodes the body constraints.
-  Non-negetivity is enforced by \eqref{nneg}.
+  Non-negativity is enforced by \eqref{nneg}.
   The slack constraints are not tagged.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
@@ -238,7 +238,7 @@ Use the \verb|\tag| and \verb|\label| commands to customize tags and to referenc
     \end{lpalign} 
 \eqref{obj} is the objective function.
 \eqref{cons} encodes the body constraints.
-Non-negetivity is enforced by \eqref{nneg}.
+Non-negativity is enforced by \eqref{nneg}.
 The slack constraints are not tagged.
 \end{tcolorbox}
 
@@ -336,7 +336,7 @@ Other common tag styles include \verb|\roman| and \verb|\arabic|.
 \end{tcolorbox}
 
 
-Fonts can be changed using the the appropriate switch commands.
+Fonts can be changed using the appropriate switch commands.
 \begin{tcolorbox}
   \begin{verbatim}
   \begin{namedsubeqs}[\itshape\roman]{EQ}
@@ -387,7 +387,7 @@ or just \subeqref{sq:1} or even \eqref{sq:2}.
 We can reference both (\subref{sq:1}-\subref{sq:2}) 
 or just \subeqref{sq:1} or even \eqref{sq:2}.
 \end{tcolorbox}
-Unfortunately, the \textsf{hyperref} links seem to be broken sometimes. I haven't been able to find this bug. The \verb|\sublabel| macro is designed around the \verb|namedsubeq| environment; it will not work properly in a traditional \verb|subequations| environment. Users should probably only use \verb|\sublabel| on equations they actually intend to \verb|\subref|.
+The \verb|\sublabel| macro is designed around the \verb|namedsubeqs| environment; it will not work properly in a traditional \verb|subequations| environment. Users should probably only use \verb|\sublabel| on equations they actually intend to \verb|\subref|.
 
 
 
@@ -438,7 +438,7 @@ Non-negativity is enforced by constraint \subeqref{NLP.3}.
 
 \subsection*{Quick Spacing}
 
-Also included are font-relative version of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
+Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
     \vtrg\begin{multicols}{2}
     \begin{itemize}
         \item\verb|\hskp|  = 0.5em \hspace{5pt}$\vert\hskp\vert$
@@ -480,7 +480,7 @@ Vertical versions of the above horizontal spacing macros:
 These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip| correctly, but I find them more convenient.
 \begin{tcolorbox}
 	\begin{verbatim}
-	Some horizontal spacing between these \HHSKP words \\
+		Some horizontal spacing between these \HSKP words \\
 
 	Some vertical spacing between these \VSKp lines \\
 
@@ -603,15 +603,20 @@ A few binary relations with extra space on either side. I like these for aligned
 
 \section{Known Bugs}
 \begin{itemize}
-	\item[$\boxtimes$] Spacing macros \verb|\quad|and \verb|\qquad| overwrite default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
+	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
+	
+	\item[$\boxtimes$] The package depended on \textsf{makecell} and \textsf{vcell} without using them. Fixed by removing those unused dependencies; v1.2.
+	
+	\item[$\boxtimes$] The \verb|namedsubeqs| environment assigned \verb|\@currentlabel| without switching to \verb|\makeatletter| scope. Fixed internally; v1.2.
+	
+	\item[$\boxtimes$] The \verb|\subref| and \verb|\subeqref| macros failed outright when \textsf{hyperref} was not loaded. Fixed by falling back to plain text references when \textsf{hyperref} is absent; v1.2.
 	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of environment object. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
-	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros do not work properly without the \textsf{hyperref} package 
-	
 	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros do not work outside of a \textsf{namedsubeqs} environment.
 	
-	\item[$\boxdot$] The \verb|\sublabel|, \verb|\subref| and \verb|\subeqref| macros sometimes hyperlink to the wrong tag.
+	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning a dedicated hyperref-facing equation identifier inside \textsf{namedsubeqs}; test branch after v1.2.
+	
 \end{itemize}
 
 \section{Feature Wishlist}
@@ -626,7 +631,8 @@ A few binary relations with extra space on either side. I like these for aligned
 \section{Version History}
 	\begin{itemize}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
-	\item[v1.1] Jan. 30, 2026. Bug Fix. Renamed quick spacing macros to maintain compatability with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
+	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
+	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\subref| and \verb|\subeqref|, and cleaned up documentation inconsistencies.
 	\end{itemize}
 
 
@@ -644,11 +650,6 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \end{document}
-
-
-
-
-
 
 
 

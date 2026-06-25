@@ -1,6 +1,6 @@
-\ProvidesPackage{lpalign}[Jan 30, 2026: v1.1 of Jamie Fravel's lpalign macro package]
+\ProvidesPackage{lpalign}[Jun 25, 2026: v1.2 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3, makecell, vcell}
+\RequirePackage{amsmath, expl3}
 %%begin novalidate
 
 
@@ -43,9 +43,9 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%  Spaced Evaluaters  %%%%%%%%%%
+%%%%  Spaced Evaluators  %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A few binary evaluaters with extra space on either side. I like these for aligned inequality constraints.
+% A few binary evaluators with extra space on either side. I like these for aligned inequality constraints.
 
 \newcommand{\eq}{=}
 
@@ -105,7 +105,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  lpalign  %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aestetically. Takes an optimization direction (#1) [Maximize, Minimize, max, min] and an objective function (#2). The constraints are given, in alignat format, between \begin and \end. Importantly, a double ampersand && should be placed after every line break \\ to preserve spacing. The starred version mutes equation reference tags.
+% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aesthetically. Takes an optimization direction (#1) [Maximize, Minimize, max, min] and an objective function (#2). The constraints are given, in alignat format, between \begin and \end. Importantly, a double ampersand && should be placed after every line break \\ to preserve spacing. The starred version mutes equation reference tags.
 
 
 \newlength{\straise}
@@ -159,43 +159,52 @@
 % A subequations-style environment will use a (#1) as the first index in any enclosed equation reference tag. A second index is appended and iterated on. (#2) can be used to change the style of the second index.
 
 \newcounter{NamedEq}
+\makeatletter
 \NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
   {\begin{subequations}
      \refstepcounter{NamedEq}
      \def\@currentlabel{#1}
-     \renewcommand{\theequation}{#1.{#2{equation}}}}
+     \renewcommand{\theequation}{#1.{#2{equation}}}
+     \@ifundefined{theHequation}{}%
+       {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
   {\end{subequations}
      \ignorespacesafterend
      \unskip
      \addtocounter{equation}{-1}
   }
+\makeatother
 
 % \sublabel, \subref and \subeqref which work like \label, \ref and \eqref but only reference the secondary, sub-index of the tag. The \sublabel macro includes \label.
 \makeatletter
+\newcommand{\lpalignhyperref}[2]{%
+  \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
+}
 \newcommand{\sublabel}[1]{%
   \label{#1}% stores \@currentlabel for hyperref
-  \addtocounter{equation}{1}%
-  \expandafter\xdef\csname subeqref@#1\endcsname{\theequation}% save for subeqref
-  \addtocounter{equation}{-1}%
+  \lpalignstoresublabel{#1}%
 }
 \makeatother
 \ExplSyntaxOn
+\cs_new_protected:Npn \lpalignstoresublabel #1
+ {
+  \addtocounter{equation}{1}
+  \tl_set:Nx \l_tmpa_tl { \theequation }
+  \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
+  \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpa_tl }
+  \addtocounter{equation}{-1}
+ }
+\cs_new:Npn \lpalignsubreftext #1
+ {
+  \cs_if_exist:cTF { subeqref@#1 }
+   { \use:c { subeqref@#1 } }
+   { ?? }
+ }
 \NewDocumentCommand{\subref}{m}
  {
-  \hyperref[#1]{%
-    \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname } % stored number
-    % extract last component after last dot
-    \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
-    \l_tmpa_tl % just print the subindex without parentheses
-  }
+  \lpalignhyperref{#1}{\lpalignsubreftext{#1}}
  }
 \NewDocumentCommand{\subeqref}{m}
  {
-  \hyperref[#1]{
-    \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname } % stored number
-    % extract last component after last dot
-    \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
-    \csname tagform@\endcsname { \l_tmpa_tl }
-  }
+  \lpalignhyperref{#1}{\csname tagform@\endcsname { \lpalignsubreftext{#1} }}
  }
 \ExplSyntaxOff
