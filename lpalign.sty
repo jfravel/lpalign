@@ -163,6 +163,11 @@
 \newcommand{\lpalign@storesubreftext}[2]{%
   \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
 }
+\newcommand{\lpalign@sanitizesubeqcurrentlabel}{%
+  \ifnum\value{equation}>0\relax
+    \protected@edef\@currentlabel{{\p@equation\theequation}}%
+  \fi
+}
 \newcommand{\lpalign@storestandardsubcurrent}[1]{%
   \begingroup
   \edef\lpalign@full{\theequation}%
@@ -189,10 +194,12 @@
    \@ifundefined{theHequation}{}%
      {\renewcommand{\theHequation}{lpalign.subequation.\arabic{parentequation}.\arabic{equation}}}%
    \RenewDocumentCommand{\label}{m}{%
+     \lpalign@sanitizesubeqcurrentlabel
      \lpalign@subeqoriglabel{##1}%
      \lpalign@subeqstoresubcurrent{##1}%
    }%
    \renewcommand{\ltx@label}[1]{%
+     \lpalign@sanitizesubeqcurrentlabel
      \lpalign@subeqorigltxlabel{##1}%
      \lpalign@subeqstoresubcurrent{##1}%
    }}
