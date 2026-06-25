@@ -174,8 +174,6 @@
   \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
   \endgroup
 }
-\let\lpalign@baselabel\label
-\let\lpalign@baseltxlabel\ltx@label
 \let\lpalign@origsubequations\subequations
 \let\lpalign@endorigsubequations\endsubequations
 \RenewDocumentEnvironment{subequations}{}%
@@ -200,20 +198,10 @@
 \NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
   {\begin{subequations}
      \refstepcounter{NamedEq}
-     \let\lpalign@namedoriglabel\lpalign@baselabel
-     \let\lpalign@namedorigltxlabel\lpalign@baseltxlabel
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1.{#2{equation}}}
-     \def\lpalign@namedstoresubcurrent##1{%
+     \def\lpalign@subeqstoresubcurrent##1{%
        \expandafter\xdef\csname subeqref@##1\endcsname{#2{equation}}%
-     }%
-     \RenewDocumentCommand{\label}{m}{%
-       \lpalign@namedoriglabel{##1}%
-       \lpalign@namedstoresubcurrent{##1}%
-     }%
-     \renewcommand{\ltx@label}[1]{%
-       \lpalign@namedorigltxlabel{##1}%
-       \lpalign@namedstoresubcurrent{##1}%
      }%
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
@@ -238,9 +226,9 @@
 }
 \newcommand{\sublabel}[1]{%
   \label{#1}%
-  \@ifundefined{lpalign@namedstoresubcurrent}
+  \@ifundefined{lpalign@subeqstoresubcurrent}
     {\lpalign@storestandardsubcurrent{#1}}
-    {\lpalign@namedstoresubcurrent{#1}}%
+    {\lpalign@subeqstoresubcurrent{#1}}%
 }
 \makeatother
 \ExplSyntaxOn
