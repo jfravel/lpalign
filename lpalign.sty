@@ -187,9 +187,13 @@
 \newcommand{\lpalign@newsubref}[2]{%
   \expandafter\gdef\csname subeqref@#1\endcsname{#2}%
 }
-\let\lpalignauxout\@auxout
 \newcommand{\lpalignnewsubref}[2]{%
   \lpalign@newsubref{#1}{#2}%
+}
+\newcommand{\lpalignwritesubref}[2]{%
+  \protected@write\@auxout{}{%
+    \string\lpalignnewsubref{#1}{#2}%
+  }%
 }
 \newcommand{\lpalign@storesublabel}[2]{%
   \lpalignstoresublabel{#1}{#2}%
@@ -206,7 +210,7 @@
   \lpalign@tmpdef
   \expandafter\lpalign@stripaux\lpalign@full\@nil
   \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
-  \immediate\write\lpalignauxout{\string\lpalignnewsubref{#1}{\lpalign@tmp}}%
+  \lpalignwritesubref{#1}{\lpalign@tmp}%
   \endgroup
 }
 \let\lpalign@origsubequations\subequations
@@ -237,8 +241,7 @@
   \group_begin:
   \tl_set:Nx \l_tmpa_tl { #2 }
   \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpa_tl }
-  \tl_set:Nx \l_tmpb_tl { \string\lpalignnewsubref{#1}{\tl_use:N \l_tmpa_tl} }
-  \immediate\write\lpalignauxout{\tl_use:N \l_tmpb_tl}%
+  \exp_args:Nnx \lpalignwritesubref {#1} { \tl_use:N \l_tmpa_tl }
   \group_end:
  }
 \cs_new:Npn \lpalignsubreftext #1
