@@ -164,6 +164,7 @@
   {\begin{subequations}
      \refstepcounter{NamedEq}
      \let\lpalign@origlabel\label
+     \let\lpalign@origltxlabel\ltx@label
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1.{#2{equation}}}
      \def\lpalign@storesubcurrent##1{%
@@ -171,6 +172,10 @@
      }%
      \RenewDocumentCommand{\label}{m}{%
        \lpalign@origlabel{##1}%
+       \lpalign@storesubcurrent{##1}%
+     }%
+     \renewcommand{\ltx@label}[1]{%
+       \lpalign@origltxlabel{##1}%
        \lpalign@storesubcurrent{##1}%
      }%
      \@ifundefined{theHequation}{}%
