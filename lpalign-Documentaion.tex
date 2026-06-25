@@ -455,7 +455,7 @@ an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
   \begin{verbatim}
 	  \begin{subequations}
 	  \renewcommand{\theequation}
-	  								{\theparentequation$\vert$\arabic{equation}}
+	  								{\theparentequation\textbar\arabic{equation}}
 	  \begin{align}
 	    A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
 	    C\mathbf{y} = \mathbf{d}   \label{sq:2}
@@ -468,7 +468,7 @@ an equation's sub-tag \subref{sq:1} and \subeqref{sq:2}.
 \begin{center}$\downarrow$\end{center}
     \begin{subequations}
 	  \renewcommand{\theequation}
-  	  								{\theparentequation$\vert$\arabic{equation}}
+  	  								{\theparentequation\textbar\arabic{equation}}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
@@ -476,6 +476,7 @@ an equation's sub-tag \subref{sq:1} and \subeqref{sq:2}.
     \end{subequations}
 We can also reference \ref{sq:1} and \eqref{sq:2}, or sub-reference \subref{sq:1} and \subeqref{sq:2} in a \textsf{subequations} environment.
 \end{tcolorbox}
+Supported punctuation includes the period (.), colon (:), semicolon (;), comma (,), hyphen (-), forward-slash (/)  and \verb|\textbar| (\textbar). Other punctuation has not been tested.
 
 
 
@@ -700,9 +701,11 @@ A few binary relations with extra space on either side. I like these for aligned
 		
 	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
+	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\subref| and \verb|\subeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
+	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of environment object. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
-	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\subref| and \verb|\subeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
+
 	
 \end{itemize}
 
@@ -719,7 +722,7 @@ A few binary relations with extra space on either side. I like these for aligned
 	\begin{itemize}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
-	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\subref| and \verb|\subeqref|, and cleaned up documentation inconsistencies.
+	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\subref| and \verb|\subeqref|, added subref support for the \textsf{subequations} environment from \textsf{amsmath}.
 	\end{itemize}
 
 

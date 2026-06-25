@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.25)  25 JUN 2026 16:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.25)  25 JUN 2026 17:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -798,36 +798,45 @@ Overfull \hbox (11.7951pt too wide) in paragraph at lines 374--374
 $][] 
  []
 
-[8] [9]
-Overfull \hbox (6.54515pt too wide) in paragraph at lines 489--489
+[8]
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
+75.
+ (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/base\omscmr.fd
+File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 475.
+
+[9]
+Overfull \hbox (6.54515pt too wide) in paragraph at lines 490--490
 []  \OT1/cmtt/m/n/10 g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&
 &[] 
  []
 
 
-Overfull \hbox (6.54515pt too wide) in paragraph at lines 490--490
+Overfull \hbox (6.54515pt too wide) in paragraph at lines 491--491
 []  \OT1/cmtt/m/n/10 h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&
 &[] 
  []
 
 [10] [11]
-Overfull \hbox (11.7951pt too wide) in paragraph at lines 574--574
+Overfull \hbox (11.7951pt too wide) in paragraph at lines 575--575
 [] \OT1/cmtt/m/n/10 Some negative-horizontal spacing between these \HTrg words 
 \\[] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--582
+Underfull \hbox (badness 10000) in paragraph at lines 582--583
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 583--584
+Underfull \hbox (badness 10000) in paragraph at lines 584--585
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 585--586
+Underfull \hbox (badness 10000) in paragraph at lines 586--587
 
  []
 
@@ -838,10 +847,10 @@ L3 programming layer <2026-05-26>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 23089 strings out of 467509
- 447340 string characters out of 5408780
- 861360 words of memory out of 5000000
- 51883 multiletter control sequences out of 15000+600000
+ 23109 strings out of 467509
+ 447709 string characters out of 5408780
+ 861413 words of memory out of 5000000
+ 51900 multiletter control sequences out of 15000+600000
  639772 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  116i,20n,121p,561b,658s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -875,7 +884,7 @@ TeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/jamie/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/jamie/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/jamie/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on lpalign-Documentaion.pdf (14 pages, 364358 bytes).
+Output written on lpalign-Documentaion.pdf (14 pages, 364574 bytes).
 PDF statistics:
  331 PDF objects out of 1000 (max. 8388607)
  93 named destinations out of 1000 (max. 500000)
