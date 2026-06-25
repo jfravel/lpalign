@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.21)  25 JUN 2026 10:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.21)  25 JUN 2026 10:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -632,13 +632,14 @@ File: puenc.def 2025-07-12 v7.01o Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
+Package hyperref Info: Option `bookmarks' set `false' on input line 4066.
 Package hyperref Info: Hyper figures OFF on input line 4195.
 Package hyperref Info: Link nesting OFF on input line 4200.
 Package hyperref Info: Hyper index ON on input line 4203.
 Package hyperref Info: Plain pages OFF on input line 4210.
 Package hyperref Info: Backreferencing OFF on input line 4215.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4462.
+Package hyperref Info: Bookmarks OFF on input line 4468.
 \c@Hy@tempcnt=\count339
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
@@ -719,7 +720,8 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 \enit@inbox=\box121
 \enit@count@id=\count349
 \enitdp@description=\count350
-) (C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.aux)
+)
+No file lpalign-Documentaion.aux.
 \openout1 = `lpalign-Documentaion.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
@@ -767,11 +769,6 @@ fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package hyperref Info: Link coloring ON on input line 25.
- (C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.out)
-(C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.out)
-\@outlinefile=\write4
-\openout4 = `lpalign-Documentaion.out'.
-
 
 ! Use of \__hook_make_prefixes:w doesn't match its definition.
 <argument> ...\__hook_make_prefixes:w \scan_stop: 
@@ -798,11 +795,11 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-(C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.toc)
-\tf@toc=\write5
-\openout5 = `lpalign-Documentaion.toc'.
+No file lpalign-Documentaion.toc.
+\tf@toc=\write4
+\openout4 = `lpalign-Documentaion.toc'.
 
- [2]
+[2]
 Overfull \hbox (10.68248pt too wide) detected at line 83
 []
  []
@@ -817,11 +814,48 @@ Overfull \hbox (10.68248pt too wide) detected at line 91
 []
  []
 
-[3] [4]
+[3]
 
 LaTeX Warning: Characters dropped after `\end{verbatim}' on input line 164.
 
-[5] [6] [7] [8] [9]
+[4]
+
+LaTeX Warning: Reference `obj' on page 5 undefined on input line 241.
+
+
+LaTeX Warning: Reference `cons' on page 5 undefined on input line 242.
+
+
+LaTeX Warning: Reference `nneg' on page 5 undefined on input line 243.
+
+[5]
+
+LaTeX Warning: Reference `npara' on page 6 undefined on input line 269.
+
+[6]
+
+LaTeX Warning: Reference `npara2' on page 7 undefined on input line 281.
+
+
+LaTeX Warning: Reference `eq:1' on page 7 undefined on input line 311.
+
+
+LaTeX Warning: Reference `eq:2' on page 7 undefined on input line 311.
+
+[7]
+
+LaTeX Warning: Hyper reference `sq:1' on page 8 undefined on input line 389.
+
+
+LaTeX Warning: Hyper reference `sq:2' on page 8 undefined on input line 389.
+
+
+LaTeX Warning: Hyper reference `sq:1' on page 8 undefined on input line 390.
+
+
+LaTeX Warning: Reference `sq:2' on page 8 undefined on input line 390.
+
+[8]
 Overfull \hbox (6.54515pt too wide) in paragraph at lines 404--404
 []  \OT1/cmtt/m/n/10 g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&
 &[] 
@@ -833,7 +867,22 @@ Overfull \hbox (6.54515pt too wide) in paragraph at lines 405--405
 &[] 
  []
 
-[10]
+
+LaTeX Warning: Reference `para:NLP' on page 9 undefined on input line 425.
+
+
+LaTeX Warning: Reference `NLP.0' on page 9 undefined on input line 426.
+
+
+LaTeX Warning: Reference `NLP.1' on page 9 undefined on input line 427.
+
+
+LaTeX Warning: Hyper reference `NLP.3' on page 9 undefined on input line 427.
+
+
+LaTeX Warning: Hyper reference `NLP.3' on page 9 undefined on input line 428.
+
+[9]
 Overfull \hbox (11.7951pt too wide) in paragraph at lines 489--489
 [] \OT1/cmtt/m/n/10 Some negative-horizontal spacing between these \HTrg words 
 \\[] 
@@ -854,25 +903,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 500--501
 
  []
 
-[11] [12] [13] [14]
-(C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.aux)
+[10] [11] [12] [13] (lpalign-Documentaion.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-29>
  ***********
 
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package rerunfilecheck Info: File `lpalign-Documentaion.out' has not changed.
-(rerunfilecheck)             Checksum: 428084D183423098A8ED54E30D66B38F;1114.
  ) 
 Here is how much of TeX's memory you used:
- 23133 strings out of 467871
- 446750 string characters out of 5418376
- 855106 words of memory out of 5000000
- 51580 multiletter control sequences out of 15000+600000
- 639772 words of font info for 85 fonts, out of 8000000 for 9000
+ 23101 strings out of 467871
+ 445801 string characters out of 5418376
+ 856550 words of memory out of 5000000
+ 51559 multiletter control sequences out of 15000+600000
+ 639478 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  116i,20n,121p,561b,624s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\jamie\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
@@ -905,9 +954,9 @@ TeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/jamie/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/jamie/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/jamie/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on lpalign-Documentaion.pdf (14 pages, 360486 bytes).
+Output written on lpalign-Documentaion.pdf (13 pages, 345894 bytes).
 PDF statistics:
- 331 PDF objects out of 1000 (max. 8388607)
- 73 named destinations out of 1000 (max. 500000)
- 85 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 272 PDF objects out of 1000 (max. 8388607)
+ 72 named destinations out of 1000 (max. 500000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
