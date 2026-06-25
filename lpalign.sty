@@ -163,9 +163,13 @@
 \NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
   {\begin{subequations}
      \refstepcounter{NamedEq}
+     \let\lpalign@origlabel\label
      \def\@currentlabel{#1}
-     \def\lpalign@storesublabelcurrent##1{\lpalign@storesublabel{##1}{#2{equation}}}%
      \renewcommand{\theequation}{#1.{#2{equation}}}
+     \RenewDocumentCommand{\label}{m}{%
+       \lpalign@origlabel{##1}%
+       \lpalign@storesubcurrent{##1}%
+     }%
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
   {\end{subequations}
@@ -181,11 +185,14 @@
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }
-\newcommand{\sublabel}[1]{%
-  \label{#1}%
+\newcommand{\lpalign@storesubcurrent}[1]{%
   \addtocounter{equation}{1}%
   \expandafter\xdef\csname subeqref@#1\endcsname{\theequation}%
   \addtocounter{equation}{-1}%
+}
+\newcommand{\sublabel}[1]{%
+  \label{#1}%
+  \lpalign@storesubcurrent{#1}%
 }
 \makeatother
 \ExplSyntaxOn

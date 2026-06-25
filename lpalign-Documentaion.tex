@@ -364,13 +364,13 @@ Fonts can be changed using the appropriate switch commands.
 \end{tcolorbox}
 
 
-Also available is \verb|\subref| and \verb|\subeqref| which work like \verb|\ref| and \verb|\eqref| but only reference the secondary, sub-index of the tag. To use them, label subequations with \verb|\sublabel|.
+Also available is \verb|\subref| and \verb|\subeqref| which work like \verb|\ref| and \verb|\eqref| but only reference the secondary, sub-index of the tag. Inside \verb|namedsubeqs|, ordinary \verb|\label| is enough. The \verb|\sublabel| macro remains available.
 \begin{tcolorbox}
   \begin{verbatim}
     \begin{namedsubeqs}{SQ}[\itshape\roman]
     \begin{align}
-      A\mathbf{x} = \mathbf{b}   \sublabel{sq:1}\\
-      C\mathbf{y} = \mathbf{d}   \sublabel{sq:2}
+      A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
+      C\mathbf{y} = \mathbf{d}   \label{sq:2}
     \end{align}
     \end{namedsubeqs}
 
@@ -382,14 +382,14 @@ or just \subeqref{sq:1} or even \eqref{sq:2}.
 \vtrg
     \begin{namedsubeqs}{SQ}[\itshape\roman]
     \begin{align}
-      A\mathbf{x} = \mathbf{b}   \sublabel{sq:1}\\
-      C\mathbf{y} = \mathbf{d}   \sublabel{sq:2}
+      A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
+      C\mathbf{y} = \mathbf{d}   \label{sq:2}
     \end{align}
     \end{namedsubeqs}
 We can reference both (\subref{sq:1}-\subref{sq:2}) 
 or just \subeqref{sq:1} or even \eqref{sq:2}.
 \end{tcolorbox}
-\verb|\subref| and \verb|\subeqref| use the sub-index stored by \verb|\sublabel| inside \verb|namedsubeqs|.
+\verb|\subref| and \verb|\subeqref| work with ordinary \verb|\label| inside \verb|namedsubeqs|. Support for other subequation environments is still separate.
 
 
 
@@ -400,10 +400,10 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
   \begin{verbatim}
 \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
 \begin{namedsubeqs}{NLP}
-\begin{lpalign}{Minimize}{f(\mathbf{x})    \sublabel{NLP.0}}
-  g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \sublabel{NLP.1} \\&&
-  h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \sublabel{NLP.2} \\&&
-      \mathbf{x}  &\GE 0                \sublabel{NLP.3}
+\begin{lpalign}{Minimize}{f(\mathbf{x})    \label{NLP.0}}
+  g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
+  h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
+      \mathbf{x}  &\GE 0                \label{NLP.3}
 \end{lpalign}
 \end{namedsubeqs}
 
@@ -415,10 +415,10 @@ Non-negativity is enforced by constraint \subeqref{NLP.3}.
 \begin{center}$\downarrow$\end{center}
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
     \begin{namedsubeqs}{NLP}[\itshape\roman]
-    \begin{lpalign}{Minimize}{f(\mathbf{x})      \sublabel{NLP.0}}
-        g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \sublabel{NLP.1} \\&&
-        h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \sublabel{NLP.2} \\&&
-            \mathbf{x}  &\GE 0                \sublabel{NLP.3}
+    \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
+        g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
+        h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
+            \mathbf{x}  &\GE 0                \label{NLP.3}
     \end{lpalign}
     \end{namedsubeqs}
     
@@ -615,7 +615,7 @@ A few binary relations with extra space on either side. I like these for aligned
 	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of environment object. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
-	\item[$\boxdot$] The \verb|\subref| and \verb|\subeqref| macros currently rely on \verb|\sublabel| to store sub-index information explicitly. Automatic support for ordinary \verb|\label| in all subequation settings remains unresolved after v1.2 testing.
+	\item[$\boxdot$] Ordinary \verb|\label| now works again for \verb|\subref| and \verb|\subeqref| inside \verb|namedsubeqs|, but broader support for traditional \textsf{subequations} and other settings remains unresolved after v1.2 testing.
 	
 	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
@@ -652,7 +652,6 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \end{document}
-
 
 
 
