@@ -174,7 +174,13 @@
  }
 \cs_new_protected:Npn \lpalign@namedsubeqsetup #1
  {
-  \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = ., #1 }
+  \tl_if_blank:nTF {#1}
+   { \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = . } }
+   {
+    \tl_if_in:nnTF {#1} {=}
+     { \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = ., #1 } }
+     { \keys_set:nn { lpalign/namedsubeqs } { style = #1, punct = . } }
+   }
  }
 \cs_new:Npn \lpalign@namedsubeqstyle #1
  {

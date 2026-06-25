@@ -286,6 +286,7 @@ Paragraph \ref{npara2} is a named paragraph.
 \section{Named Sub-equation}
 The \verb|namedsubeqs| environment will use a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
 Options are given as key-value pairs in the optional argument. The currently supported keys are \verb|style| for the second-index formatter (default \verb|\alph|) and \verb|punct| for the separator between the main tag and the sub-tag (default \verb|.|).
+For backward compatibility, a single optional argument without an \verb|=| sign is still interpreted as the style argument.
     \begin{itemize}
     \item[M.] a name or abbreviation.
     \item[O.] optional key-value settings such as \verb|style=\roman| or \verb|punct=-|.
@@ -677,6 +678,5 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \end{document}
-
 
 
