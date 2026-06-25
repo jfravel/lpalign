@@ -160,6 +160,9 @@
 
 \newcounter{NamedEq}
 \makeatletter
+\newcommand{\lpalign@storesubreftext}[2]{%
+  \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
+}
 \newcommand{\lpalign@storestandardsubcurrent}[1]{%
   \begingroup
   \edef\lpalign@full{\theequation}%
@@ -171,7 +174,7 @@
   }%
   \lpalign@tmpdef
   \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
+  \lpalign@storesubreftext{#1}{\lpalign@tmp}%
   \endgroup
 }
 \let\lpalign@origsubequations\subequations
@@ -201,7 +204,7 @@
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1.{#2{equation}}}
      \def\lpalign@subeqstoresubcurrent##1{%
-       \expandafter\xdef\csname subeqref@##1\endcsname{#2{equation}}%
+       \lpalign@storesubreftext{##1}{#2{equation}}%
      }%
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
@@ -212,14 +215,15 @@
 \makeatother
 
 % \subref and \subeqref work like \ref and \eqref but only reference the
-% secondary, sub-index of the tag. This implementation uses \sublabel to store
-% the current sub-index explicitly.
+% secondary, sub-index of the tag. Inside namedsubeqs and standard
+% subequations, ordinary \label stores this text automatically. \sublabel
+% remains as a compatibility wrapper around \label.
 \makeatletter
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }
 \newcommand{\lpalign@newsubref}[2]{%
-  \expandafter\gdef\csname subeqref@#1\endcsname{#2}%
+  \lpalign@storesubreftext{#1}{#2}%
 }
 \newcommand{\lpalignnewsubref}[2]{%
   \lpalign@newsubref{#1}{#2}%
