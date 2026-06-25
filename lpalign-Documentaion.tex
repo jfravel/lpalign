@@ -450,13 +450,12 @@ Just like \ref{nq:1} and \eqref{nq:2}, we can reference
 an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
 \end{tcolorbox}
 \verb|\subref| and \verb|\subeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported.
-For traditional \verb|subequations| custom tags, text punctuation such as \verb|\textbar| or \verb|-| is the supported path.
 
 \begin{tcolorbox}
   \begin{verbatim}
 	  \begin{subequations}
 	  \renewcommand{\theequation}
-	  								{\theparentequation\textbar\arabic{equation}}
+	  								{\theparentequation$\vert$\arabic{equation}}
 	  \begin{align}
 	    A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
 	    C\mathbf{y} = \mathbf{d}   \label{sq:2}
@@ -469,7 +468,7 @@ an equation's sub-tag \subref{sq:1} and \subeqref{sq:2}.
 \begin{center}$\downarrow$\end{center}
     \begin{subequations}
 	  \renewcommand{\theequation}
-  	  								{\theparentequation\textbar\arabic{equation}}
+  	  								{\theparentequation$\vert$\arabic{equation}}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
