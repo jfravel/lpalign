@@ -175,95 +175,26 @@
 \makeatother
 
 % \subref and \subeqref work like \ref and \eqref but only reference the
-% secondary, sub-index of the tag. \sublabel remains as a compatibility alias
-% for \label.
+% secondary, sub-index of the tag. This implementation uses \sublabel to store
+% the current sub-index explicitly.
 \makeatletter
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }
-\newcommand{\lpalignrawref}[1]{%
-  \@ifundefined{hyperref}{\ref{#1}}{\ref*{#1}}%
-}
-\newcommand{\lpalign@newsubref}[2]{%
-  \expandafter\gdef\csname subeqref@#1\endcsname{#2}%
-}
-\newcommand{\lpalignnewsubref}[2]{%
-  \lpalign@newsubref{#1}{#2}%
-}
-\newcommand{\lpalignwritesubref}[2]{%
-  \protected@write\@auxout{}{%
-    \string\lpalignnewsubref{#1}{#2}%
-  }%
-}
-\newcommand{\lpalign@storesublabel}[2]{%
-  \lpalignstoresublabel{#1}{#2}%
-}
-\newcommand{\lpalign@storestandardsublabel}[1]{%
-  \begingroup
-  \edef\lpalign@full{\theequation}%
-  \edef\lpalign@prefix{\theparentequation}%
-  \edef\lpalign@tmpdef{%
-    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
-      \xdef\noexpand\lpalign@tmp{####2}%
-    }%
-  }%
-  \lpalign@tmpdef
-  \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \lpalignstoresublabel{#1}{\lpalign@tmp}%
-  \endgroup
-}
-\let\lpalign@origsubequations\subequations
-\let\lpalign@endorigsubequations\endsubequations
-\RenewDocumentEnvironment{subequations}{}%
-  {\lpalign@origsubequations
-   \let\lpalign@origlabel\label
-   \let\lpalign@origltxlabel\ltx@label
-   \def\lpalign@storesublabelcurrent##1{\lpalign@storestandardsublabel{##1}}%
-   \@ifundefined{theHequation}{}%
-     {\renewcommand{\theHequation}{lpalign.subequation.\arabic{parentequation}.\arabic{equation}}}%
-   \RenewDocumentCommand{\label}{m}{%
-     \lpalign@origlabel{##1}%
-     \lpalign@storesublabelcurrent{##1}%
-   }%
-   \renewcommand{\ltx@label}[1]{%
-     \lpalign@origltxlabel{##1}%
-     \lpalign@storesublabelcurrent{##1}%
-   }}
-  {\lpalign@endorigsubequations}
 \newcommand{\sublabel}[1]{%
   \label{#1}%
+  \addtocounter{equation}{1}%
+  \expandafter\xdef\csname subeqref@#1\endcsname{\theequation}%
+  \addtocounter{equation}{-1}%
 }
 \makeatother
 \ExplSyntaxOn
-\cs_new_protected:Npn \lpalign_sanitize_subref:NN #1#2
- {
-  \tl_set_eq:NN #1 #2
-  \regex_replace_all:nnN { \\[[:alpha:]@]+ } {} #1
-  \regex_replace_all:nnN { [^[:alnum:]]+ } {} #1
- }
-\cs_new_protected:Npn \lpalignstoresublabel #1#2
- {
-  \group_begin:
-  \tl_set:Nx \l_tmpa_tl { #2 }
-  \lpalign_sanitize_subref:NN \l_tmpb_tl \l_tmpa_tl
-  \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpb_tl }
-  \exp_args:Nnx \lpalignwritesubref {#1} { \tl_use:N \l_tmpb_tl }
-  \group_end:
- }
 \cs_new:Npn \lpalignsubreftext #1
  {
-  \cs_if_exist:cTF { subeqref@#1 }
-   { \use:c { subeqref@#1 } }
-   { \lpalignsubreffallback{#1} }
- }
-\cs_new:Npn \lpalignsubreffallback #1
- {
-  \tl_set:Nx \l_tmpa_tl { \lpalignrawref{#1} }
+  \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname }
   \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
   \regex_replace_once:nnN { ^\{(.*)\}$ } { \1 } \l_tmpa_tl
-  \regex_extract_once:nnNTF { ([[:alnum:]]+)$ } { \l_tmpa_tl } \l_tmpa_seq
-   { \seq_item:Nn \l_tmpa_seq { 1 } }
-   { ?? }
+  \l_tmpa_tl
  }
 \NewDocumentCommand{\subref}{m}
  {
