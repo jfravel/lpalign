@@ -212,10 +212,10 @@
  }
 \NewDocumentCommand{\subref}{m}
  {
-  \lpalignhyperref{#1}{\lpalignsubreftext{#1}}
+  \lpalignhyperref{#1}{{\lpalignsubreftext{#1}}}
  }
 \NewDocumentCommand{\subeqref}{m}
  {
-  \lpalignhyperref{#1}{\csname tagform@\endcsname { \lpalignsubreftext{#1} }}
+  \lpalignhyperref{#1}{\csname tagform@\endcsname {{\lpalignsubreftext{#1}}}}
  }
 \ExplSyntaxOff
