@@ -209,8 +209,7 @@
   }%
   \lpalign@tmpdef
   \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
-  \lpalignwritesubref{#1}{\lpalign@tmp}%
+  \lpalignstoresublabel{#1}{\lpalign@tmp}%
   \endgroup
 }
 \let\lpalign@origsubequations\subequations
@@ -236,12 +235,19 @@
 }
 \makeatother
 \ExplSyntaxOn
+\cs_new_protected:Npn \lpalign_sanitize_subref:NN #1#2
+ {
+  \tl_set_eq:NN #1 #2
+  \regex_replace_all:nnN { \\[[:alpha:]@]+ } {} #1
+  \regex_replace_all:nnN { [^[:alnum:]]+ } {} #1
+ }
 \cs_new_protected:Npn \lpalignstoresublabel #1#2
  {
   \group_begin:
   \tl_set:Nx \l_tmpa_tl { #2 }
-  \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpa_tl }
-  \exp_args:Nnx \lpalignwritesubref {#1} { \tl_use:N \l_tmpa_tl }
+  \lpalign_sanitize_subref:NN \l_tmpb_tl \l_tmpa_tl
+  \cs_gset:cpx { subeqref@#1 } { \tl_use:N \l_tmpb_tl }
+  \exp_args:Nnx \lpalignwritesubref {#1} { \tl_use:N \l_tmpb_tl }
   \group_end:
  }
 \cs_new:Npn \lpalignsubreftext #1
