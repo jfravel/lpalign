@@ -10,20 +10,31 @@
 \usepackage{multicol}
 %\usepackage[bookmarks=false]{hyperref}
 %    \hypersetup{colorlinks=true, linkcolor=blue!70!black}
-\usepackage{authblk}
 \usepackage{amssymb}
 \usepackage{enumitem}
 	\setlist[itemize]{noitemsep, topsep=-0.7em}
+\makeatletter
+\AtBeginDocument{%
+  \@ifpackageloaded{hyperref}{%
+    \hypersetup{%
+      pdftitle={The lpalign Package},
+      pdfauthor={Jamie Fravel}%
+    }%
+  }{}%
+}
+\makeatother
 
 
 \title{The \textsf{lpalign} Package}
 \date{Corresponds to \textsf{lpalign} v$1.2$, dated June $25^\textrm{th}$ 2026}
 \author{Jamie Fravel}
-\affil{jamiefravel@me.com}
 
 
 \begin{document}
 \maketitle
+\begin{center}
+\texttt{jamiefravel@me.com}
+\end{center}
 \begin{abstract}
     This is a collection of macros that I developed while writing my dissertation. They are mostly focused around displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and  sub-equations macros will be useful in any document which defines and references multiple problems, algorithms or multi-lined environments. 
 \end{abstract}
@@ -678,5 +689,3 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \end{document}
-
-
