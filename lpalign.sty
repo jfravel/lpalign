@@ -215,7 +215,7 @@
 }
 \let\lpalign@origsubequations\subequations
 \let\lpalign@endorigsubequations\endsubequations
-\RenewDocumentEnvironment{subequations}{}%
+\renewenvironment{subequations}%
   {\lpalign@origsubequations
    \let\lpalign@subeqoriglabel\label
    \let\lpalign@subeqorigltxlabel\ltx@label
@@ -224,16 +224,16 @@
    }%
    \@ifundefined{theHequation}{}%
      {\renewcommand{\theHequation}{lpalign.subequation.\arabic{parentequation}.\arabic{equation}}}%
-   \RenewDocumentCommand{\label}{m}{%
+   \def\label##1{%
      \lpalign@sanitizesubeqcurrentlabel
      \lpalign@subeqoriglabel{##1}%
      \lpalign@subeqstoresubcurrent{##1}%
    }%
-   \renewcommand{\ltx@label}[1]{%
+   \def\ltx@label##1{%
      \lpalign@sanitizesubeqcurrentlabel
      \lpalign@subeqorigltxlabel{##1}%
      \lpalign@subeqstoresubcurrent{##1}%
-   }}
+   }}%
   {\lpalign@endorigsubequations}
 
 \NewDocumentEnvironment{namedsubeqs}{mO{}}
