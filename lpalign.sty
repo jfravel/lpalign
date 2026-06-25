@@ -160,6 +160,41 @@
 
 \newcounter{NamedEq}
 \makeatletter
+\newcommand{\lpalign@storestandardsubcurrent}[1]{%
+  \begingroup
+  \edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \xdef\noexpand\lpalign@tmp{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \expandafter\xdef\csname subeqref@#1\endcsname{\lpalign@tmp}%
+  \endgroup
+}
+\let\lpalign@origsubequations\subequations
+\let\lpalign@endorigsubequations\endsubequations
+\RenewDocumentEnvironment{subequations}{}%
+  {\lpalign@origsubequations
+   \let\lpalign@origlabel\label
+   \let\lpalign@origltxlabel\ltx@label
+   \def\lpalign@storesubcurrent##1{%
+     \lpalign@storestandardsubcurrent{##1}%
+   }%
+   \@ifundefined{theHequation}{}%
+     {\renewcommand{\theHequation}{lpalign.subequation.\arabic{parentequation}.\arabic{equation}}}%
+   \RenewDocumentCommand{\label}{m}{%
+     \lpalign@origlabel{##1}%
+     \lpalign@storesubcurrent{##1}%
+   }%
+   \renewcommand{\ltx@label}[1]{%
+     \lpalign@origltxlabel{##1}%
+     \lpalign@storesubcurrent{##1}%
+   }}
+  {\lpalign@endorigsubequations}
+
 \NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
   {\begin{subequations}
      \refstepcounter{NamedEq}
