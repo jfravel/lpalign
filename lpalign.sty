@@ -201,16 +201,26 @@
 }
 \newcommand{\lpalign@storestandardsubcurrent}[1]{%
   \begingroup
-  \edef\lpalign@full{\theequation}%
+  \protected@edef\lpalign@full{\theequation}%
   \edef\lpalign@prefix{\theparentequation}%
   \edef\lpalign@tmpdef{%
     \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
-      \xdef\noexpand\lpalign@tmp{####2}%
+      \def\noexpand\lpalign@tmp{####2}%
     }%
   }%
   \lpalign@tmpdef
   \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \lpalign@storesubreftext{#1}{\lpalign@tmp}%
+  \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
+    \ifx##1\textbar
+      \def\lpalign@tmp{##2}%
+    \else\ifx##1\vert
+      \def\lpalign@tmp{##2}%
+    \else\ifx##1\mid
+      \def\lpalign@tmp{##2}%
+    \fi\fi\fi
+  }%
+  \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
+  \global\expandafter\let\csname subeqref@#1\endcsname\lpalign@tmp
   \endgroup
 }
 \let\lpalign@origsubequations\subequations
