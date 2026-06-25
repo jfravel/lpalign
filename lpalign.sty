@@ -235,6 +235,7 @@
 \cs_new:Npn \lpalignsubreftext #1
  {
   \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname }
+  \regex_replace_once:nnN { ^[\.\-:;,/\s]+ } {} \l_tmpa_tl
   \l_tmpa_tl
  }
 \NewDocumentCommand{\subref}{m}
