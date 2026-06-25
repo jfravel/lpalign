@@ -22,20 +22,13 @@ The package requires `amsmath` and `expl3`. Loading `hyperref` is optional but r
 
 ## Documentation
 
-The user documentation lives in [`Documentation/lpalign-Documentaion.tex`](/repos/lpalign/Documentation/lpalign-Documentaion.tex).
+The user documentation lives in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex).
 
-From `Documentation/`, `latexmk` will pick up the bundled search path config automatically:
-
-```bash
-cd /repos/lpalign/Documentation
-latexmk -pdf lpalign-Documentaion.tex
-```
-
-If you prefer to run `pdflatex` directly, use:
+From the repository root, a simple local build is:
 
 ```bash
-cd /repos/lpalign/Documentation
-TEXINPUTS=..: pdflatex -interaction=nonstopmode -output-directory build lpalign-Documentaion.tex
+pdflatex -interaction=nonstopmode --aux-directory=build lpalign-Documentaion.tex
+pdflatex -interaction=nonstopmode --aux-directory=build lpalign-Documentaion.tex
 ```
 
 Run `pdflatex` twice if you want references and the table of contents fully resolved.
