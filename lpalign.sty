@@ -166,6 +166,9 @@
      \let\lpalign@origlabel\label
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1.{#2{equation}}}
+     \def\lpalign@storesubcurrent##1{%
+       \expandafter\xdef\csname subeqref@##1\endcsname{#2{equation}}%
+     }%
      \RenewDocumentCommand{\label}{m}{%
        \lpalign@origlabel{##1}%
        \lpalign@storesubcurrent{##1}%
@@ -185,10 +188,11 @@
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }
-\newcommand{\lpalign@storesubcurrent}[1]{%
-  \addtocounter{equation}{1}%
-  \expandafter\xdef\csname subeqref@#1\endcsname{\theequation}%
-  \addtocounter{equation}{-1}%
+\newcommand{\lpalign@newsubref}[2]{%
+  \expandafter\gdef\csname subeqref@#1\endcsname{#2}%
+}
+\newcommand{\lpalignnewsubref}[2]{%
+  \lpalign@newsubref{#1}{#2}%
 }
 \newcommand{\sublabel}[1]{%
   \label{#1}%
@@ -199,8 +203,6 @@
 \cs_new:Npn \lpalignsubreftext #1
  {
   \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname }
-  \regex_replace_once:nnN { ^.*\. } {} \l_tmpa_tl
-  \regex_replace_once:nnN { ^\{(.*)\}$ } { \1 } \l_tmpa_tl
   \l_tmpa_tl
  }
 \NewDocumentCommand{\subref}{m}
