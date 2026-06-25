@@ -285,9 +285,10 @@ Paragraph \ref{npara2} is a named paragraph.
 
 \section{Named Sub-equation}
 The \verb|namedsubeqs| environment will use a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
+Options are given as key-value pairs in the optional argument. The currently supported keys are \verb|style| for the second-index formatter (default \verb|\alph|) and \verb|punct| for the separator between the main tag and the sub-tag (default \verb|.|).
     \begin{itemize}
     \item[M.] a name or abbreviation.
-    \item[O.] an optional style for the second index (defaults to \verb|\alph|).
+    \item[O.] optional key-value settings such as \verb|style=\roman| or \verb|punct=-|.
     \end{itemize}
 
 \begin{tcolorbox}
@@ -315,20 +316,20 @@ The \verb|namedsubeqs| environment will use a given name as the first index in a
 Other common tag styles include \verb|\roman| and \verb|\arabic|.
 \begin{tcolorbox}
   \begin{verbatim}
-  \begin{namedsubeqs}{EQ}[\roman]
+  \begin{namedsubeqs}{EQ}[style=\roman]
   
-                          \begin{namedsubeqs}{EQ}[\arabic]
+                          \begin{namedsubeqs}{EQ}[style=\arabic]
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
 \VTrg
 \begin{multicols}{2}
-    \begin{namedsubeqs}{EQ}[\roman]
+    \begin{namedsubeqs}{EQ}[style=\roman]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \\
       C\mathbf{y} = \mathbf{d}
     \end{align}
     \end{namedsubeqs}
-    \begin{namedsubeqs}{EQ}[\arabic]
+    \begin{namedsubeqs}{EQ}[style=\arabic]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \\
       C\mathbf{y} = \mathbf{d}
@@ -341,20 +342,20 @@ Other common tag styles include \verb|\roman| and \verb|\arabic|.
 Fonts can be changed using the appropriate switch commands.
 \begin{tcolorbox}
   \begin{verbatim}
-  \begin{namedsubeqs}[\itshape\roman]{EQ}
+  \begin{namedsubeqs}{EQ}[style=\itshape\roman]
   
-                    \begin{subequations}[\scshape\alph]{EQ}
+                    \begin{namedsubeqs}{EQ}[style=\scshape\alph]
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
 \VTrg
 \begin{multicols}{2}
-    \begin{namedsubeqs}{EQ}[\itshape\roman]
+    \begin{namedsubeqs}{EQ}[style=\itshape\roman]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \\
       C\mathbf{y} = \mathbf{d}
     \end{align}
     \end{namedsubeqs}
-    \begin{namedsubeqs}{EQ}[\scshape\alph]
+    \begin{namedsubeqs}{EQ}[style=\scshape\alph]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \\
       C\mathbf{y} = \mathbf{d}
@@ -363,11 +364,26 @@ Fonts can be changed using the appropriate switch commands.
   \end{multicols}
 \end{tcolorbox}
 
+\verb|punct| changes the separator between the main tag and the sub-tag.
+\begin{tcolorbox}
+  \begin{verbatim}
+  \begin{namedsubeqs}{EQ}[style=\roman,punct=-]
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\VTrg
+    \begin{namedsubeqs}{EQ}[style=\roman,punct=-]
+    \begin{align}
+      A\mathbf{x} = \mathbf{b}   \\
+      C\mathbf{y} = \mathbf{d}
+    \end{align}
+    \end{namedsubeqs}
+\end{tcolorbox}
+
 
 Also available is \verb|\subref| and \verb|\subeqref| which work like \verb|\ref| and \verb|\eqref| but only reference the secondary, sub-index of the tag. Inside both \verb|namedsubeqs| and traditional \verb|subequations|, ordinary \verb|\label| is enough. The \verb|\sublabel| macro remains available.
 \begin{tcolorbox}
   \begin{verbatim}
-    \begin{namedsubeqs}{SQ}[\itshape\roman]
+    \begin{namedsubeqs}{SQ}[style=\itshape\roman]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
@@ -380,7 +396,7 @@ or just \subeqref{sq:1} or even \eqref{sq:2}.
 \Vtrg
 \begin{center}$\downarrow$\end{center}
 \vtrg
-    \begin{namedsubeqs}{SQ}[\itshape\roman]
+    \begin{namedsubeqs}{SQ}[style=\itshape\roman]
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
@@ -423,7 +439,7 @@ Non-negativity is enforced by constraint \subeqref{NLP.3}.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
-    \begin{namedsubeqs}{NLP}[\itshape\roman]
+    \begin{namedsubeqs}{NLP}[style=\itshape\roman]
     \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
         g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
         h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
@@ -661,7 +677,6 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \end{document}
-
 
 
 

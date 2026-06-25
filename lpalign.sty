@@ -156,10 +156,35 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named SubEquations  %%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A subequations-style environment will use a (#1) as the first index in any enclosed equation reference tag. A second index is appended and iterated on. (#2) can be used to change the style of the second index.
+% A subequations-style environment will use (#1) as the first index in any
+% enclosed equation reference tag. The optional key-value argument controls the
+% second-index style and the punctuation between the main tag and the sub-tag.
 
 \newcounter{NamedEq}
 \makeatletter
+\ExplSyntaxOn
+\tl_new:N \l_lpalign_namedsubeq_style_tl
+\tl_new:N \l_lpalign_namedsubeq_punct_tl
+\keys_define:nn { lpalign/namedsubeqs }
+ {
+  style .tl_set:N = \l_lpalign_namedsubeq_style_tl,
+  punct .tl_set:N = \l_lpalign_namedsubeq_punct_tl,
+  style .initial:n = \alph,
+  punct .initial:n = .,
+ }
+\cs_new_protected:Npn \lpalign@namedsubeqsetup #1
+ {
+  \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = ., #1 }
+ }
+\cs_new:Npn \lpalign@namedsubeqstyle #1
+ {
+  \exp_args:NV \use:n \l_lpalign_namedsubeq_style_tl {#1}
+ }
+\cs_new:Npn \lpalign@namedsubeqpunct
+ {
+  \tl_use:N \l_lpalign_namedsubeq_punct_tl
+ }
+\ExplSyntaxOff
 \newcommand{\lpalign@storesubreftext}[2]{%
   \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
 }
@@ -205,13 +230,14 @@
    }}
   {\lpalign@endorigsubequations}
 
-\NewDocumentEnvironment{namedsubeqs}{mO{\alph}}
+\NewDocumentEnvironment{namedsubeqs}{mO{}}
   {\begin{subequations}
+     \lpalign@namedsubeqsetup{#2}%
      \refstepcounter{NamedEq}
      \def\@currentlabel{#1}
-     \renewcommand{\theequation}{#1.{#2{equation}}}
+     \renewcommand{\theequation}{#1\lpalign@namedsubeqpunct{\lpalign@namedsubeqstyle{equation}}}
      \def\lpalign@subeqstoresubcurrent##1{%
-       \lpalign@storesubreftext{##1}{#2{equation}}%
+       \lpalign@storesubreftext{##1}{\lpalign@namedsubeqstyle{equation}}%
      }%
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
