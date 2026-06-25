@@ -8,8 +8,8 @@
 \usepackage{parskip}
     \setlength{\parskip}{13pt}
 \usepackage{multicol}
-\usepackage[bookmarks=false]{hyperref}
-    \hypersetup{colorlinks=true, linkcolor=blue!70!black}
+%\usepackage[bookmarks=false]{hyperref}
+%    \hypersetup{colorlinks=true, linkcolor=blue!70!black}
 \usepackage{authblk}
 \usepackage{amssymb}
 \usepackage{enumitem}
@@ -343,7 +343,7 @@ Fonts can be changed using the appropriate switch commands.
   \begin{verbatim}
   \begin{namedsubeqs}[\itshape\roman]{EQ}
   
-                    \begin{namedsubeqs}[\scshape\alph]{EQ}
+                    \begin{subequations}[\scshape\alph]{EQ}
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
 \VTrg
@@ -391,6 +391,15 @@ or just \subeqref{sq:1} or even \eqref{sq:2}.
 \end{tcolorbox}
 \verb|\subref| and \verb|\subeqref| work with ordinary \verb|\label| inside \verb|namedsubeqs|. Support for other subequation environments is still separate.
 
+\begin{tcolorbox}
+  \begin{subequations}\label{test}
+  \begin{align}
+    A\mathbf{x} = \mathbf{b}   \label{test:1}\\
+    C\mathbf{y} = \mathbf{d}   \label{test:2}
+  \end{align}
+  \end{subequations}
+Testing subrefs with subequations: \verb|\ref{test}| \ref{test}, \verb|\ref{test:1}| \ref{test:1},\verb|\subref{test:1}|\subref{test:1}
+\end{tcolorbox}
 
 
 
@@ -612,12 +621,12 @@ A few binary relations with extra space on either side. I like these for aligned
 	\item[$\boxtimes$] The \verb|namedsubeqs| environment assigned \verb|\@currentlabel| without switching to \verb|\makeatletter| scope. Fixed internally; v1.2.
 	
 	\item[$\boxtimes$] The \verb|\subref| and \verb|\subeqref| macros failed outright when \textsf{hyperref} was not loaded. Fixed by falling back to plain text references when \textsf{hyperref} is absent; v1.2.
+		
+	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of environment object. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
 	\item[$\boxdot$] Ordinary \verb|\label| now works again for \verb|\subref| and \verb|\subeqref| inside \verb|namedsubeqs|, but broader support for traditional \textsf{subequations} and other settings remains unresolved after v1.2 testing.
-	
-	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
 \end{itemize}
 
