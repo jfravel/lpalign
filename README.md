@@ -33,6 +33,22 @@ pdflatex -interaction=nonstopmode --aux-directory=build lpalign-Documentaion.tex
 
 Run `pdflatex` twice if you want references and the table of contents fully resolved.
 
+## Regression Tests
+
+Small manual regression files live in [`tests/`](/repos/lpalign/tests):
+
+- `HookError.tex` checks package loading with `hyperref`
+- `test-subequations.tex` checks standard `subequations`
+- `test-namedsubeqs.tex` checks `namedsubeqs`
+- `test-mixed.tex` checks mixed usage with `lpalign`
+
+Compile them from the repository root, and compile each file twice. For example:
+
+```bash
+pdflatex -interaction=nonstopmode tests/HookError.tex
+pdflatex -interaction=nonstopmode tests/HookError.tex
+```
+
 ## Status
 
 This repository is still in a light pre-packaging state. The current pass focuses on small consistency fixes and documentation cleanup rather than structural redesign.

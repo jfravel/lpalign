@@ -1,0 +1,32 @@
+\documentclass{article}
+\usepackage{lpalign}
+\usepackage{hyperref}
+
+\begin{document}
+
+\paratitle{Non-Linear Program}[NLP]\label{para:NLP}
+
+\begin{namedsubeqs}{NLP}[style=\itshape\roman]
+\begin{lpalign}{Minimize}{f(\mathbf{x}) \label{NLP.0}}
+  g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&&
+  h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&&
+  \mathbf{x}      &\GE 0                         \label{NLP.3}
+\end{lpalign}
+\end{namedsubeqs}
+
+\begin{subequations}\label{std}
+\renewcommand{\theequation}{\theparentequation-\roman{equation}}
+\begin{align}
+  A\mathbf{x} &= \mathbf{b} \label{std:1}\\
+  C\mathbf{y} &= \mathbf{d} \label{std:2}
+\end{align}
+\end{subequations}
+
+Problem \eqref{para:NLP} is a nonlinear program.
+Objective \eqref{NLP.0} is followed by constraints (\ref{NLP.1}-\subref{NLP.3}).
+Non-negativity is enforced by \subeqref{NLP.3}.
+
+Standard subequations:
+\ref{std}, \ref{std:1}, \subref{std:1}, \subeqref{std:2}.
+
+\end{document}
