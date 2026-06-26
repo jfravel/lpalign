@@ -137,6 +137,7 @@
 \box_new:N \l_lpalign_lp_st_box
 \dim_new:N \l_lpalign_lp_gutter_width_dim
 \dim_new:N \l_lpalign_lp_label_width_dim
+\dim_new:N \l_lpalign_lp_objective_width_dim
 \keys_define:nn { lpalign/lp }
  {
   vars .tl_set:N = \l_lpalign_lp_vars_tl,
@@ -184,6 +185,8 @@
    }
   \dim_set:Nn \l_lpalign_lp_gutter_width_dim
    { \l_lpalign_lp_label_width_dim + \l_lpalign_lp_gutter_sep_dim }
+  \dim_set:Nn \l_lpalign_lp_objective_width_dim
+   { \linewidth - \l_lpalign_lp_gutter_width_dim - \l_lpalign_lp_gutter_sep_dim }
  }
 \cs_new_protected:Npn \lpalign_lp_prefix:nnn #1#2#3
  {
@@ -205,6 +208,19 @@
    { \rlap{\hskp$#1$} }
    { \dim_use:N \l_lpalign_lp_sense_shift_dim }
  }
+\cs_new_protected:Npn \lpalign_lp_objective_line:n #1
+ {
+  \hspace*{\dim_use:N \l_lpalign_lp_gutter_width_dim}
+  \makebox[0pt][r]
+   {
+    \makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
+     {
+      \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
+      \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
+     }
+   }
+  \parbox[t]{\dim_use:N \l_lpalign_lp_objective_width_dim}{$\displaystyle #1$}
+ }
 \cs_new_protected:Npn \lpalign_lp_st_prefix:
  {
   \lpalign_lp_prefix:nnn
@@ -216,7 +232,8 @@
  {
   \lpalign_lp_setup:nn {#1} {#2}
   \begin{alignat}{2}
-  \lpalign_lp_objective_prefix:n {#3} && \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim}\\
+  {}&{}&&{}\notag\\[\dimexpr-\baselineskip-\jot\relax]
+  \intertext{\lpalign_lp_objective_line:n {#3}}
   \lpalign_lp_st_prefix: #4
   \end{alignat}
  }
@@ -225,7 +242,8 @@
  {
   \lpalign_lp_setup:nn {#1} {#2}
   \begin{alignat*}{2}
-  \lpalign_lp_objective_prefix:n {#3} && \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim}\\
+  {}&{}&&{}\\[\dimexpr-\baselineskip-\jot\relax]
+  \intertext{\lpalign_lp_objective_line:n {#3}}
   \lpalign_lp_st_prefix: #4
   \end{alignat*}
  }
