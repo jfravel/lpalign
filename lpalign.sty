@@ -238,7 +238,7 @@
     \lpalign@namedpararefstep{NamedPara}
     \exp_args:Nx \lpalign@overridecreftype { \tl_use:N \l_lpalign_namedpara_cref_tl }
     \exp_args:Nx \lpalign@overridecreftext { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
-    \edef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
+    \xdef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
    }
  }
 \ExplSyntaxOff
@@ -257,7 +257,7 @@
   \@ifpackageloaded{cleveref}
     {\if\relax\detokenize{#1}\relax
      \else
-       \protected@edef\cref@currentlabel{%
+       \protected@xdef\cref@currentlabel{%
          \expandafter\lpalign@overridecreftypeaux\cref@currentlabel\@nil{#1}}%
      \fi}
     {}%
@@ -265,7 +265,7 @@
 \def\lpalign@overridecreftypeaux[#1][#2][#3]#4\@nil#5{[#5][#2][#3]#4}
 \newcommand{\lpalign@overridecreftext}[1]{%
   \@ifpackageloaded{cleveref}
-    {\protected@edef\cref@currentlabel{%
+    {\protected@xdef\cref@currentlabel{%
       \expandafter\lpalign@overridecreftextaux\cref@currentlabel\@nil{#1}}}
     {}%
 }
