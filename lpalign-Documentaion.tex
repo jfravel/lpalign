@@ -437,7 +437,7 @@ A single optional argument which does not contain an \verb|=| sign is interprete
 
 \section{Sub-References}
 
-Also available are \verb|\subref| and \verb|\subeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
+Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
 \begin{tcolorbox}
   \begin{verbatim}
     \begin{namedsubeqs}{SQ}[style=\itshape\roman]
@@ -448,7 +448,7 @@ Also available are \verb|\subref| and \verb|\subeqref|, which work like \verb|\r
     \end{namedsubeqs}
 
 Just like \ref{nq:1} and \eqref{nq:2}, we can reference
-an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
+an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
     \begin{namedsubeqs}{SQ}[style=\itshape\roman]
@@ -459,9 +459,9 @@ an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
     \end{namedsubeqs}
 
 Just like \ref{nq:1} and \eqref{nq:2}, we can reference
-an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
+an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
 \end{tcolorbox}
-\verb|\subref| and \verb|\subeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported.
+\verb|\lpsubref| and \verb|\lpsubeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported.
 
 \begin{tcolorbox}
   \begin{verbatim}
@@ -475,7 +475,7 @@ an equation's sub-tag \subref{nq:1} and \subeqref{nq:2}.
 	  \end{subequations}
 
 Just like \ref{sq:1} and \eqref{sq:2}, we can reference
-an equation's sub-tag \subref{sq:1} and \subeqref{sq:2}.
+an equation's sub-tag \lpsubref{sq:1} and \lpsubeqref{sq:2}.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
     \begin{subequations}
@@ -486,7 +486,7 @@ an equation's sub-tag \subref{sq:1} and \subeqref{sq:2}.
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
     \end{align}
     \end{subequations}
-We can also reference \ref{sq:1} and \eqref{sq:2}, or sub-reference \subref{sq:1} and \subeqref{sq:2} in a \textsf{subequations} environment.
+We can also reference \ref{sq:1} and \eqref{sq:2}, or sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a \textsf{subequations} environment.
 \end{tcolorbox}
 Supported punctuation currently includes the period (.), colon (:), semicolon (;), comma (,), hyphen (-), forward slash (/), and \verb|\textbar| (\textbar). Other punctuation has not been tested.
 
@@ -508,7 +508,7 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 Problem \eqref{para:NLP} is a nonlinear program.
 Equations \eqref{NLP.0} is the objective function.
 Equations (\ref{NLP.1}-\ref{NLP.3}) are the constraints.
-Non-negativity is enforced by constraint \subeqref{NLP.3}.
+Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
@@ -522,8 +522,8 @@ Non-negativity is enforced by constraint \subeqref{NLP.3}.
     
 Problem \eqref{para:NLP} is a nonlinear program.
 Equations \eqref{NLP.0} is the objective function.
-Equations (\ref{NLP.1}-\subref{NLP.3}) are the constraints. 
-Non-negativity is enforced by constraint \subeqref{NLP.3}.
+Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints. 
+Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \end{tcolorbox}
 
 
@@ -709,11 +709,11 @@ A few binary relations with extra space on either side. I like these for aligned
 	
 	\item[$\boxtimes$] The \verb|namedsubeqs| environment assigned \verb|\@currentlabel| without switching to \verb|\makeatletter| scope. Fixed internally; v1.2.
 	
-	\item[$\boxtimes$] The \verb|\subref| and \verb|\subeqref| macros failed outright when \textsf{hyperref} was not loaded. Fixed by falling back to plain text references when \textsf{hyperref} is absent; v1.2.
+	\item[$\boxtimes$] The \verb|\lpsubref| and \verb|\lpsubeqref| macros failed outright when \textsf{hyperref} was not loaded. Fixed by falling back to plain text references when \textsf{hyperref} is absent; v1.2.
 		
 	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
-	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\subref| and \verb|\subeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
+	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\lpsubref| and \verb|\lpsubeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
 	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of the environment. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
@@ -734,7 +734,7 @@ A few binary relations with extra space on either side. I like these for aligned
 	\begin{itemize}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
-	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\subref| and \verb|\subeqref|, and added \verb|\subref|/\verb|\subeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
+	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, and added \verb|\lpsubref|/\verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
 	\end{itemize}
 
 

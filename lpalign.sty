@@ -373,7 +373,7 @@
   }
 \makeatother
 
-% \subref and \subeqref work like \ref and \eqref but only reference the
+% \lpsubref and \lpsubeqref work like \ref and \eqref but only reference the
 % secondary, sub-index of the tag. Inside namedsubeqs and standard
 % subequations, ordinary \label stores this text automatically. \sublabel
 % remains as a compatibility wrapper around \label.
@@ -401,11 +401,11 @@
   \regex_replace_once:nnN { ^[\.\-:;,/\s]+ } {} \l_tmpa_tl
   \l_tmpa_tl
  }
-\NewDocumentCommand{\subref}{m}
+\NewDocumentCommand{\lpsubref}{m}
  {
   \lpalignhyperref{#1}{{\lpalignsubreftext{#1}}}
  }
-\NewDocumentCommand{\subeqref}{m}
+\NewDocumentCommand{\lpsubeqref}{m}
  {
   \lpalignhyperref{#1}{\csname tagform@\endcsname {{\lpalignsubreftext{#1}}}}
  }

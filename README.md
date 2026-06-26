@@ -5,7 +5,7 @@
 It currently provides:
 
 - `lpalign` and `lpalign*` for optimization problems aligned on constraint relations
-- `namedsubeqs` plus `\subref` and `\subeqref`, with `\sublabel` retained for compatibility
+- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`, with `\sublabel` retained for compatibility
 - `\paratitle` and `\namedpara` for named paragraphs
 - quick horizontal and vertical spacing helpers
 - display-style sum/product/union/intersection helpers with zero-width lower indices
