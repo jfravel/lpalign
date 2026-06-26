@@ -252,8 +252,13 @@
   \let\lpalign@savedtheNamedPara\theNamedPara
   \def\theNamedPara{#1}%
   \refstepcounter{NamedPara}%
+  \@ifpackageloaded{cleveref}
+    {\protected@edef\cref@currentlabel{%
+      \expandafter\lpalign@overridecreftextaux\cref@currentlabel\@nil{#1}}}
+    {}%
   \let\theNamedPara\lpalign@savedtheNamedPara
 }
+\def\lpalign@overridecreftextaux[#1][#2][#3]#4\@nil#5{[#1][#2][#3]#5}
 \ExplSyntaxOn
 \NewDocumentCommand\namedpara{mO{}}
     {%
