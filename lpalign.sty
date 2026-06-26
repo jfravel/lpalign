@@ -167,6 +167,7 @@
 \tl_new:N \l_lpalign_namedpara_before_tl
 \tl_new:N \l_lpalign_namedpara_after_tl
 \tl_new:N \l_lpalign_namedpara_flush_tl
+\tl_new:N \g_lpalign_pending_cref_text_tl
 \keys_define:nn { lpalign/namedpara }
  {
   abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
@@ -229,11 +230,14 @@
   \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
    {
     \lpalign@namedpararefstep{Para}
+    \tl_gclear:N \g_lpalign_pending_cref_text_tl
    }
    {
     \exp_args:Nx \lpalign@namedpararefstepabbrev
       { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
     \xdef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
+    \tl_gset:Nx \g_lpalign_pending_cref_text_tl
+      { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
    }
  }
 \ExplSyntaxOff
@@ -252,13 +256,44 @@
   \let\lpalign@savedtheNamedPara\theNamedPara
   \def\theNamedPara{#1}%
   \refstepcounter{NamedPara}%
+  \let\theNamedPara\lpalign@savedtheNamedPara
+}
+\newcommand{\lpalign@overridecreftext}[1]{%
   \@ifpackageloaded{cleveref}
     {\protected@xdef\cref@currentlabel{%
       \expandafter\lpalign@overridecreftextaux\cref@currentlabel\@nil{#1}}}
     {}%
-  \let\theNamedPara\lpalign@savedtheNamedPara
 }
 \def\lpalign@overridecreftextaux[#1][#2][#3]#4\@nil#5{[#1][#2][#3]#5}
+\ExplSyntaxOn
+\cs_new_protected:Npn \lpalign@clearpendingcreftext
+ {
+  \tl_gclear:N \g_lpalign_pending_cref_text_tl
+ }
+\cs_new_protected:Npn \lpalign@applypendingcreftext
+ {
+  \tl_if_blank:VTF \g_lpalign_pending_cref_text_tl
+   { }
+   { \exp_args:NV \lpalign@overridecreftext \g_lpalign_pending_cref_text_tl }
+ }
+\cs_new_protected:Npn \lpalign@label@noopt #1
+ {
+  \lpalign@applypendingcreftext
+  \lpalign@origlabel{#1}
+  \lpalign@clearpendingcreftext
+ }
+\ExplSyntaxOff
+\newcommand{\lpalign@label@opt}[2][]{%
+  \lpalign@applypendingcreftext
+  \lpalign@origlabel[#1]{#2}%
+  \lpalign@clearpendingcreftext
+}
+\newcommand{\lpalign@installlabelhook}{%
+  \let\lpalign@origlabel\label
+  \def\label{%
+    \@ifnextchar[\lpalign@label@opt\lpalign@label@noopt}%
+}
+\AddToHook{begindocument/end}{\lpalign@installlabelhook}
 \ExplSyntaxOn
 \NewDocumentCommand\namedpara{mO{}}
     {%
