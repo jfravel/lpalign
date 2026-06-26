@@ -174,7 +174,6 @@
   abbreviation .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
   indent .tl_set:N = \l_lpalign_namedpara_indent_tl,
   before .tl_set:N = \l_lpalign_namedpara_before_tl,
-  preamble .tl_set:N = \l_lpalign_namedpara_before_tl,
   after .tl_set:N = \l_lpalign_namedpara_after_tl,
   flush .choices:nn = { left, center, right }
    { \tl_set_eq:NN \l_lpalign_namedpara_flush_tl \l_keys_choice_tl },
@@ -231,9 +230,14 @@
      }
    }
   \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
-   { \exp_args:Nx \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {Para} }
    {
-    \exp_args:Nx \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {NamedPara}
+    \lpalign@namedpararefstep{Para}
+    \exp_args:Nx \lpalign@overridecreftype { \tl_use:N \l_lpalign_namedpara_cref_tl }
+   }
+   {
+    \lpalign@namedpararefstep{NamedPara}
+    \exp_args:Nx \lpalign@overridecreftype { \tl_use:N \l_lpalign_namedpara_cref_tl }
+    \exp_args:Nx \lpalign@overridecreftext { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
     \edef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
    }
  }
@@ -246,15 +250,26 @@
             {\textbf{(#3)}\refstepcounter{NamedPara}\def\@currentlabel{#3}}
             {\refstepcounter{Para}}
     }
-\newcommand{\lpalign@namedpararefstep}[2]{%
+\newcommand{\lpalign@namedpararefstep}[1]{%
+  \refstepcounter{#1}%
+}
+\newcommand{\lpalign@overridecreftype}[1]{%
   \@ifpackageloaded{cleveref}
     {\if\relax\detokenize{#1}\relax
-       \refstepcounter{#2}%
      \else
-       \refstepcounter[#1]{#2}%
+       \protected@edef\cref@currentlabel{%
+         \expandafter\lpalign@overridecreftypeaux\cref@currentlabel\@nil{#1}}%
      \fi}
-    {\refstepcounter{#2}}%
+    {}%
 }
+\def\lpalign@overridecreftypeaux[#1][#2][#3]#4\@nil#5{[#5][#2][#3]#4}
+\newcommand{\lpalign@overridecreftext}[1]{%
+  \@ifpackageloaded{cleveref}
+    {\protected@edef\cref@currentlabel{%
+      \expandafter\lpalign@overridecreftextaux\cref@currentlabel\@nil{#1}}}
+    {}%
+}
+\def\lpalign@overridecreftextaux[#1][#2][#3]#4\@nil#5{[#1][#2][#3]#5}
 \ExplSyntaxOn
 \NewDocumentCommand\namedpara{mO{}}
     {%
