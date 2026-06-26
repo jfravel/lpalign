@@ -440,15 +440,16 @@ A single optional argument which does not contain an \verb|=| sign is interprete
 Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
 \begin{tcolorbox}
   \begin{verbatim}
-    \begin{namedsubeqs}{SQ}[style=\itshape\roman]
-    \begin{align}
-      A\mathbf{x} = \mathbf{b}   \label{nq:1}\\
-      C\mathbf{y} = \mathbf{d}   \label{nq:2}
-    \end{align}
-    \end{namedsubeqs}
+  \begin{namedsubeqs}{SQ}[style=\itshape\roman]\label{nq}
+  \begin{align}
+    A\mathbf{x} = \mathbf{b}   \label{nq:1}\\
+    C\mathbf{y} = \mathbf{d}   \label{nq:2}
+  \end{align}
+  \end{namedsubeqs}
 
 Just like \ref{nq:1} and \eqref{nq:2}, we can reference
 an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
+The environment itself may also be referenced \ref{nq}.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
     \begin{namedsubeqs}{SQ}[style=\itshape\roman]
@@ -460,12 +461,13 @@ an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
 
 Just like \ref{nq:1} and \eqref{nq:2}, we can reference
 an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
+The environment itself may also be referenced \ref{nq}.
 \end{tcolorbox}
 \verb|\lpsubref| and \verb|\lpsubeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported.
 
 \begin{tcolorbox}
   \begin{verbatim}
-	  \begin{subequations}
+	  \begin{subequations}\label{sq}
 	  \renewcommand{\theequation}
 	  								{\theparentequation\textbar\arabic{equation}}
 	  \begin{align}
@@ -474,11 +476,12 @@ an equation's sub-tag \lpsubref{nq:1} and \lpsubeqref{nq:2}.
 	  \end{align}
 	  \end{subequations}
 
-Just like \ref{sq:1} and \eqref{sq:2}, we can reference
-an equation's sub-tag \lpsubref{sq:1} and \lpsubeqref{sq:2}.
+We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2}, or 
+sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a 
+\textsf{subequations} environment.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
-    \begin{subequations}
+    \begin{subequations}\label{sq}
 	  \renewcommand{\theequation}
   	  								{\theparentequation\textbar\arabic{equation}}
     \begin{align}
@@ -486,7 +489,7 @@ an equation's sub-tag \lpsubref{sq:1} and \lpsubeqref{sq:2}.
       C\mathbf{y} = \mathbf{d}   \label{sq:2}
     \end{align}
     \end{subequations}
-We can also reference \ref{sq:1} and \eqref{sq:2}, or sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a \textsf{subequations} environment.
+We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2}, or sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a \textsf{subequations} environment.
 \end{tcolorbox}
 Supported punctuation currently includes the period (.), colon (:), semicolon (;), comma (,), hyphen (-), forward slash (/), and \verb|\textbar| (\textbar). Other punctuation has not been tested.
 
