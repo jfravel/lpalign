@@ -5,8 +5,8 @@
 It currently provides:
 
 - `lpalign` and `lpalign*` for optimization problems aligned on constraint relations
-- `namedsubeqs` plus `\subref` and `\subeqref`, with `\sublabel` retained for compatibility
-- `\paratitle` for named paragraphs
+- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`, with `\sublabel` retained for compatibility
+- `\paratitle` and `\namedpara` for named paragraphs
 - quick horizontal and vertical spacing helpers
 - display-style sum/product/union/intersection helpers with zero-width lower indices
 
@@ -35,4 +35,4 @@ Run `pdflatex` twice if you want references and the table of contents fully reso
 
 ## Status
 
-This repository is still in a light pre-packaging state. The current pass focuses on small consistency fixes and documentation cleanup rather than structural redesign.
+`v1.3` was published on June 26, 2026. The main visible changes since `v1.2` are the new `\namedpara` command, namespaced sub-equation references via `\lpsubref` and `\lpsubeqref`, and more robust parent-label handling inside `namedsubeqs` and traditional `subequations`.

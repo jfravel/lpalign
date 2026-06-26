@@ -1,6 +1,6 @@
-\ProvidesPackage{lpalign}[Jun 25, 2026: v1.2 of Jamie Fravel's lpalign macro package]
+\ProvidesPackage{lpalign}[Jun 26, 2026: v1.3 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3}
+\RequirePackage{amsmath, expl3, l3keys2e}
 %%begin novalidate
 
 
@@ -139,9 +139,104 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named Paragraphs  %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A paragraph marker that takes a title (#1) and an optional abbreviation (#2). If the paragraph is labeled, then any reference to it will give the abbreviation (#2) rather than a counter number.
+% A paragraph marker that takes a title and key-value options. If the paragraph
+% is labeled, then any reference to it will give the abbreviation rather than
+% a counter number when one is supplied.
 
 \makeatletter
+\ExplSyntaxOn
+\tl_new:N \g_lpalign_namedpara_default_indent_tl
+\tl_new:N \g_lpalign_namedpara_default_flush_tl
+\tl_new:N \g_lpalign_namedpara_default_before_tl
+\tl_new:N \g_lpalign_namedpara_default_after_tl
+\keys_define:nn { lpalign/package }
+ {
+  namedparaindent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
+  namedparaindent .initial:n = 2em,
+  namedparabefore .tl_gset:N = \g_lpalign_namedpara_default_before_tl,
+  namedparabefore .initial:n = ,
+  namedparaafter .tl_gset:N = \g_lpalign_namedpara_default_after_tl,
+  namedparaafter .initial:n = ,
+  namedparaflush .choices:nn = { left, center, right }
+   { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
+  namedparaflush .initial:n = left,
+ }
+\ProcessKeysOptions{ lpalign/package }
+\tl_new:N \l_lpalign_namedpara_abbreviation_tl
+\tl_new:N \l_lpalign_namedpara_indent_tl
+\tl_new:N \l_lpalign_namedpara_before_tl
+\tl_new:N \l_lpalign_namedpara_after_tl
+\tl_new:N \l_lpalign_namedpara_flush_tl
+\keys_define:nn { lpalign/namedpara }
+ {
+  abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
+  abbreviation .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
+  indent .tl_set:N = \l_lpalign_namedpara_indent_tl,
+  before .tl_set:N = \l_lpalign_namedpara_before_tl,
+  after .tl_set:N = \l_lpalign_namedpara_after_tl,
+  flush .choices:nn = { left, center, right }
+   { \tl_set_eq:NN \l_lpalign_namedpara_flush_tl \l_keys_choice_tl },
+ }
+\cs_new_protected:Npn \lpalign_namedpara_reset:
+ {
+  \tl_clear:N \l_lpalign_namedpara_abbreviation_tl
+  \tl_set:Nx \l_lpalign_namedpara_indent_tl
+   { \tl_use:N \g_lpalign_namedpara_default_indent_tl }
+  \tl_set:Nx \l_lpalign_namedpara_before_tl
+   { \tl_use:N \g_lpalign_namedpara_default_before_tl }
+  \tl_set:Nx \l_lpalign_namedpara_after_tl
+   { \tl_use:N \g_lpalign_namedpara_default_after_tl }
+  \tl_set:Nx \l_lpalign_namedpara_flush_tl
+   { \tl_use:N \g_lpalign_namedpara_default_flush_tl }
+ }
+\cs_new_protected:Npn \lpalign_namedpara_setup:n #1
+ {
+  \lpalign_namedpara_reset:
+  \tl_if_blank:nTF {#1}
+   { }
+   {
+    \tl_if_in:nnTF {#1} {=}
+     { \keys_set:nn { lpalign/namedpara } { #1 } }
+     { \tl_set:Nn \l_lpalign_namedpara_abbreviation_tl {#1} }
+   }
+ }
+\cs_new_protected:Npn \lpalign_namedpara_typeset:n #1
+ {
+  \str_case:VnF \l_lpalign_namedpara_flush_tl
+   {
+    {left}   { \noindent #1 }
+    {center} { \noindent \makebox[\linewidth][c]{#1} }
+    {right}  { \noindent \makebox[\linewidth][r]{#1} }
+   }
+   { \noindent #1 }
+ }
+\cs_new_protected:Npn \lpalign_namedpara:nn #1#2
+ {
+  \lpalign_namedpara_setup:n {#2}
+  \par
+  \lpalign_namedpara_typeset:n
+   {
+    \hspace*{\tl_use:N \l_lpalign_namedpara_indent_tl}
+    \tl_use:N \l_lpalign_namedpara_before_tl
+    \textbf{#1}
+    \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
+     { }
+     {
+      \hspace{0.5em}\textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)}
+      \tl_use:N \l_lpalign_namedpara_after_tl
+     }
+   }
+  \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
+   {
+    \lpalign@namedpararefstep{Para}
+   }
+   {
+    \exp_args:Nx \lpalign@namedpararefstepabbrev
+      { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
+    \xdef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
+   }
+ }
+\ExplSyntaxOff
 \newcounter{Para}
 \newcounter{NamedPara}
 \NewDocumentCommand\paratitle{O{}mo}
@@ -150,6 +245,21 @@
             {\textbf{(#3)}\refstepcounter{NamedPara}\def\@currentlabel{#3}}
             {\refstepcounter{Para}}
     }
+\newcommand{\lpalign@namedpararefstep}[1]{%
+  \refstepcounter{#1}%
+}
+\newcommand{\lpalign@namedpararefstepabbrev}[1]{%
+  \let\lpalign@savedtheNamedPara\theNamedPara
+  \def\theNamedPara{#1}%
+  \refstepcounter{NamedPara}%
+  \let\theNamedPara\lpalign@savedtheNamedPara
+}
+\ExplSyntaxOn
+\NewDocumentCommand\namedpara{mO{}}
+    {%
+      \lpalign_namedpara:nn{#1}{#2}%
+    }
+\ExplSyntaxOff
 \makeatother
 
 
@@ -203,6 +313,7 @@
   \begingroup
   \protected@edef\lpalign@full{\theequation}%
   \edef\lpalign@prefix{\theparentequation}%
+  \let\lpalign@tmp\@empty
   \edef\lpalign@tmpdef{%
     \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
       \def\noexpand\lpalign@tmp{####2}%
@@ -210,17 +321,20 @@
   }%
   \lpalign@tmpdef
   \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
-    \ifx##1\textbar
-      \def\lpalign@tmp{##2}%
-    \else\ifx##1\vert
-      \def\lpalign@tmp{##2}%
-    \else\ifx##1\mid
-      \def\lpalign@tmp{##2}%
-    \fi\fi\fi
-  }%
-  \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
-  \global\expandafter\let\csname subeqref@#1\endcsname\lpalign@tmp
+  \ifx\lpalign@tmp\@empty
+  \else
+    \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
+      \ifx##1\textbar
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\vert
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\mid
+        \def\lpalign@tmp{##2}%
+      \fi\fi\fi
+    }%
+    \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
+    \global\expandafter\let\csname subeqref@#1\endcsname\lpalign@tmp
+  \fi
   \endgroup
 }
 \let\lpalign@origsubequations\subequations
@@ -263,7 +377,7 @@
   }
 \makeatother
 
-% \subref and \subeqref work like \ref and \eqref but only reference the
+% \lpsubref and \lpsubeqref work like \ref and \eqref but only reference the
 % secondary, sub-index of the tag. Inside namedsubeqs and standard
 % subequations, ordinary \label stores this text automatically. \sublabel
 % remains as a compatibility wrapper around \label.
@@ -291,11 +405,11 @@
   \regex_replace_once:nnN { ^[\.\-:;,/\s]+ } {} \l_tmpa_tl
   \l_tmpa_tl
  }
-\NewDocumentCommand{\subref}{m}
+\NewDocumentCommand{\lpsubref}{m}
  {
   \lpalignhyperref{#1}{{\lpalignsubreftext{#1}}}
  }
-\NewDocumentCommand{\subeqref}{m}
+\NewDocumentCommand{\lpsubeqref}{m}
  {
   \lpalignhyperref{#1}{\csname tagform@\endcsname {{\lpalignsubreftext{#1}}}}
  }
