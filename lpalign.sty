@@ -105,7 +105,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  lpalign  %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aesthetically. Takes an optimization direction (#1) [Maximize, Minimize, max, min] and an objective function (#2). The constraints are given, in alignat format, between \begin and \end. Importantly, a double ampersand && should be placed after every line break \\ to preserve spacing. The starred version mutes equation reference tags.
+% An environment macro built on the alignat environment from the amsmath package
+% which helps to format mathematical programming problems aesthetically. The
+% redesign keeps the raw alignat-style body but measures a left gutter for the
+% sense and s.t. labels instead of making them part of the alignment grid.
 
 
 \newlength{\straise}
@@ -121,18 +124,113 @@
 \newlength{\forallspace}
 \setlength{\forallspace}{2em}
 
-\NewDocumentEnvironment{lpalign}{mmO{\straisedefault}O{\objraisedefault} +b}
-    {\begin{alignat}{4}
-     \raisebox{#4}{\text{#1}}\rlap{\hskp$#2$}  &\hskp&  &&  \hspace{\forallspace}  \\
-     \raisebox{#3}{\text{s.t.}}  &&  #5
-     \end{alignat}}
-    {\ignorespacesafterend}
-\NewDocumentEnvironment{lpalign*}{mmO{\straisedefault}O{\objraisedefault} +b}
-    {\begin{alignat*}{4}
-     \raisebox{#4}{\text{#1}}\rlap{\hskp$#2$}  &\hskp&  &&  \hspace{\forallspace}  \\
-     \raisebox{#3}{\text{s.t.}}  &&  #5
-    \end{alignat*}}
-    {\ignorespacesafterend}
+\ExplSyntaxOn
+\tl_new:N \l_lpalign_lp_vars_tl
+\tl_new:N \l_lpalign_lp_st_tl
+\tl_new:N \l_lpalign_lp_sense_pos_tl
+\tl_new:N \l_lpalign_lp_st_pos_tl
+\dim_new:N \l_lpalign_lp_sense_shift_dim
+\dim_new:N \l_lpalign_lp_st_shift_dim
+\dim_new:N \l_lpalign_lp_qualifier_sep_dim
+\dim_new:N \l_lpalign_lp_gutter_sep_dim
+\box_new:N \l_lpalign_lp_sense_box
+\box_new:N \l_lpalign_lp_st_box
+\dim_new:N \l_lpalign_lp_gutter_width_dim
+\dim_new:N \l_lpalign_lp_label_width_dim
+\keys_define:nn { lpalign/lp }
+ {
+  vars .tl_set:N = \l_lpalign_lp_vars_tl,
+  vars .initial:n = ,
+  st .tl_set:N = \l_lpalign_lp_st_tl,
+  st .initial:n = s.t.,
+  sense-pos .choices:nn = { c, t, b }
+   { \tl_set_eq:NN \l_lpalign_lp_sense_pos_tl \l_keys_choice_tl },
+  sense-pos .initial:n = c,
+  st-pos .choices:nn = { c, t, b }
+   { \tl_set_eq:NN \l_lpalign_lp_st_pos_tl \l_keys_choice_tl },
+  st-pos .initial:n = t,
+  sense-shift .dim_set:N = \l_lpalign_lp_sense_shift_dim,
+  sense-shift .initial:n = 0pt,
+  st-shift .dim_set:N = \l_lpalign_lp_st_shift_dim,
+  st-shift .initial:n = 0pt,
+  qualifier-sep .dim_set:N = \l_lpalign_lp_qualifier_sep_dim,
+  qualifier-sep .initial:n = 2em,
+  gutter-sep .dim_set:N = \l_lpalign_lp_gutter_sep_dim,
+  gutter-sep .initial:n = 0.75em,
+ }
+\cs_new_protected:Npn \lpalign_lp_setup:nn #1#2
+ {
+  \keys_set:nn { lpalign/lp } { #1 }
+  \hbox_set:Nn \l_lpalign_lp_sense_box
+   {
+    \shortstack[\tl_use:N \l_lpalign_lp_sense_pos_tl]
+     {
+      #2
+      \tl_if_blank:VTF \l_lpalign_lp_vars_tl
+       { }
+       { \\ $\tl_use:N \l_lpalign_lp_vars_tl$ }
+     }
+   }
+  \hbox_set:Nn \l_lpalign_lp_st_box
+   {
+    \shortstack[\tl_use:N \l_lpalign_lp_st_pos_tl]
+     { \tl_use:N \l_lpalign_lp_st_tl }
+   }
+  \dim_set:Nn \l_lpalign_lp_label_width_dim { \box_wd:N \l_lpalign_lp_sense_box }
+  \dim_compare:nNnT
+   { \box_wd:N \l_lpalign_lp_st_box } > { \l_lpalign_lp_label_width_dim }
+   {
+    \dim_set:Nn \l_lpalign_lp_label_width_dim { \box_wd:N \l_lpalign_lp_st_box }
+   }
+  \dim_set:Nn \l_lpalign_lp_gutter_width_dim
+   { \l_lpalign_lp_label_width_dim + \l_lpalign_lp_gutter_sep_dim }
+ }
+\cs_new_protected:Npn \lpalign_lp_prefix:nnn #1#2#3
+ {
+  \hspace*{\dim_use:N \l_lpalign_lp_gutter_width_dim}
+  \makebox[0pt][r]
+   {
+    \makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
+     {
+      \raisebox{#3}{#1}
+      \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
+     }
+   }
+  #2
+ }
+\cs_new_protected:Npn \lpalign_lp_objective_prefix:n #1
+ {
+  \lpalign_lp_prefix:nnn
+   { \box_use:N \l_lpalign_lp_sense_box }
+   { \rlap{\hskp$#1$} }
+   { \dim_use:N \l_lpalign_lp_sense_shift_dim }
+ }
+\cs_new_protected:Npn \lpalign_lp_st_prefix:
+ {
+  \lpalign_lp_prefix:nnn
+   { \box_use:N \l_lpalign_lp_st_box }
+   { }
+   { \dim_use:N \l_lpalign_lp_st_shift_dim }
+ }
+\NewDocumentEnvironment{lpalign}{O{}mm+b}
+ {
+  \lpalign_lp_setup:nn {#1} {#2}
+  \begin{alignat}{2}
+  \lpalign_lp_objective_prefix:n {#3} && \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim}\\
+  \lpalign_lp_st_prefix: #4
+  \end{alignat}
+ }
+ {\ignorespacesafterend}
+\NewDocumentEnvironment{lpalign*}{O{}mm+b}
+ {
+  \lpalign_lp_setup:nn {#1} {#2}
+  \begin{alignat*}{2}
+  \lpalign_lp_objective_prefix:n {#3} && \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim}\\
+  \lpalign_lp_st_prefix: #4
+  \end{alignat*}
+ }
+ {\ignorespacesafterend}
+\ExplSyntaxOff
 
 
 

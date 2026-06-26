@@ -55,7 +55,8 @@ with the starred form
 - Remove the current fake left alignment column for `sense` and `s.t.`.
 - Reserve a real left gutter whose width is measured from the `sense` and `s.t.` boxes.
 - Place the left labels inside that gutter instead of forcing them into the alignment structure.
-- Reduce the qualifier column syntax from trailing `&&` to a single `&` before the qualifier text.
+- Remove the structural `\\&&` placeholder at the end of ordinary constraint rows.
+- Keep the qualifier column working during the first pass, even if that still means using `&& \forall ...` for now.
 
 ### Draft option keys
 
@@ -89,7 +90,7 @@ The current default direction is:
 \end{lpalign}
 ```
 
-The intended improvement over the current implementation is that the constraint body remains familiar to anyone who already reads `align` / `alignat`, but the end-of-line `&&` boilerplate disappears.
+The intended improvement over the current implementation is that the constraint body remains familiar to anyone who already reads `align` / `alignat`, but the old end-of-line `\\&&` boilerplate disappears on ordinary rows.
 
 ## Experiment Notes
 
@@ -116,5 +117,6 @@ Items intentionally deferred until after the first redesign pass:
 - explicit gutter-width override keys
 - more expressive vertical-position syntax beyond `t/c/b` plus additive shifts
 - richer subject-to formatting beyond a single `st` label
+- reducing the qualifier column from `&& <qualifier>` to a single `& <qualifier>` without losing alignment
 - deciding whether the backend should remain `alignat` or switch to a different display engine if the gutter approach proves too fragile
 - broader documentation updates in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex) once the design stabilizes
