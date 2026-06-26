@@ -253,7 +253,7 @@
   \def\theNamedPara{#1}%
   \refstepcounter{NamedPara}%
   \@ifpackageloaded{cleveref}
-    {\protected@edef\cref@currentlabel{%
+    {\protected@xdef\cref@currentlabel{%
       \expandafter\lpalign@overridecreftextaux\cref@currentlabel\@nil{#1}}}
     {}%
   \let\theNamedPara\lpalign@savedtheNamedPara
