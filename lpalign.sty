@@ -139,19 +139,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named Paragraphs  %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A paragraph marker that takes a title (#1) and an optional abbreviation (#2). If the paragraph is labeled, then any reference to it will give the abbreviation (#2) rather than a counter number.
+% A paragraph marker that takes a title and key-value options. If the paragraph
+% is labeled, then any reference to it will give the abbreviation rather than
+% a counter number when one is supplied.
 
 \makeatletter
 \ExplSyntaxOn
 \tl_new:N \g_lpalign_namedpara_default_indent_tl
 \tl_new:N \g_lpalign_namedpara_default_flush_tl
-\tl_new:N \g_lpalign_namedpara_default_preamble_tl
+\tl_new:N \g_lpalign_namedpara_default_before_tl
+\tl_new:N \g_lpalign_namedpara_default_after_tl
 \keys_define:nn { lpalign/package }
  {
   namedparaindent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
   namedparaindent .initial:n = 2em,
-  namedparapreamble .tl_gset:N = \g_lpalign_namedpara_default_preamble_tl,
-  namedparapreamble .initial:n = ,
+  namedparabefore .tl_gset:N = \g_lpalign_namedpara_default_before_tl,
+  namedparabefore .initial:n = ,
+  namedparaafter .tl_gset:N = \g_lpalign_namedpara_default_after_tl,
+  namedparaafter .initial:n = ,
   namedparaflush .choices:nn = { left, center, right }
    { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
   namedparaflush .initial:n = left,
@@ -160,14 +165,17 @@
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
 \tl_new:N \l_lpalign_namedpara_indent_tl
 \tl_new:N \l_lpalign_namedpara_cref_tl
-\tl_new:N \l_lpalign_namedpara_preamble_tl
+\tl_new:N \l_lpalign_namedpara_before_tl
+\tl_new:N \l_lpalign_namedpara_after_tl
 \tl_new:N \l_lpalign_namedpara_flush_tl
 \keys_define:nn { lpalign/namedpara }
  {
   abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
   abbreviation .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
   indent .tl_set:N = \l_lpalign_namedpara_indent_tl,
-  preamble .tl_set:N = \l_lpalign_namedpara_preamble_tl,
+  before .tl_set:N = \l_lpalign_namedpara_before_tl,
+  preamble .tl_set:N = \l_lpalign_namedpara_before_tl,
+  after .tl_set:N = \l_lpalign_namedpara_after_tl,
   flush .choices:nn = { left, center, right }
    { \tl_set_eq:NN \l_lpalign_namedpara_flush_tl \l_keys_choice_tl },
   cref .tl_set:N = \l_lpalign_namedpara_cref_tl,
@@ -177,8 +185,10 @@
   \tl_clear:N \l_lpalign_namedpara_abbreviation_tl
   \tl_set:Nx \l_lpalign_namedpara_indent_tl
    { \tl_use:N \g_lpalign_namedpara_default_indent_tl }
-  \tl_set:Nx \l_lpalign_namedpara_preamble_tl
-   { \tl_use:N \g_lpalign_namedpara_default_preamble_tl }
+  \tl_set:Nx \l_lpalign_namedpara_before_tl
+   { \tl_use:N \g_lpalign_namedpara_default_before_tl }
+  \tl_set:Nx \l_lpalign_namedpara_after_tl
+   { \tl_use:N \g_lpalign_namedpara_default_after_tl }
   \tl_set:Nx \l_lpalign_namedpara_flush_tl
    { \tl_use:N \g_lpalign_namedpara_default_flush_tl }
   \tl_clear:N \l_lpalign_namedpara_cref_tl
@@ -210,17 +220,20 @@
   \par
   \lpalign_namedpara_typeset:n
    {
-    \tl_use:N \l_lpalign_namedpara_preamble_tl
     \hspace*{\tl_use:N \l_lpalign_namedpara_indent_tl}
+    \tl_use:N \l_lpalign_namedpara_before_tl
     \textbf{#1}
     \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
      { }
-     { \hspace{0.5em}\textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)} }
+     {
+      \hspace{0.5em}\textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)}
+      \tl_use:N \l_lpalign_namedpara_after_tl
+     }
    }
   \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
-   { \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {Para} }
+   { \exp_args:Nx \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {Para} }
    {
-    \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {NamedPara}
+    \exp_args:Nx \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {NamedPara}
     \edef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
    }
  }

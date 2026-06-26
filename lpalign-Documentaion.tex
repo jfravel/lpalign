@@ -11,6 +11,7 @@
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
 \usepackage{cleveref}
+\crefname{Problem}{Problem}{Problems}
 \usepackage{amssymb}
 \usepackage{enumitem}
 	\setlist[itemize]{noitemsep, topsep=-0.7em}
@@ -255,7 +256,6 @@ The slack constraints are not tagged.
 
 
 \section{Named Paragraphs}
-\section{Named Paragraphs}
 The \verb|namedpara| command displays a paragraph marker that takes an abbreviation which is useful for referencing specific problems or conventions
 \begin{tcolorbox}
   \begin{verbatim}
@@ -272,35 +272,41 @@ Currently supported optional keys include
 	\begin{itemize}
 	\item \verb|abv| -- abbreviation used when referencing. A single argument with no \verb|=| sign is also interpreted as this abbreviation.
 	\item \verb|indent| -- indent distance. The default value of 2em can be changed during package load by the \verb|namedparaindent| option.
-	\item \verb|premble| -- arbitrary code before the title
+	\item \verb|before| -- arbitrary code placed after the indent and before the title so that it stays flush with the title. The older \verb|preamble| spelling is still accepted as a compatibility alias.
+	\item \verb|after| -- arbitrary code placed after the printed abbreviation.
 	\item \verb|flush| -- centers or right flushes the paragraph title via \verb|center| or \verb|right| -- respectively.
-	\item \verb|cref| -- passes value to \verb|\refstepcounter| as the reference type override for that paragraph if \textsf{cleveref} is loaded.
+	\item \verb|cref| -- passes a label type to \verb|\refstepcounter| as the reference type override for that paragraph if \textsf{cleveref} is loaded. If you use a custom category, define it with \verb|\crefname| as in the example below.
 	\end{itemize}
 
 \begin{tcolorbox}
   \begin{verbatim}
 \namedpara{Indented Paragraph}[abv=indent, indent=6em]
 
-\namedpara{Premble Paragraph}
-                     [abv=preamb, preamble=$\sim\sim\sim$]
+\namedpara{Before Paragraph}
+                    [abv=bef, before=$\sim\sim\sim$]
+
+\namedpara{After Paragraph}
+                   [abv=aft, after=$\leadsto$]
 
 \namedpara{Rightflushed Paragraph}[abv=right, flush=right]
 
 \namedpara{Cref Satisfiability}
                         [abv=SAT, cref=Problem]\label{sat}
 
-If loaded, \textsf{cleverref} uses the \verb|cref| key to 
-reference the paragraph \cref{sat}
+If loaded, \textsf{cleveref} uses the \verb|cref| key to 
+reference the paragraph \cref{sat}. This example assumes that the
+\verb|Problem| category has been defined with \verb|\crefname|.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}\Vskp
 \namedpara{Indented Paragraph}[abv=indent, indent=6em] \\
-\namedpara{Premble Paragraph}[abv=preamb, preamble=$\sim\sim\sim$] \\
+\namedpara{Before Paragraph}[abv=bef, before=$\sim\sim\sim$] \\
+\namedpara{After Paragraph}[abv=aft, after=$\leadsto$] \\
 \namedpara{Rightflushed Paragraph}[abv=right, flush=right] \\
 \namedpara{Cref Satisfiability}[abv=SAT, cref=Problem]\label{sat} \\
-If loaded, \textsf{cleverref} uses the \verb|cref| key to reference the paragraph \cref{sat}
+If loaded, \textsf{cleveref} uses the \verb|cref| key to reference the paragraph \cref{sat}
 \end{tcolorbox}
 
-The compatability command \verb|paratitle| is left untouched from previous versions.
+The compatibility command \verb|paratitle| is left untouched from previous versions.
 
 
 
