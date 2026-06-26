@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.25)  26 JUN 2026 10:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.6.25)  26 JUN 2026 10:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -734,24 +734,24 @@ Package: enumitem 2025/02/06 v3.11 Customized lists
 ) (C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.aux)
 \openout1 = `lpalign-Documentaion.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
@@ -778,13 +778,13 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring ON on input line 25.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 27.
+Package hyperref Info: Link coloring ON on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
 
  (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 27.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
 
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
@@ -797,26 +797,21 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [1
 
 {C:/Users/jamie/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-Overfull \hbox (10.68248pt too wide) detected at line 86
+Overfull \hbox (10.68248pt too wide) detected at line 87
 []
  []
 
 
-Overfull \hbox (10.68248pt too wide) detected at line 90
+Overfull \hbox (10.68248pt too wide) detected at line 91
 []
  []
 
 
-Overfull \hbox (10.68248pt too wide) detected at line 94
+Overfull \hbox (10.68248pt too wide) detected at line 95
 []
  []
 
 [2] [3] [4] [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 296--297
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 297--298
 
  []
@@ -827,60 +822,65 @@ Underfull \hbox (badness 10000) in paragraph at lines 298--299
  []
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 299--300
+
+ []
+
+
 LaTeX Warning: cref reference format for label type `NamedPara' undefined on in
-put line 300.
+put line 301.
 
 [7]
-Overfull \hbox (11.7951pt too wide) in paragraph at lines 397--397
+Overfull \hbox (11.7951pt too wide) in paragraph at lines 398--398
 []  \OT1/cmtt/m/n/10 \begin{namedsubeqs}{EQ}[style=\bfseries\arabic, punct=$sim
 $][] 
  []
 
 [8]
-Overfull \hbox (8.27776pt too wide) in paragraph at lines 451--474
+Overfull \hbox (8.27776pt too wide) in paragraph at lines 452--475
 []\OT1/cmr/m/n/10 but ref-er-ence only the sec-ondary, sub-index part of a tag 
 in-side ei-ther [][]\OT1/cmtt/m/n/10 namedsubeqs
  []
 
 [9]
 LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 4
-98.
+99.
  (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/base\omscmr.fd
 File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 498.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 499.
 
 [10]
-Overfull \hbox (6.54515pt too wide) in paragraph at lines 513--513
+Overfull \hbox (6.54515pt too wide) in paragraph at lines 514--514
 []  \OT1/cmtt/m/n/10 g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\&
 &[] 
  []
 
 
-Overfull \hbox (6.54515pt too wide) in paragraph at lines 514--514
+Overfull \hbox (6.54515pt too wide) in paragraph at lines 515--515
 []  \OT1/cmtt/m/n/10 h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\&
 &[] 
  []
 
 [11]
-Overfull \hbox (11.7951pt too wide) in paragraph at lines 598--598
+Overfull \hbox (11.7951pt too wide) in paragraph at lines 599--599
 [] \OT1/cmtt/m/n/10 Some negative-horizontal spacing between these \HTrg words 
 \\[] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 605--606
+Underfull \hbox (badness 10000) in paragraph at lines 606--607
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 607--608
+Underfull \hbox (badness 10000) in paragraph at lines 608--609
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--610
+Underfull \hbox (badness 10000) in paragraph at lines 610--611
 
  []
 
@@ -896,10 +896,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 24843 strings out of 467509
- 488225 string characters out of 5408780
- 923846 words of memory out of 5000000
- 53621 multiletter control sequences out of 15000+600000
+ 24871 strings out of 467509
+ 488995 string characters out of 5408780
+ 924894 words of memory out of 5000000
+ 53650 multiletter control sequences out of 15000+600000
  639772 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  116i,20n,121p,558b,673s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -933,9 +933,9 @@ TeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/jamie/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/jamie/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/jamie/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on lpalign-Documentaion.pdf (15 pages, 368545 bytes).
+Output written on lpalign-Documentaion.pdf (15 pages, 369426 bytes).
 PDF statistics:
- 340 PDF objects out of 1000 (max. 8388607)
- 98 named destinations out of 1000 (max. 500000)
+ 338 PDF objects out of 1000 (max. 8388607)
+ 97 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
