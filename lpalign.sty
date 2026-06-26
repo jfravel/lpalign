@@ -271,6 +271,7 @@
 % second-index style and the punctuation between the main tag and the sub-tag.
 
 \newcounter{NamedEq}
+\newcounter{lpalignNamedEqSavedEquation}
 \makeatletter
 \ExplSyntaxOn
 \tl_new:N \l_lpalign_namedsubeq_style_tl
@@ -361,9 +362,13 @@
   {\lpalign@endorigsubequations}
 
 \NewDocumentEnvironment{namedsubeqs}{mO{}}
-  {\begin{subequations}
-     \lpalign@namedsubeqsetup{#2}%
-     \refstepcounter{NamedEq}
+  {\begingroup
+   \setcounter{lpalignNamedEqSavedEquation}{\value{equation}}%
+   \lpalign@namedsubeqsetup{#2}%
+   \refstepcounter{NamedEq}
+   \@ifundefined{theHequation}{}%
+     {\renewcommand{\theHequation}{lpalign.namedparent.\arabic{NamedEq}.\arabic{equation}}}%
+   \begin{subequations}
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1\lpalign@namedsubeqpunct{\lpalign@namedsubeqstyle{equation}}}
      \def\lpalign@subeqstoresubcurrent##1{%
@@ -372,6 +377,8 @@
      \@ifundefined{theHequation}{}%
        {\renewcommand{\theHequation}{lpalign.\arabic{NamedEq}.\arabic{equation}}}}
   {\end{subequations}
+     \setcounter{equation}{\value{lpalignNamedEqSavedEquation}}%
+     \endgroup
      \ignorespacesafterend
      \unskip
   }
