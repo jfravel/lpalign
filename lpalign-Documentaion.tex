@@ -284,7 +284,7 @@ Paragraph \ref{npara2} is a named paragraph.
 \end{tcolorbox}
 
 
-The newer \verb|namedpara| command leaves \verb|paratitle| untouched for compatibility but replaces the optional-argument convention with key-value settings. It takes a mandatory title and currently supports the keys \verb|abv|, \verb|indent| and \verb|cref|. The legacy-style key \verb|abbreviation| is also accepted as an alias for \verb|abv|. A single optional argument with no \verb|=| sign is interpreted as the abbreviation. The default indent is \verb|\HSkp|.
+The newer \verb|namedpara| command leaves \verb|paratitle| untouched for compatibility but replaces the optional-argument convention with key-value settings. It takes a mandatory title and currently supports the keys \verb|abv|, \verb|indent|, \verb|preamble|, \verb|flush| and \verb|cref|. The legacy-style key \verb|abbreviation| is also accepted as an alias for \verb|abv|. A single optional argument with no \verb|=| sign is interpreted as the abbreviation. The \verb|indent| key takes a distance, which is inserted using \verb|\hspace*|, while \verb|preamble| prints arbitrary code before the title. The default indent is \verb|2em|, matching the spacing of \verb|\HSkp|. The package option \verb|namedparaindent=<distance>| changes that global default.
 \begin{tcolorbox}
   \begin{verbatim}
 \namedpara{Named Paragraph}
@@ -296,7 +296,7 @@ Paragraph \ref{npara3} is a named paragraph.
           [abv=NPg]\label{npara3} \\
 Paragraph \ref{npara3} is a named paragraph.
 \end{tcolorbox}
-If \textsf{cleveref} is loaded, the \verb|cref| key is passed to \verb|\refstepcounter| as the reference type override for that paragraph.
+The \verb|flush| key accepts \verb|left|, \verb|center| and \verb|right|, with \verb|left| as the default. If \textsf{cleveref} is loaded, the \verb|cref| key is passed to \verb|\refstepcounter| as the reference type override for that paragraph.
 
 
 

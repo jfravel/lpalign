@@ -1,6 +1,6 @@
 \ProvidesPackage{lpalign}[Jun 25, 2026: v1.2 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3}
+\RequirePackage{amsmath, expl3, l3keys2e}
 %%begin novalidate
 
 
@@ -143,47 +143,83 @@
 
 \makeatletter
 \ExplSyntaxOn
+\tl_new:N \g_lpalign_namedpara_default_indent_tl
+\tl_new:N \g_lpalign_namedpara_default_flush_tl
+\tl_new:N \g_lpalign_namedpara_default_preamble_tl
+\keys_define:nn { lpalign/package }
+ {
+  namedparaindent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
+  namedparaindent .initial:n = 2em,
+  namedparapreamble .tl_gset:N = \g_lpalign_namedpara_default_preamble_tl,
+  namedparapreamble .initial:n = ,
+  namedparaflush .choices:nn = { left, center, right }
+   { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
+  namedparaflush .initial:n = left,
+ }
+\ProcessKeysOptions{ lpalign/package }
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
 \tl_new:N \l_lpalign_namedpara_indent_tl
 \tl_new:N \l_lpalign_namedpara_cref_tl
+\tl_new:N \l_lpalign_namedpara_preamble_tl
+\tl_new:N \l_lpalign_namedpara_flush_tl
 \keys_define:nn { lpalign/namedpara }
  {
   abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
-  abv .initial:n = ,
   abbreviation .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
-  abbreviation .initial:n = ,
   indent .tl_set:N = \l_lpalign_namedpara_indent_tl,
-  indent .initial:n = \HSkp,
+  preamble .tl_set:N = \l_lpalign_namedpara_preamble_tl,
+  flush .choices:nn = { left, center, right }
+   { \tl_set_eq:NN \l_lpalign_namedpara_flush_tl \l_keys_choice_tl },
   cref .tl_set:N = \l_lpalign_namedpara_cref_tl,
-  cref .initial:n = ,
+ }
+\cs_new_protected:Npn \lpalign_namedpara_reset:
+ {
+  \tl_clear:N \l_lpalign_namedpara_abbreviation_tl
+  \tl_set:Nx \l_lpalign_namedpara_indent_tl
+   { \tl_use:N \g_lpalign_namedpara_default_indent_tl }
+  \tl_set:Nx \l_lpalign_namedpara_preamble_tl
+   { \tl_use:N \g_lpalign_namedpara_default_preamble_tl }
+  \tl_set:Nx \l_lpalign_namedpara_flush_tl
+   { \tl_use:N \g_lpalign_namedpara_default_flush_tl }
+  \tl_clear:N \l_lpalign_namedpara_cref_tl
  }
 \cs_new_protected:Npn \lpalign_namedpara_setup:n #1
  {
+  \lpalign_namedpara_reset:
   \tl_if_blank:nTF {#1}
-   {
-    \keys_set:nn { lpalign/namedpara }
-     { abv = , abbreviation = , indent = \HSkp, cref = }
-   }
+   { }
    {
     \tl_if_in:nnTF {#1} {=}
-     {
-      \keys_set:nn { lpalign/namedpara }
-       { abv = , abbreviation = , indent = \HSkp, cref = , #1 }
-     }
-     {
-      \keys_set:nn { lpalign/namedpara }
-       { abbreviation = , indent = \HSkp, cref = , abv = #1 }
-     }
+     { \keys_set:nn { lpalign/namedpara } { #1 } }
+     { \tl_set:Nn \l_lpalign_namedpara_abbreviation_tl {#1} }
    }
+ }
+\cs_new_protected:Npn \lpalign_namedpara_typeset:n #1
+ {
+  \str_case:VnF \l_lpalign_namedpara_flush_tl
+   {
+    {left}   { \noindent #1 }
+    {center} { \noindent \makebox[\linewidth][c]{#1} }
+    {right}  { \noindent \makebox[\linewidth][r]{#1} }
+   }
+   { \noindent #1 }
  }
 \cs_new_protected:Npn \lpalign_namedpara:nn #1#2
  {
   \lpalign_namedpara_setup:n {#2}
-  \hfill\break\indent\tl_use:N \l_lpalign_namedpara_indent_tl \textbf{#1}
+  \par
+  \lpalign_namedpara_typeset:n
+   {
+    \tl_use:N \l_lpalign_namedpara_preamble_tl
+    \hspace*{\tl_use:N \l_lpalign_namedpara_indent_tl}
+    \textbf{#1}
+    \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
+     { }
+     { \hspace{0.5em}\textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)} }
+   }
   \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
    { \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {Para} }
    {
-    \textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)}
     \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {NamedPara}
     \edef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
    }
