@@ -284,6 +284,21 @@ Paragraph \ref{npara2} is a named paragraph.
 \end{tcolorbox}
 
 
+The newer \verb|namedpara| command leaves \verb|paratitle| untouched for compatibility but replaces the optional-argument convention with key-value settings. It takes a mandatory title and currently supports the keys \verb|abv|, \verb|indent| and \verb|cref|. The legacy-style key \verb|abbreviation| is also accepted as an alias for \verb|abv|. A single optional argument with no \verb|=| sign is interpreted as the abbreviation. The default indent is \verb|\HSkp|.
+\begin{tcolorbox}
+  \begin{verbatim}
+\namedpara{Named Paragraph}
+          [abv=NPg]\label{npara3} \\
+Paragraph \ref{npara3} is a named paragraph.
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}
+\namedpara{Named Paragraph}
+          [abv=NPg]\label{npara3} \\
+Paragraph \ref{npara3} is a named paragraph.
+\end{tcolorbox}
+If \textsf{cleveref} is loaded, the \verb|cref| key is passed to \verb|\refstepcounter| as the reference type override for that paragraph.
+
+
 
 \section{Named Sub-equation}
 The \verb|namedsubeqs| environment will use a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.

@@ -142,6 +142,53 @@
 % A paragraph marker that takes a title (#1) and an optional abbreviation (#2). If the paragraph is labeled, then any reference to it will give the abbreviation (#2) rather than a counter number.
 
 \makeatletter
+\ExplSyntaxOn
+\tl_new:N \l_lpalign_namedpara_abbreviation_tl
+\tl_new:N \l_lpalign_namedpara_indent_tl
+\tl_new:N \l_lpalign_namedpara_cref_tl
+\keys_define:nn { lpalign/namedpara }
+ {
+  abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
+  abv .initial:n = ,
+  abbreviation .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
+  abbreviation .initial:n = ,
+  indent .tl_set:N = \l_lpalign_namedpara_indent_tl,
+  indent .initial:n = \HSkp,
+  cref .tl_set:N = \l_lpalign_namedpara_cref_tl,
+  cref .initial:n = ,
+ }
+\cs_new_protected:Npn \lpalign_namedpara_setup:n #1
+ {
+  \tl_if_blank:nTF {#1}
+   {
+    \keys_set:nn { lpalign/namedpara }
+     { abv = , abbreviation = , indent = \HSkp, cref = }
+   }
+   {
+    \tl_if_in:nnTF {#1} {=}
+     {
+      \keys_set:nn { lpalign/namedpara }
+       { abv = , abbreviation = , indent = \HSkp, cref = , #1 }
+     }
+     {
+      \keys_set:nn { lpalign/namedpara }
+       { abbreviation = , indent = \HSkp, cref = , abv = #1 }
+     }
+   }
+ }
+\cs_new_protected:Npn \lpalign_namedpara:nn #1#2
+ {
+  \lpalign_namedpara_setup:n {#2}
+  \hfill\break\indent\tl_use:N \l_lpalign_namedpara_indent_tl \textbf{#1}
+  \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
+   { \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {Para} }
+   {
+    \textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)}
+    \lpalign@namedpararefstep { \tl_use:N \l_lpalign_namedpara_cref_tl } {NamedPara}
+    \edef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
+   }
+ }
+\ExplSyntaxOff
 \newcounter{Para}
 \newcounter{NamedPara}
 \NewDocumentCommand\paratitle{O{}mo}
@@ -150,6 +197,21 @@
             {\textbf{(#3)}\refstepcounter{NamedPara}\def\@currentlabel{#3}}
             {\refstepcounter{Para}}
     }
+\newcommand{\lpalign@namedpararefstep}[2]{%
+  \@ifpackageloaded{cleveref}
+    {\if\relax\detokenize{#1}\relax
+       \refstepcounter{#2}%
+     \else
+       \refstepcounter[#1]{#2}%
+     \fi}
+    {\refstepcounter{#2}}%
+}
+\ExplSyntaxOn
+\NewDocumentCommand\namedpara{mO{}}
+    {%
+      \lpalign_namedpara:nn{#1}{#2}%
+    }
+\ExplSyntaxOff
 \makeatother
 
 
