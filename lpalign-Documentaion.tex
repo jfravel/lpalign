@@ -10,8 +10,6 @@
 \usepackage{multicol}
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
-\usepackage{cleveref}
-		\crefname{problem}{problem}{problems}
 \usepackage{amssymb}
 \usepackage{enumitem}
 	\setlist[itemize]{noitemsep, topsep=-0.7em}
@@ -284,21 +282,11 @@ Currently supported optional keys include
 \namedpara{Surrounded}[abv=SUR, before=$>>>$, after=$<<<$]
 
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
-
-\namedpara{Cref Satisfiability}[abv=SAT]\label[problem]{sat}
-
-	If loaded, \textsf{cleveref} can use its optional
-	\verb|\label[problem]{sat}| syntax to
-	reference \cref{sat}. This example assumes that the 
-	\verb|problem| category has been defined in the preamble 
-	with \verb|\crefname{problem}{problem}{problems}|.
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}\Vskp
 \namedpara{Indented}[abv=IND, indent=6em]\\
 \namedpara{Surrounded}[abv=SUR, before=$>>>$ , after=$<<<$ ]\\
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]\\
-\namedpara{Cref Satisfiability}[abv=SAT]\label[problem]{sat}\\
-If loaded, \textsf{cleveref} can use its optional \verb|\label[problem]{sat}| syntax to reference \cref{sat}. This example assumes that the \verb|problem| category has been defined in the preamble with \verb|\crefname{problem}{problem}{problems}|.
 \end{tcolorbox}
 
 The compatibility command \verb|paratitle| is left untouched from previous versions.
