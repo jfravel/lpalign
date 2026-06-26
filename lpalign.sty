@@ -164,11 +164,9 @@
 \ProcessKeysOptions{ lpalign/package }
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
 \tl_new:N \l_lpalign_namedpara_indent_tl
-\tl_new:N \l_lpalign_namedpara_cref_tl
 \tl_new:N \l_lpalign_namedpara_before_tl
 \tl_new:N \l_lpalign_namedpara_after_tl
 \tl_new:N \l_lpalign_namedpara_flush_tl
-\tl_new:N \g_lpalign_pending_cref_type_tl
 \keys_define:nn { lpalign/namedpara }
  {
   abv .tl_set:N = \l_lpalign_namedpara_abbreviation_tl,
@@ -178,7 +176,6 @@
   after .tl_set:N = \l_lpalign_namedpara_after_tl,
   flush .choices:nn = { left, center, right }
    { \tl_set_eq:NN \l_lpalign_namedpara_flush_tl \l_keys_choice_tl },
-  cref .tl_set:N = \l_lpalign_namedpara_cref_tl,
  }
 \cs_new_protected:Npn \lpalign_namedpara_reset:
  {
@@ -191,7 +188,6 @@
    { \tl_use:N \g_lpalign_namedpara_default_after_tl }
   \tl_set:Nx \l_lpalign_namedpara_flush_tl
    { \tl_use:N \g_lpalign_namedpara_default_flush_tl }
-  \tl_clear:N \l_lpalign_namedpara_cref_tl
  }
 \cs_new_protected:Npn \lpalign_namedpara_setup:n #1
  {
@@ -214,11 +210,6 @@
    }
    { \noindent #1 }
  }
-\cs_new_protected:Npn \lpalign_namedpara_set_pending_cref:
- {
-  \tl_gset:Nx \g_lpalign_pending_cref_type_tl
-   { \tl_use:N \l_lpalign_namedpara_cref_tl }
- }
 \cs_new_protected:Npn \lpalign_namedpara:nn #1#2
  {
   \lpalign_namedpara_setup:n {#2}
@@ -238,13 +229,11 @@
   \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
    {
     \lpalign@namedpararefstep{Para}
-    \lpalign_namedpara_set_pending_cref:
    }
    {
     \exp_args:Nx \lpalign@namedpararefstepabbrev
       { \tl_use:N \l_lpalign_namedpara_abbreviation_tl }
     \xdef\@currentlabel{\tl_use:N \l_lpalign_namedpara_abbreviation_tl}
-    \lpalign_namedpara_set_pending_cref:
    }
  }
 \ExplSyntaxOff
@@ -265,34 +254,6 @@
   \refstepcounter{NamedPara}%
   \let\theNamedPara\lpalign@savedtheNamedPara
 }
-\ExplSyntaxOn
-\cs_new_protected:Npn \lpalign@clearpendingcref
- {
-  \tl_gclear:N \g_lpalign_pending_cref_type_tl
- }
-\ExplSyntaxOff
-\ExplSyntaxOn
-\cs_new_protected:Npn \lpalign@label@noopt #1
- {
-  \tl_if_blank:VTF \g_lpalign_pending_cref_type_tl
-   { \lpalign@origlabel{#1} }
-   {
-    \edef\lpalign@pendingcreftype{\tl_use:N \g_lpalign_pending_cref_type_tl}
-    \lpalign@origlabel[\lpalign@pendingcreftype]{#1}
-   }
-  \lpalign@clearpendingcref
- }
-\ExplSyntaxOff
-\newcommand{\lpalign@label@opt}[2][]{%
-  \lpalign@origlabel[#1]{#2}%
-  \lpalign@clearpendingcref
-}
-\newcommand{\lpalign@installlabelhook}{%
-  \let\lpalign@origlabel\label
-  \def\label{%
-    \@ifnextchar[\lpalign@label@opt\lpalign@label@noopt}%
-}
-\AddToHook{begindocument/end}{\lpalign@installlabelhook}
 \ExplSyntaxOn
 \NewDocumentCommand\namedpara{mO{}}
     {%

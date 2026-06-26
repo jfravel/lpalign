@@ -275,7 +275,6 @@ Currently supported optional keys include
 	\item \verb|before| -- arbitrary code placed between the indent and the title.
 	\item \verb|after| -- arbitrary code placed after the abbreviation.
 	\item \verb|flush| -- centers or right-flushes the paragraph title via \verb|center| or \verb|right|.
-	\item \verb|cref| -- passes a label type to \verb|\refstepcounter| as the reference type override for that paragraph if \textsf{cleveref} is loaded. If you use a custom category, define it with \verb|\crefname| as in the example below.
 	\end{itemize}
 
 \begin{tcolorbox}
@@ -286,10 +285,10 @@ Currently supported optional keys include
 
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
 
-\namedpara{Cref Satisfiability}
-                        [abv=SAT, cref=Problem]\label{sat}
+\namedpara{Cref Satisfiability}[abv=SAT]\label[problem]{sat}
 
-	If loaded, \textsf{cleveref} uses the \verb|cref| key to 
+	If loaded, \textsf{cleveref} can use its optional
+	\verb|\label[problem]{sat}| syntax to
 	reference \cref{sat}. This example assumes that the 
 	\verb|problem| category has been defined in the preamble 
 	with \verb|\crefname{problem}{problem}{problems}|.
@@ -298,8 +297,8 @@ Currently supported optional keys include
 \namedpara{Indented}[abv=IND, indent=6em]\\
 \namedpara{Surrounded}[abv=SUR, before=$>>>$ , after=$<<<$ ]\\
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]\\
-\namedpara{Cref Satisfiability}[abv=SAT, cref=problem]\label{sat}\\
-If loaded, \textsf{cleveref} uses the \verb|cref| key to reference \cref{sat}. This example assumes that the \verb|problem| category has been defined in the preamble with \verb|\crefname{problem}{problem}{problems}|.
+\namedpara{Cref Satisfiability}[abv=SAT]\label[problem]{sat}\\
+If loaded, \textsf{cleveref} can use its optional \verb|\label[problem]{sat}| syntax to reference \cref{sat}. This example assumes that the \verb|problem| category has been defined in the preamble with \verb|\crefname{problem}{problem}{problems}|.
 \end{tcolorbox}
 
 The compatibility command \verb|paratitle| is left untouched from previous versions.
