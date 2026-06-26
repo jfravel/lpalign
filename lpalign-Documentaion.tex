@@ -17,7 +17,7 @@
 
 
 \title{The \textsf{lpalign} Package}
-\date{Corresponds to \textsf{lpalign} v$1.2$, dated June $25^\textrm{th}$ 2026}
+\date{Corresponds to \textsf{lpalign} v$1.3$, dated June $26^\textrm{th}$ 2026}
 \author{Jamie Fravel}
 
 
@@ -27,7 +27,7 @@
 \texttt{jamiefravel@me.com}
 \end{center}
 \begin{abstract}
-    This is a collection of macros that I developed while writing my dissertation. They are mostly focused around displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and  sub-equations macros will be useful in any document which defines and references multiple problems, algorithms or multi-lined environments. 
+    This is a collection of macros that I developed while writing my dissertation. They are mostly focused on displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and sub-equation macros will be useful in any document which defines and references multiple problems, algorithms or multi-lined environments. 
 \end{abstract}
 
 \tableofcontents
@@ -254,7 +254,7 @@ The slack constraints are not tagged.
 
 
 \section{Named Paragraphs}
-The \verb|namedpara| command displays a paragraph marker that takes an abbreviation which is useful for referencing specific problems or conventions
+The \verb|namedpara| command displays a paragraph marker that takes an abbreviation, which is useful for referencing specific problems or conventions.
 \begin{tcolorbox}
   \begin{verbatim}
 \namedpara{Named Paragraph}[NPg]\label{npara1} \\
@@ -266,7 +266,7 @@ Paragraph \ref{npara1} is a named paragraph.
 Paragraph \ref{npara1} is a named paragraph.
 \end{tcolorbox}
 
-Currently supported optional keys include 
+Currently supported optional keys include
 	\begin{itemize}
 	\item \verb|abv| -- abbreviation used when referencing. A single argument with no \verb|=| sign is also interpreted as this abbreviation.
 	\item \verb|indent| -- indent distance. The default value of 2em can be changed during package load by the \verb|namedparaindent| option.
@@ -298,7 +298,7 @@ The compatibility command \verb|paratitle| is left untouched from previous versi
 
 
 \section{Named Sub-equations}
-The \verb|namedsubeqs| environment will use a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
+The \verb|namedsubeqs| environment uses a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
 
 \begin{tcolorbox}
   \begin{verbatim}
@@ -383,7 +383,7 @@ The \verb|punct| argument controls the separator between the main tag and the su
   \begin{verbatim}
 \begin{namedsubeqs}{EQ}[style=\scshape\roman, punct=:]
   
-  \begin{namedsubeqs}{EQ}[style=\bfseries\arabic, punct=$sim$]
+  \begin{namedsubeqs}{EQ}[style=\bfseries\arabic, punct=$\sim$]
   \end{verbatim}
 \begin{center}$\downarrow$\end{center}
   \begin{minipage}[T]{0.4\textwidth}
@@ -496,7 +496,7 @@ Supported punctuation currently includes the period (.), colon (:), semicolon (;
 
 
 \section{Combining Macros}
-Each of these macros may be combined for a nicely named, labeled, formatted and tagged mathematical programming problem
+Each of these macros may be combined for a nicely named, labeled, formatted and tagged mathematical programming problem.
 \begin{tcolorbox}
   \begin{verbatim}
 \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
@@ -509,7 +509,7 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 \end{namedsubeqs}
 
 Problem \eqref{para:NLP} is a nonlinear program.
-Equations \eqref{NLP.0} is the objective function.
+Equation \eqref{NLP.0} is the objective function.
 Equations (\ref{NLP.1}-\ref{NLP.3}) are the constraints.
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
   \end{verbatim}
@@ -524,7 +524,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
     \end{namedsubeqs}
     
 Problem \eqref{para:NLP} is a nonlinear program.
-Equations \eqref{NLP.0} is the objective function.
+Equation \eqref{NLP.0} is the objective function.
 Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints. 
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \end{tcolorbox}
@@ -717,6 +717,8 @@ A few binary relations with extra space on either side. I like these for aligned
 	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
 	
 	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\lpsubref| and \verb|\lpsubeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
+
+	\item[$\boxtimes$] The public commands \verb|\subref| and \verb|\subeqref| conflicted with packages such as \textsf{subcaption}. Fixed by renaming the package commands to \verb|\lpsubref| and \verb|\lpsubeqref|; v1.3.
 	
 	\item[$\boxdot$] The objective function argument in the \textsf{lpalign} environment is embedded in a zero-width box to avoid interfering with the spacing/alignment of the constraints. Unfortunately, this means that the objective function does not contribute to the width of the environment. So, if the objective function is long enough, the LP will not center properly or may even overflow the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
@@ -738,6 +740,7 @@ A few binary relations with extra space on either side. I like these for aligned
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
 	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\@currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, and added \verb|\lpsubref|/\verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
+	\item[v1.3] Jun. 26, 2026. Feature and compatibility update. Added \verb|\namedpara| with key-value options, namespaced the sub-equation reference commands as \verb|\lpsubref| and \verb|\lpsubeqref|, and hardened parent-label handling for both \verb|namedsubeqs| and traditional \textsf{subequations}.
 	\end{itemize}
 
 

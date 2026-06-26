@@ -35,4 +35,4 @@ Run `pdflatex` twice if you want references and the table of contents fully reso
 
 ## Status
 
-This repository is still in a light pre-packaging state. The current pass focuses on small consistency fixes and documentation cleanup rather than structural redesign.
+The current branch is a candidate for `v1.3`. The main visible changes since `v1.2` are the new `\namedpara` command, namespaced sub-equation references via `\lpsubref` and `\lpsubeqref`, and more robust parent-label handling inside `namedsubeqs` and traditional `subequations`.
