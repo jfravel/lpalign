@@ -10,6 +10,7 @@
 \usepackage{multicol}
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
+\usepackage{cleveref}
 \usepackage{amssymb}
 \usepackage{enumitem}
 	\setlist[itemize]{noitemsep, topsep=-0.7em}
@@ -254,49 +255,56 @@ The slack constraints are not tagged.
 
 
 \section{Named Paragraphs}
-The \verb|paratitle| command displays a paragraph marker that takes
-    \begin{itemize}
-    \item[\texttt O.] an optional extra indent.
-    \item[\texttt M.] a title.
-    \item[\texttt O.] an optional abbreviation.
-    \end{itemize}
-If the paragraph is labeled, then any reference to it will give the abbreviation rather than a counter number.
+\section{Named Paragraphs}
+The \verb|namedpara| command displays a paragraph marker that takes an abbreviation which is useful for referencing specific problems or conventions
 \begin{tcolorbox}
   \begin{verbatim}
-  \paratitle{Named Paragraph}[NPg]\label{npara} \\
-  Paragraph \ref{npara} is a named paragraph.
+\namedpara{Named Paragraph}[NPg]\label{npara1} \\
+Paragraph \ref{npara1} is a named paragraph.
   \end{verbatim}
-\begin{center}$\downarrow$\end{center}
-\paratitle{Named Paragraph}[NPg]\label{npara} \\
-Paragraph \ref{npara} is a named paragraph.
-\end{tcolorbox}
-
-
-The first optional argument is a sort of preamble. It is intended to be used for custom indent spacing.
-\begin{tcolorbox}
-  \begin{verbatim}
-\paratitle[\HSKP]{Named Paragraph}[NPg]\label{npara2} \\
-Paragraph \ref{npara2} is a named paragraph.
-  \end{verbatim}
-\begin{center}$\downarrow$\end{center}
-\paratitle[\HSKP]{Named Paragraph}[NPg]\label{npara2} \\
-Paragraph \ref{npara2} is a named paragraph.
-\end{tcolorbox}
-
-
-The newer \verb|namedpara| command leaves \verb|paratitle| untouched for compatibility but replaces the optional-argument convention with key-value settings. It takes a mandatory title and currently supports the keys \verb|abv|, \verb|indent|, \verb|preamble|, \verb|flush| and \verb|cref|. The legacy-style key \verb|abbreviation| is also accepted as an alias for \verb|abv|. A single optional argument with no \verb|=| sign is interpreted as the abbreviation. The \verb|indent| key takes a distance, which is inserted using \verb|\hspace*|, while \verb|preamble| prints arbitrary code before the title. The default indent is \verb|2em|, matching the spacing of \verb|\HSkp|. The package option \verb|namedparaindent=<distance>| changes that global default.
-\begin{tcolorbox}
-  \begin{verbatim}
+\begin{center}$\downarrow$\end{center}\Vskp
 \namedpara{Named Paragraph}
-          [abv=NPg]\label{npara3} \\
-Paragraph \ref{npara3} is a named paragraph.
-  \end{verbatim}
-\begin{center}$\downarrow$\end{center}
-\namedpara{Named Paragraph}
-          [abv=NPg]\label{npara3} \\
-Paragraph \ref{npara3} is a named paragraph.
+          [abv=NPg]\label{npara1} \\
+Paragraph \ref{npara1} is a named paragraph.
 \end{tcolorbox}
-The \verb|flush| key accepts \verb|left|, \verb|center| and \verb|right|, with \verb|left| as the default. If \textsf{cleveref} is loaded, the \verb|cref| key is passed to \verb|\refstepcounter| as the reference type override for that paragraph.
+
+Currently supported optional keys include 
+	\begin{itemize}
+	\item \verb|abv| -- abbreviation used when referencing. A single argument with no \verb|=| sign is also interpreted as this abbreviation.
+	\item \verb|indent| -- indent distance. The default value of 2em can be changed during package load by the \verb|namedparaindent| option.
+	\item \verb|premble| -- arbitrary code before the title
+	\item \verb|flush| -- centers or right flushes the paragraph title via \verb|center| or \verb|right| -- respectively.
+	\item \verb|cref| -- passes value to \verb|\refstepcounter| as the reference type override for that paragraph if \textsf{cleveref} is loaded.
+	\end{itemize}
+
+\begin{tcolorbox}
+  \begin{verbatim}
+\namedpara{Indented Paragraph}[abv=indent, indent=6em]
+
+\namedpara{Premble Paragraph}
+                     [abv=preamb, preamble=$\sim\sim\sim$]
+
+\namedpara{Rightflushed Paragraph}[abv=right, flush=right]
+
+\namedpara{Cref Satisfiability}
+                        [abv=SAT, cref=Problem]\label{sat}
+
+If loaded, \textsf{cleverref} uses the \verb|cref| key to 
+reference the paragraph \cref{sat}
+  \end{verbatim}
+\begin{center}$\downarrow$\end{center}\Vskp
+\namedpara{Indented Paragraph}[abv=indent, indent=6em] \\
+\namedpara{Premble Paragraph}[abv=preamb, preamble=$\sim\sim\sim$] \\
+\namedpara{Rightflushed Paragraph}[abv=right, flush=right] \\
+\namedpara{Cref Satisfiability}[abv=SAT, cref=Problem]\label{sat} \\
+If loaded, \textsf{cleverref} uses the \verb|cref| key to reference the paragraph \cref{sat}
+\end{tcolorbox}
+
+The compatability command \verb|paratitle| is left untouched from previous versions.
+
+
+
+
 
 
 
