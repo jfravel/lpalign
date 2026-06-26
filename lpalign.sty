@@ -222,13 +222,22 @@
    { }
    { \dim_use:N \l_lpalign_lp_st_shift_dim }
  }
+\cs_new_protected:Npn \lpalign_lp_format_body:n #1
+ {
+  \tl_set:Nn \l_tmpa_tl {#1}
+  \tl_replace_all:Nnn \l_tmpa_tl {&&}
+   {& \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim} &}
+  \tl_use:N \l_tmpa_tl
+ }
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
  {
   \lpalign_lp_setup:nn {#1} {#2}
   \begin{alignat}{2}
   \omit\span\omit\span\omit\span\omit
-  \lpalign_lp_objective_prefix:n {#3}\cr
-  \lpalign_lp_st_prefix: #4
+  \refstepcounter{equation}%
+  \hbox to \displaywidth
+   { \lpalign_lp_objective_prefix:n {#3}\hfil\normalfont\tagform@\theequation }\cr
+  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat}
  }
  {\ignorespacesafterend}
@@ -238,7 +247,7 @@
   \begin{alignat*}{2}
   \omit\span\omit\span\omit\span\omit
   \lpalign_lp_objective_prefix:n {#3}\cr
-  \lpalign_lp_st_prefix: #4
+  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat*}
  }
  {\ignorespacesafterend}
