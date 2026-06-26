@@ -411,6 +411,6 @@
  }
 \NewDocumentCommand{\lpsubeqref}{m}
  {
-  \lpalignhyperref{#1}{\csname tagform@\endcsname {{\lpalignsubreftext{#1}}}}
+  \csname tagform@\endcsname {\lpalignhyperref{#1}{{\lpalignsubreftext{#1}}}}
  }
 \ExplSyntaxOff
