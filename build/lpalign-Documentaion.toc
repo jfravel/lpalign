@@ -1,7 +1,7 @@
 \contentsline {section}{\numberline {1}Installation}{2}{section.1}%
 \contentsline {section}{\numberline {2}The \textsf {lpalign} Environment}{2}{section.2}%
 \contentsline {section}{\numberline {3}Named Paragraphs}{6}{section.3}%
-\contentsline {section}{\numberline {4}Named Sub-equation}{7}{section.4}%
+\contentsline {section}{\numberline {4}Named Sub-equations}{7}{section.4}%
 \contentsline {section}{\numberline {5}Sub-References}{9}{section.5}%
 \contentsline {section}{\numberline {6}Combining Macros}{11}{section.6}%
 \contentsline {section}{\numberline {7}Spacing Macros}{11}{section.7}%
