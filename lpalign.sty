@@ -186,7 +186,10 @@
   \dim_set:Nn \l_lpalign_lp_gutter_width_dim
    { \l_lpalign_lp_label_width_dim + \l_lpalign_lp_gutter_sep_dim }
   \dim_set:Nn \l_lpalign_lp_objective_width_dim
-   { \linewidth - \l_lpalign_lp_gutter_width_dim - \l_lpalign_lp_gutter_sep_dim }
+   {
+    \linewidth - \l_lpalign_lp_gutter_width_dim
+    - \l_lpalign_lp_gutter_sep_dim - \mintagsep
+   }
  }
 \cs_new_protected:Npn \lpalign_lp_prefix:nnn #1#2#3
  {
@@ -235,7 +238,7 @@
   \begin{alignat}{2}
   \omit\span\omit\span\omit\span\omit
   \refstepcounter{equation}%
-  \hbox to \dimexpr\displaywidth-\mintagsep-3em\relax
+  \hbox to \dimexpr\displaywidth-\mintagsep\relax
    { \lpalign_lp_objective_prefix:n {#3}\hfil\normalfont\tagform@\theequation }\cr
   \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat}
