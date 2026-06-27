@@ -198,8 +198,9 @@
  }
 \cs_new_protected:Npn \lpalign_lp_objective_prefix:n #1
  {
-  \makebox[\dim_use:N \l_lpalign_lp_objective_width_dim][l]
+  \rlap{\makebox[\dim_use:N \l_lpalign_lp_objective_width_dim][l]
    { $\displaystyle #1$ }
+  }
  }
 \cs_new_protected:Npn \lpalign_lp_st_prefix:
  {
@@ -223,8 +224,7 @@
    {
     \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
     \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }
-  & \omit\lpalign_lp_objective_prefix:n {#3}
+   }\lpalign_lp_objective_prefix:n {#3}
   && {} \\[-\jot]
   \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat}
@@ -238,8 +238,7 @@
    {
     \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
     \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }
-  & \omit\lpalign_lp_objective_prefix:n {#3}
+   }\lpalign_lp_objective_prefix:n {#3}
   && {} \\[-\jot]
   \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat*}
