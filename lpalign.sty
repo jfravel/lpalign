@@ -219,11 +219,11 @@
  {
   \lpalign_lp_setup:nn {#1} {#2}
   \begin{alignat}{2}
-  \makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
+  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
    {
     \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
     \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   } & \omit\span\omit \lpalign_lp_objective_prefix:n {#3}
+   }\span\omit \lpalign_lp_objective_prefix:n {#3}
   && {} \\[-\jot]
   \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat}
@@ -233,11 +233,11 @@
  {
   \lpalign_lp_setup:nn {#1} {#2}
   \begin{alignat*}{2}
-  \makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
+  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
    {
     \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
     \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   } & \omit\span\omit \lpalign_lp_objective_prefix:n {#3}
+   }\span\omit \lpalign_lp_objective_prefix:n {#3}
   && {} \\[-\jot]
   \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
   \end{alignat*}
