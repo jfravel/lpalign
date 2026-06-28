@@ -23,7 +23,7 @@
 	\setlength{\fboxsep}{0.5pt}
 
 \title{The \textsf{lpalign} Package}
-\date{Published as \textsf{lpalign} v$1.4$ on June $28^\textrm{th}$ 2026}
+\date{Published as \textsf{lpalign} v$1.4$ final on June $28^\textrm{th}$ 2026}
 \author{Jamie Fravel}
 
 
@@ -695,7 +695,7 @@ A few binary relations with extra space on either side. I like these for aligned
 
 	\item[$\boxtimes$] The public commands \verb|\subref| and \verb|\subeqref| conflicted with packages such as \textsf{subcaption}. Fixed by renaming the package commands to \verb|\lpsubref| and \verb|\lpsubeqref|; v1.3.
 	
-	\item[$\boxtimes$] The objective function did not contribute correctly to the width of the environment. Fixed in v1.4.
+	\item[$\boxtimes$] The objective function did not contribute correctly to the width of the environment. Fixed in v1.4 final.
 \end{compactitem}
 
 
@@ -707,7 +707,7 @@ A few binary relations with extra space on either side. I like these for aligned
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
 	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, and added \verb|\lpsubref|/\verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
 	\item[v1.3] Jun. 26, 2026. Feature and compatibility update. Added \verb|\namedpara| with key-value options, namespaced the sub-equation reference commands as \verb|\lpsubref| and \verb|\lpsubeqref|, and hardened parent-label handling for both \verb|namedsubeqs| and traditional \textsf{subequations}.
-	\item[v1.4] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, and package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|.
+	\item[v1.4 final] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|, and the operator helpers now preserve standard \verb|_|/\verb|^| syntax.
 	\end{compactitem}
 
 
