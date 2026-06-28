@@ -122,9 +122,10 @@
 \dim_new:N \lpalign_sense_width
 \dim_new:N \lpalign_st_shift
 \dim_new:N \lpalign_st_width
+\dim_new:N \lpalign_objective_sep
+\dim_new:N \lpalign_qualifier_sep
 \dim_new:N \lpalign_gutter_sep
 \dim_new:N \lpalign_gutter_width
-\dim_new:N \lpalign_qualifier_sep
 % Key Options
 \keys_define:nn { lpalign/lp }
 	{
@@ -140,12 +141,15 @@
 	st .initial:n = s.t.,
 	st-shift .dim_set:N = \lpalign_st_shift,
 	st-shift .initial:n = 0pt,
-	% Gutter Parameters
-	gutter-sep .dim_set:N = \lpalign_gutter_sep,
-	gutter-sep .initial:n = 0.75em,
-	% Qualifier Parameters
+	% Objective Sep
+	objective-sep .dim_set:N = \lpalign_objective_sep,
+	objective-sep .initial:n = 0em,
+	% Qualifier Sep
 	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
 	qualifier-sep .initial:n = 2em,
+	% Gutter Seo
+	gutter-sep .dim_set:N = \lpalign_gutter_sep,
+	gutter-sep .initial:n = 0.75em,
 	}
 % lpalign Environment Setup
 \cs_new_protected:Npn \lpalign_lp_setup:nn #1#2#3
@@ -194,24 +198,26 @@
 	}
 % Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
- 	{
+	{
   \lpalign_lp_setup:nn {#1}{#2}{#3}
   \begin{alignat}{2}
   \lpalign_print_sense: 
   \begin{aligned}#3\end{aligned}
-	\span\span\span\omit\hfill \\
+	\span\span\span\omit\hfill 
+	\\[\dim_use:N \lpalign_objective_sep]
   \lpalign_print_st: \lpalign_lp_format_body:n {#4}
   \end{alignat}
 	}
 	{\ignorespacesafterend}
  % Environment* Main
-\NewDocumentEnvironment{lpalignexp*}{O{}mm+b}
+\NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1} {#2} {#3}
     \begin{alignat*}{2}
       \lpalign_print_sense: 
       \begin{aligned}#3\end{aligned}
-    	\span\span\span\omit\hfill \\
+    	\span\span\span\omit\hfill 
+			\\[\dim_use:N \lpalign_objective_sep]
       \lpalign_print_st: \lpalign_lp_format_body:n {#4}
     \end{alignat*}
 	}
@@ -233,8 +239,8 @@
 \tl_new:N \g_lpalign_namedpara_default_after_tl
 \keys_define:nn { lpalign/package }
  {
-  namedparaindent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
-  namedparaindent .initial:n = 2em,
+  namedpara_indent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
+  namedpara_indent .initial:n = 2em,
   namedparabefore .tl_gset:N = \g_lpalign_namedpara_default_before_tl,
   namedparabefore .initial:n = ,
   namedparaafter .tl_gset:N = \g_lpalign_namedpara_default_after_tl,
