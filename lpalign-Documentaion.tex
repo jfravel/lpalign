@@ -11,8 +11,9 @@
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
 \usepackage{amssymb}
-\usepackage{enumitem}
-	\setlist[itemize]{noitemsep, topsep=-0.7em}
+%\usepackage{enumitem}
+%	\setlist[itemize]{noitemsep, topsep=-0.7em}
+\usepackage{paralist}
 
 \usepackage{fancyvrb}
 	\fvset{tabsize=2, commandchars=@~|}
@@ -48,17 +49,17 @@ Copy \textsf{lpalign.sty} to the same directory as your main \textsf{.tex} file 
 
 \textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary function is to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the \textsf{alignat} body. These terms are aligned with the objective and first constraint respectively.
 
-The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:
-  \begin{itemize}
-  \item \verb|vars| -- subscript on the `sense' term. Commonly used to state variables and ranges.
-  \item \verb|vars-style| -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle|.
-  \item \verb|st| -- text used for the `subject to' term. Defaults to \verb|s.t.|.
-  \item \verb|objective-sep| -- controls the spacing between objective function and the first constraint. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective-sep| option. \\ e.g. \verb|\usepackage[lp_objective-sep=XXem]{lpalign}|.
-  \item \verb|qualifier-sep| -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier-sep| option. \\ e.g. \verb|\usepackage[lp_qualifier-sep=XXem]{lpalign}|.
-  \item \verb|gutter-sep| -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter-sep| option. \\ e.g. \verb|\usepackage[lp_gutter-sep=XXem]{lpalign}|.
-  \item \verb|sense-shift| -- adds a vertical shift to the `sense' term.
-  \item \verb|st-shift| -- adds a vertical shift to the `subject to' term.
-  \end{itemize}
+The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
+  \begin{compactitem}
+  \item[\Verb|vars|] -- subscript on the `sense' term. Commonly used to state variables and ranges.
+  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle|.
+  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.|.
+  \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective-sep| option. \\ e.g. \verb|\usepackage[lp_objective-sep=XXem]{lpalign}|.
+  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier-sep| option. \\ e.g. \verb|\usepackage[lp_qualifier-sep=XXem]{lpalign}|.
+  \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter-sep| option. \\ e.g. \verb|\usepackage[lp_gutter-sep=XXem]{lpalign}|.
+  \item[\Verb|sense-shift|] -- adds a vertical shift to the `sense' term.
+  \item[\Verb|st-shift|] -- adds a vertical shift to the `subject to' term.
+  \end{compactitem}
 The \textsf{lpalign*} environment is identical without printing equation reference tags unless explicitly called for by the \verb|\tag| command.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -243,14 +244,14 @@ Paragraph \ref{npara1} is a named paragraph.
 Paragraph \ref{npara1} is a named paragraph.
 \end{tcolorbox}
 
-Currently supported optional keys include
-	\begin{itemize}
-	\item \verb|abv| -- abbreviation used when referencing. A single argument with no \verb|=| sign is also interpreted as this abbreviation.
-	\item \verb|indent| -- indent distance. The default value of \verb|2em| can be changed during package load by the \verb|namedpara_indent| option. \\ e.g. \verb|\usepackage[namedpara_indent=XXem]{lpalign}|.
-	\item \verb|before| -- arbitrary code placed between the indent and the title.
-	\item \verb|after| -- arbitrary code placed after the abbreviation.
-	\item \verb|flush| -- centers or right-flushes the paragraph title via \verb|center| or \verb|right|.
-	\end{itemize}
+Currently supported optional keys include\Vtrg
+	\begin{compactitem}
+	\item[\Verb|abv|] -- abbreviation used when referencing. A single argument with no \Verb|=| sign is also interpreted as this abbreviation.
+	\item[\Verb|indent|] -- indent distance. The default value of \verb|2em| can be changed during package load by the \verb|namedpara_indent| option. \\ e.g. \verb|\usepackage[namedpara_indent=XXem]{lpalign}|.
+	\item[\Verb|before|] -- arbitrary code placed between the indent and the title.
+	\item[\Verb|after|] -- arbitrary code placed after the abbreviation.
+	\item[\Verb|flush|] -- centers or right-flushes the paragraph title via \verb|center| or \verb|right|.
+	\end{compactitem}
 
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -520,29 +521,29 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
 Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
     \vtrg\begin{multicols}{2}
-    \begin{itemize}
+    \begin{compactitem}
         \item\verb|\hskp|  = 0.5em \hspace{5pt}$\vert\hskp\vert$
         \item\verb|\Hskp|  = 1em   \hspace{13pt}$\vert\Hskp\vert$
         \item\verb|\HSkp|  = 2em   \hspace{13pt}$\vert\HSkp\vert$
         \item\verb|\HSKp|  = 3em   \hspace{5pt}$\vert\HSKp\vert$
         \item\verb|\HSKP|  = 4em   \hspace{5pt}$\vert\HSKP\vert$
-    \end{itemize}
+    \end{compactitem}
     \end{multicols}\Vtrg\vtrg
     
 Negative versions of the above spacing macros:
 	\vtrg\begin{multicols}{2}
-	\begin{itemize}
+	\begin{compactitem}
 		\item\verb|\htrg|  = -0.5em
 		\item\verb|\Htrg|  = -1em
 		\item\verb|\HTrg|  = -2em
 		\item\verb|\HTRg|  = -3em
 		\item\verb|\HTRG|  = -4em
-	\end{itemize}
+	\end{compactitem}
 	\end{multicols}\Vtrg\vtrg
    
 Vertical versions of the above horizontal spacing macros:
     \vtrg\begin{multicols}{2}
-	\begin{itemize}
+	\begin{compactitem}
 		\item\verb|\vskp| = 0.5em 
 		\item\verb|\Vskp| = 1em 
 		\item\verb|\VSkp| = 2em 
@@ -554,7 +555,7 @@ Vertical versions of the above horizontal spacing macros:
 		\item\verb|\VTrg| = -2em 
 		\item\verb|\VTRg| = -3em 
 		\item\verb|\VTRG| = -4em 
-	\end{itemize}
+	\end{compactitem}
 	\end{multicols}\Vtrg\vtrg
 
 These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip| correctly, but I find them more convenient.
@@ -586,20 +587,20 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 
 Some macros for correctly spacing display-style summation notation when the lower index set is overfull. This is done by placing the subscript in a zero-width box and should not be used in inline math.
 	\vtrg\begin{multicols}{3}
-	\begin{itemize}
+	\begin{compactitem}
 	\item \verb|\SUM|   = $\displaystyle\sum$
 	\item \verb|\PROD|  = $\displaystyle\prod$
 	\item \verb|\CUP|   = $\displaystyle\bigcup$
 	\item \verb|\CAP|   = $\displaystyle\bigcap$
 	\item \verb|\VEE|   = $\displaystyle\bigvee$
 	\item \verb|\WEDGE| = $\displaystyle\bigwedge$
-	\end{itemize}
+	\end{compactitem}
 	\end{multicols}\Vtrg\vtrg
-These each take two arguments
-	\begin{itemize}
+These each take two arguments\Vtrg
+	\begin{compactitem}
 		\item[\texttt M.] The lower index set
 		\item[\texttt O.] The upper index
-	\end{itemize}
+	\end{compactitem}
 	
 This spacing is a personal preference; I think it makes things more consistent and legible. The below example is comically exaggerated, please use \verb|\substack| to illuminate any \emph{really} long indexing.
 \begin{tcolorbox}
@@ -637,7 +638,7 @@ This spacing is a personal preference; I think it makes things more consistent a
 
 A few binary relations with extra space on either side. I like these for aligned inequality constraints.
     \vtrg\begin{multicols}{4}
-    \begin{itemize}
+    \begin{compactitem}
     	\item\verb|\EQ| $\EQ$ 
         \item\verb|\LS| $\LS$ 
         \item\verb|\GS| $\GS$ 
@@ -653,7 +654,7 @@ A few binary relations with extra space on either side. I like these for aligned
         \item\verb|\NIN| $\NIN$
         \item\verb|\SEQ| $\SEQ$
         \item\verb|\SPQ| $\SPQ$
-    \end{itemize}
+    \end{compactitem}
     \end{multicols}
 
 \begin{tcolorbox}
@@ -683,7 +684,7 @@ A few binary relations with extra space on either side. I like these for aligned
 
 
 \section{Known Bugs}
-\begin{itemize}
+\begin{compactitem}
 	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use an embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
 	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
@@ -701,46 +702,19 @@ A few binary relations with extra space on either side. I like these for aligned
 	\item[$\boxtimes$] The public commands \verb|\subref| and \verb|\subeqref| conflicted with packages such as \textsf{subcaption}. Fixed by renaming the package commands to \verb|\lpsubref| and \verb|\lpsubeqref|; v1.3.
 	
 	\item[$\boxtimes$] The objective function did not contribute correctly to the width of the environment. Fixed in v1.4.
-	
-
-	
-
-	
-\end{itemize}
-
-\section{Feature Wishlist}
-\begin{itemize}
-	\item[$\boxdot$] Enclose an \textsf{lpalign} environment in a figure-like structure which will move to the next page without interrupting prose if space doesn't allow for it without a page break. 
-	\item[$\boxtimes$] As of v1.4, double-ampersands \verb|&&| are no longer required at the end of ordinary lines in the \textsf{lpalign} environment.
-\end{itemize}
+\end{compactitem}
 
 
 
 
 \section{Version History}
-	\begin{itemize}
+	\begin{compactitem}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
 	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, and added \verb|\lpsubref|/\verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
 	\item[v1.3] Jun. 26, 2026. Feature and compatibility update. Added \verb|\namedpara| with key-value options, namespaced the sub-equation reference commands as \verb|\lpsubref| and \verb|\lpsubeqref|, and hardened parent-label handling for both \verb|namedsubeqs| and traditional \textsf{subequations}.
 	\item[v1.4] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, and package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|.
-	\end{itemize}
-
-
-
-
-
-
-
-
-\begin{alignat}{2}
-what the hell \\
-is going on?
-\end{alignat}
-
-
-
-
+	\end{compactitem}
 
 
 \end{document}
