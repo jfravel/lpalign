@@ -71,61 +71,99 @@
 % Spacing helpers for overindexed display operators. These preserve the usual
 % subscript/superscript syntax while applying \smashoperator to the operator.
 
-\makeatletter
-\def\SUM{%
-  \@ifnextchar_{\SUMsub}{\@ifnextchar^{\SUMsup}{\smashoperator{\sum}}}}
-\def\SUMsub_#1{%
-  \@ifnextchar^{\SUMsubsup{#1}}{\smashoperator{\sum_{#1}}}}
-\def\SUMsubsup#1^#2{\smashoperator{\sum_{#1}^{#2}}}
-\def\SUMsup^#1{%
-  \@ifnextchar_{\SUMsupsub{#1}}{\smashoperator{\sum^{#1}}}}
-\def\SUMsupsub#1_#2{\smashoperator{\sum_{#2}^{#1}}}
 
-\def\PROD{%
-  \@ifnextchar_{\PRODsub}{\@ifnextchar^{\PRODsup}{\smashoperator{\prod}}}}
-\def\PRODsub_#1{%
-  \@ifnextchar^{\PRODsubsup{#1}}{\smashoperator{\prod_{#1}}}}
-\def\PRODsubsup#1^#2{\smashoperator{\prod_{#1}^{#2}}}
-\def\PRODsup^#1{%
-  \@ifnextchar_{\PRODsupsub{#1}}{\smashoperator{\prod^{#1}}}}
-\def\PRODsupsub#1_#2{\smashoperator{\prod_{#2}^{#1}}}
+%\NewDocumentCommand{\SUM}{e{_^}}{
+%  \sum
+%  \IfValueT{#1}{_{\mathclap{#1}}}
+%  \IfValueT{#2}{^{\mathclap{#2}}}
+%}
 
-\def\CUP{%
-  \@ifnextchar_{\CUPsub}{\@ifnextchar^{\CUPsup}{\smashoperator{\bigcup}}}}
-\def\CUPsub_#1{%
-  \@ifnextchar^{\CUPsubsup{#1}}{\smashoperator{\bigcup_{#1}}}}
-\def\CUPsubsup#1^#2{\smashoperator{\bigcup_{#1}^{#2}}}
-\def\CUPsup^#1{%
-  \@ifnextchar_{\CUPsupsub{#1}}{\smashoperator{\bigcup^{#1}}}}
-\def\CUPsupsub#1_#2{\smashoperator{\bigcup_{#2}^{#1}}}
+%\ExplSyntaxOn
+%\cs_new_protected:Npn \lpalign_smashprep:nnn #1#2#3
+%  {
+%    #1
+%    \IfValueT{#2}{\sb{#2}}
+%    \IfValueT{#3}{\sp{#3}}
+%  }
+%
+%\NewDocumentCommand{\SUM}{e{_^}}
+%  {
+%    \smashoperator{\lpalign_smashprep:nnn { \sum } {#1} {#2}}
+%  }
+%\ExplSyntaxOff
 
-\def\CAP{%
-  \@ifnextchar_{\CAPsub}{\@ifnextchar^{\CAPsup}{\smashoperator{\bigcap}}}}
-\def\CAPsub_#1{%
-  \@ifnextchar^{\CAPsubsup{#1}}{\smashoperator{\bigcap_{#1}}}}
-\def\CAPsubsup#1^#2{\smashoperator{\bigcap_{#1}^{#2}}}
-\def\CAPsup^#1{%
-  \@ifnextchar_{\CAPsupsub{#1}}{\smashoperator{\bigcap^{#1}}}}
-\def\CAPsupsub#1_#2{\smashoperator{\bigcap_{#2}^{#1}}}
 
-\def\VEE{%
-  \@ifnextchar_{\VEEsub}{\@ifnextchar^{\VEEsup}{\smashoperator{\bigvee}}}}
-\def\VEEsub_#1{%
-  \@ifnextchar^{\VEEsubsup{#1}}{\smashoperator{\bigvee_{#1}}}}
-\def\VEEsubsup#1^#2{\smashoperator{\bigvee_{#1}^{#2}}}
-\def\VEEsup^#1{%
-  \@ifnextchar_{\VEEsupsub{#1}}{\smashoperator{\bigvee^{#1}}}}
-\def\VEEsupsub#1_#2{\smashoperator{\bigvee_{#2}^{#1}}}
 
-\def\WEDGE{%
-  \@ifnextchar_{\WEDGEsub}{\@ifnextchar^{\WEDGEsup}{\smashoperator{\bigwedge}}}}
-\def\WEDGEsub_#1{%
-  \@ifnextchar^{\WEDGEsubsup{#1}}{\smashoperator{\bigwedge_{#1}}}}
-\def\WEDGEsubsup#1^#2{\smashoperator{\bigwedge_{#1}^{#2}}}
-\def\WEDGEsup^#1{%
-  \@ifnextchar_{\WEDGEsupsub{#1}}{\smashoperator{\bigwedge^{#1}}}}
-\def\WEDGEsupsub#1_#2{\smashoperator{\bigwedge_{#2}^{#1}}}
-\makeatother
+\NewDocumentCommand{\smashprep}{mmm}
+  {
+    #1
+    \IfValueT{#2}{\sb{\mathclap{#2}}}
+    \IfValueT{#3}{\sp{\mathclap{#3}}}
+  }
+\NewDocumentCommand{\SUM}{e{_^}}{\smashprep{\sum}{#1}{#2}}
+\NewDocumentCommand{\PROD}{e{_^}}{\smashprep{\prod}{#1}{#2}}
+\NewDocumentCommand{\CUP}{e{_^}}{\smashprep{\bigcup}{#1}{#2}}
+\NewDocumentCommand{\CAP}{e{_^}}{\smashprep{\bigcap}{#1}{#2}}
+\NewDocumentCommand{\VEE}{e{_^}}{\smashprep{\bigvee}{#1}{#2}}
+\NewDocumentCommand{\WEDGE}{e{_^}}{\smashprep{\bigwedge}{#1}{#2}}
+
+
+
+%\makeatletter
+%\def\SUM{%
+%  \@ifnextchar_{\SUMsub}{\@ifnextchar^{\SUMsup}{\smashoperator{\sum}}}}
+%\def\SUMsub_#1{%
+%  \@ifnextchar^{\SUMsubsup{#1}}{\smashoperator{\sum_{#1}}}}
+%\def\SUMsubsup#1^#2{\smashoperator{\sum_{#1}^{#2}}}
+%\def\SUMsup^#1{%
+%  \@ifnextchar_{\SUMsupsub{#1}}{\smashoperator{\sum^{#1}}}}
+%\def\SUMsupsub#1_#2{\smashoperator{\sum_{#2}^{#1}}}
+%
+%\def\PROD{%
+%  \@ifnextchar_{\PRODsub}{\@ifnextchar^{\PRODsup}{\smashoperator{\prod}}}}
+%\def\PRODsub_#1{%
+%  \@ifnextchar^{\PRODsubsup{#1}}{\smashoperator{\prod_{#1}}}}
+%\def\PRODsubsup#1^#2{\smashoperator{\prod_{#1}^{#2}}}
+%\def\PRODsup^#1{%
+%  \@ifnextchar_{\PRODsupsub{#1}}{\smashoperator{\prod^{#1}}}}
+%\def\PRODsupsub#1_#2{\smashoperator{\prod_{#2}^{#1}}}
+%
+%\def\CUP{%
+%  \@ifnextchar_{\CUPsub}{\@ifnextchar^{\CUPsup}{\smashoperator{\bigcup}}}}
+%\def\CUPsub_#1{%
+%  \@ifnextchar^{\CUPsubsup{#1}}{\smashoperator{\bigcup_{#1}}}}
+%\def\CUPsubsup#1^#2{\smashoperator{\bigcup_{#1}^{#2}}}
+%\def\CUPsup^#1{%
+%  \@ifnextchar_{\CUPsupsub{#1}}{\smashoperator{\bigcup^{#1}}}}
+%\def\CUPsupsub#1_#2{\smashoperator{\bigcup_{#2}^{#1}}}
+%
+%\def\CAP{%
+%  \@ifnextchar_{\CAPsub}{\@ifnextchar^{\CAPsup}{\smashoperator{\bigcap}}}}
+%\def\CAPsub_#1{%
+%  \@ifnextchar^{\CAPsubsup{#1}}{\smashoperator{\bigcap_{#1}}}}
+%\def\CAPsubsup#1^#2{\smashoperator{\bigcap_{#1}^{#2}}}
+%\def\CAPsup^#1{%
+%  \@ifnextchar_{\CAPsupsub{#1}}{\smashoperator{\bigcap^{#1}}}}
+%\def\CAPsupsub#1_#2{\smashoperator{\bigcap_{#2}^{#1}}}
+%
+%\def\VEE{%
+%  \@ifnextchar_{\VEEsub}{\@ifnextchar^{\VEEsup}{\smashoperator{\bigvee}}}}
+%\def\VEEsub_#1{%
+%  \@ifnextchar^{\VEEsubsup{#1}}{\smashoperator{\bigvee_{#1}}}}
+%\def\VEEsubsup#1^#2{\smashoperator{\bigvee_{#1}^{#2}}}
+%\def\VEEsup^#1{%
+%  \@ifnextchar_{\VEEsupsub{#1}}{\smashoperator{\bigvee^{#1}}}}
+%\def\VEEsupsub#1_#2{\smashoperator{\bigvee_{#2}^{#1}}}
+%
+%\def\WEDGE{%
+%  \@ifnextchar_{\WEDGEsub}{\@ifnextchar^{\WEDGEsup}{\smashoperator{\bigwedge}}}}
+%\def\WEDGEsub_#1{%
+%  \@ifnextchar^{\WEDGEsubsup{#1}}{\smashoperator{\bigwedge_{#1}}}}
+%\def\WEDGEsubsup#1^#2{\smashoperator{\bigwedge_{#1}^{#2}}}
+%\def\WEDGEsup^#1{%
+%  \@ifnextchar_{\WEDGEsupsub{#1}}{\smashoperator{\bigwedge^{#1}}}}
+%\def\WEDGEsupsub#1_#2{\smashoperator{\bigwedge_{#2}^{#1}}}
+%\makeatother
 	
 
 
