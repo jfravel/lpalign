@@ -1,6 +1,6 @@
 \ProvidesPackage{lpalign}[Jun 26, 2026: v1.3 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3, l3keys2e}
+\RequirePackage{amsmath, expl3, l3keys2e, stackengine}
 %%begin novalidate
 
 
@@ -105,178 +105,117 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  lpalign  %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% An environment macro built on the alignat environment from the amsmath package
-% which helps to format mathematical programming problems aesthetically. The
-% redesign keeps the raw alignat-style body but measures a left gutter for the
-% sense and s.t. labels instead of making them part of the alignment grid.
-
-
-\newlength{\straise}
-\setlength{\straise}{.25\baselineskip}
-\newlength{\straisedefault}
-\setlength{\straisedefault}{0pt}
-
-\newlength{\objraise}
-\setlength{\objraise}{.25\baselineskip}
-\newlength{\objraisedefault}
-\setlength{\objraisedefault}{0pt}
-
-\newlength{\forallspace}
-\setlength{\forallspace}{2em}
+% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aesthetically.
 
 \ExplSyntaxOn
-\tl_new:N \l_lpalign_lp_vars_tl
-\tl_new:N \l_lpalign_lp_st_tl
-\tl_new:N \l_lpalign_lp_sense_pos_tl
-\tl_new:N \l_lpalign_lp_st_pos_tl
-\dim_new:N \l_lpalign_lp_sense_shift_dim
-\dim_new:N \l_lpalign_lp_st_shift_dim
-\dim_new:N \l_lpalign_lp_qualifier_sep_dim
-\dim_new:N \l_lpalign_lp_gutter_sep_dim
-\box_new:N \l_lpalign_lp_sense_box
-\box_new:N \l_lpalign_lp_st_box
-\dim_new:N \l_lpalign_lp_gutter_width_dim
-\dim_new:N \l_lpalign_lp_label_width_dim
-\dim_new:N \l_lpalign_lp_objective_width_dim
+% Text Inputs
+\tl_new:N \lpalign_vars_text
+\tl_new:N \lpalign_vars_style
+\tl_new:N \lpalign_st_text
+\tl_new:N \lpalign_sense_pos_tl
+\tl_new:N \lpalign_st_pos_tl
+% Boxes
+\box_new:N \lpalign_sense_box
+\box_new:N \lpalign_st_box
+% Dimensions
+\dim_new:N \lpalign_sense_shift
+\dim_new:N \lpalign_sense_width
+\dim_new:N \lpalign_st_shift
+\dim_new:N \lpalign_st_width
+\dim_new:N \lpalign_gutter_sep
+\dim_new:N \lpalign_gutter_width
+\dim_new:N \lpalign_qualifier_sep
+% Key Options
 \keys_define:nn { lpalign/lp }
- {
-  vars .tl_set:N = \l_lpalign_lp_vars_tl,
-  vars .initial:n = ,
-  st .tl_set:N = \l_lpalign_lp_st_tl,
-  st .initial:n = s.t.,
-  sense-pos .choices:nn = { c, t, b }
-   { \tl_set_eq:NN \l_lpalign_lp_sense_pos_tl \l_keys_choice_tl },
-  sense-pos .initial:n = c,
-  st-pos .choices:nn = { c, t, b }
-   { \tl_set_eq:NN \l_lpalign_lp_st_pos_tl \l_keys_choice_tl },
-  st-pos .initial:n = t,
-  sense-shift .dim_set:N = \l_lpalign_lp_sense_shift_dim,
-  sense-shift .initial:n = 0pt,
-  st-shift .dim_set:N = \l_lpalign_lp_st_shift_dim,
-  st-shift .initial:n = 0pt,
-  qualifier-sep .dim_set:N = \l_lpalign_lp_qualifier_sep_dim,
-  qualifier-sep .initial:n = 2em,
-  gutter-sep .dim_set:N = \l_lpalign_lp_gutter_sep_dim,
-  gutter-sep .initial:n = 0.75em,
- }
-\cs_new_protected:Npn \lpalign_lp_setup:nn #1#2
- {
-  \keys_set:nn { lpalign/lp } { #1 }
-  \hbox_set:Nn \l_lpalign_lp_sense_box
-   {
-    \shortstack[\tl_use:N \l_lpalign_lp_sense_pos_tl]
-     {
-      #2
-      \tl_if_blank:VTF \l_lpalign_lp_vars_tl
-       { }
-       { \\ $\tl_use:N \l_lpalign_lp_vars_tl$ }
-     }
-   }
-  \hbox_set:Nn \l_lpalign_lp_st_box
-   {
-    \shortstack[\tl_use:N \l_lpalign_lp_st_pos_tl]
-     { \tl_use:N \l_lpalign_lp_st_tl }
-   }
-  \dim_set:Nn \l_lpalign_lp_label_width_dim { \box_wd:N \l_lpalign_lp_sense_box }
-  \dim_compare:nNnT
-   { \box_wd:N \l_lpalign_lp_st_box } > { \l_lpalign_lp_label_width_dim }
-   {
-    \dim_set:Nn \l_lpalign_lp_label_width_dim { \box_wd:N \l_lpalign_lp_st_box }
-   }
-  \dim_set:Nn \l_lpalign_lp_gutter_width_dim
-   { \l_lpalign_lp_label_width_dim + \l_lpalign_lp_gutter_sep_dim }
-  \dim_set:Nn \l_lpalign_lp_objective_width_dim
-   {
-    \linewidth - \l_lpalign_lp_gutter_width_dim
-    - \l_lpalign_lp_gutter_sep_dim - \mintagsep
-   }
- }
-\cs_new_protected:Npn \lpalign_lp_prefix:nnn #1#2#3
- {
-  \makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
-   { \raisebox{#3}{#1}\hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim} }#2
- }
-\cs_new_protected:Npn \lpalign_lp_objective_prefix:n #1
- {
-  \rlap{\makebox[\dim_use:N \l_lpalign_lp_objective_width_dim][l]
-   { $\displaystyle #1$ }
-  }
- }
-\cs_new_protected:Npn \lpalign_lp_objective_prefix_exp:n #1
- {
-  \makebox[\dim_use:N \l_lpalign_lp_objective_width_dim][r]
-   { $\displaystyle #1$ }
- }
-\cs_new_protected:Npn \lpalign_lp_st_prefix:
- {
-  \lpalign_lp_prefix:nnn
-   { \box_use:N \l_lpalign_lp_st_box }
-   { }
-   { \dim_use:N \l_lpalign_lp_st_shift_dim }
- }
+	{
+	vars .tl_set:N = \lpalign_vars_text,
+	vars .initial:n = ,
+	vars-style .tl_set:N = \lpalign_vars_style,
+	vars-style .initial:n = \scriptstyle,
+	% Sense Parameters
+	sense-shift .dim_set:N = \lpalign_sense_shift,
+	sense-shift .initial:n = 0pt,
+	% s.t. Parameters
+	st .tl_set:N = \lpalign_st_text,
+	st .initial:n = s.t.,
+	st-shift .dim_set:N = \lpalign_st_shift,
+	st-shift .initial:n = 0pt,
+	% Gutter Parameters
+	gutter-sep .dim_set:N = \lpalign_gutter_sep,
+	gutter-sep .initial:n = 0.75em,
+	% Qualifier Parameters
+	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
+	qualifier-sep .initial:n = 2em,
+	}
+% lpalign Environment Setup
+\cs_new_protected:Npn \lpalign_lp_setup:nn #1#2#3
+	{ \keys_set:nn { lpalign/lp } { #1 }
+  % Sense Box/width
+  \hbox_set:Nn \lpalign_sense_box
+		{ \stackunder
+			{ #2 }
+			{ \tl_if_blank:VF \lpalign_vars_text
+				{$\lpalign_vars_style\tl_use:N \lpalign_vars_text$ }
+		}}
+  \dim_set:Nn \lpalign_sense_width{ \box_wd:N \lpalign_sense_box }
+  % s.t. Box/Width
+  \hbox_set:Nn \lpalign_st_box{ \tl_use:N \lpalign_st_text }
+  \dim_set:Nn \lpalign_st_width{ \box_wd:N \lpalign_st_box }
+	% Gutter Width
+	\dim_compare:nNnTF \lpalign_sense_width > \lpalign_st_width
+			{ \dim_set:Nn \lpalign_gutter_width 
+				{ \lpalign_sense_width + \lpalign_gutter_sep }}
+			{ \dim_set:Nn \lpalign_gutter_width 
+				{ \lpalign_st_width + \lpalign_gutter_sep }}
+	}
+% Print Sense Box
+\cs_new_protected:Npn \lpalign_print_sense:
+	{\makebox[\dim_use:N \lpalign_gutter_width][r]
+		{\raisebox
+			{\dim_use:N \lpalign_sense_shift}
+			{\box_use:N \lpalign_sense_box}
+		\hspace{\dim_use:N \lpalign_gutter_sep}}
+	}
+% Print s.t. Box
+\cs_new_protected:Npn \lpalign_print_st:
+	{\makebox[\dim_use:N \lpalign_gutter_width][r]
+		{\raisebox
+			{\dim_use:N \lpalign_st_shift}
+			{\box_use:N \lpalign_st_box}
+		\hspace{\dim_use:N \lpalign_gutter_sep}}
+	}
+% Add Qualifier Sep
 \cs_new_protected:Npn \lpalign_lp_format_body:n #1
- {
-  \tl_set:Nn \l_tmpa_tl {#1}
-  \tl_replace_all:Nnn \l_tmpa_tl {&&}
-   {& \hspace{\dim_use:N \l_lpalign_lp_qualifier_sep_dim} &}
-  \tl_use:N \l_tmpa_tl
- }
+	{\tl_set:Nn \l_tmpa_tl {#1}
+	\tl_replace_all:Nnn \l_tmpa_tl 
+		{&&}
+		{\hspace{\dim_use:N \lpalign_qualifier_sep} &&}
+	\tl_use:N \l_tmpa_tl
+	}
+% Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
- {
-  \lpalign_lp_setup:nn {#1} {#2}
+ 	{
+  \lpalign_lp_setup:nn {#1}{#2}{#3}
   \begin{alignat}{2}
-  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
-   {
-    \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
-    \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }\lpalign_lp_objective_prefix:n {#3}
-  \\[-\jot]
-  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
+  \lpalign_print_sense: 
+  \begin{aligned}#3\end{aligned}
+	\span\span\span\omit\hfill \\
+  \lpalign_print_st: \lpalign_lp_format_body:n {#4}
   \end{alignat}
- }
- {\ignorespacesafterend}
-\NewDocumentEnvironment{lpalign*}{O{}mm+b}
- {
-  \lpalign_lp_setup:nn {#1} {#2}
-  \begin{alignat*}{2}
-  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
-   {
-    \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
-    \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }\lpalign_lp_objective_prefix:n {#3}
-  \\[-\jot]
-  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
-  \end{alignat*}
- }
- {\ignorespacesafterend}
-\NewDocumentEnvironment{lpalignexp}{O{}mm+b}
- {
-  \lpalign_lp_setup:nn {#1} {#2}
-  \begin{alignat}{2}
-  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
-   {
-    \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
-    \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }\span\omit \lpalign_lp_objective_prefix_exp:n {#3}
-  \\[-\jot]
-  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
-  \end{alignat}
- }
- {\ignorespacesafterend}
+	}
+	{\ignorespacesafterend}
+ % Environment* Main
 \NewDocumentEnvironment{lpalignexp*}{O{}mm+b}
- {
-  \lpalign_lp_setup:nn {#1} {#2}
-  \begin{alignat*}{2}
-  \omit\makebox[\dim_use:N \l_lpalign_lp_gutter_width_dim][r]
-   {
-    \raisebox{\dim_use:N \l_lpalign_lp_sense_shift_dim}{\box_use:N \l_lpalign_lp_sense_box}
-    \hspace{\dim_use:N \l_lpalign_lp_gutter_sep_dim}
-   }\span\omit \lpalign_lp_objective_prefix_exp:n {#3}
-  \\[-\jot]
-  \lpalign_lp_st_prefix: \lpalign_lp_format_body:n {#4}
-  \end{alignat*}
- }
- {\ignorespacesafterend}
+	{
+  \lpalign_lp_setup:nn {#1} {#2} {#3}
+    \begin{alignat*}{2}
+      \lpalign_print_sense: 
+      \begin{aligned}#3\end{aligned}
+    	\span\span\span\omit\hfill \\
+      \lpalign_print_st: \lpalign_lp_format_body:n {#4}
+    \end{alignat*}
+	}
+	{\ignorespacesafterend}
 \ExplSyntaxOff
 
 
@@ -284,9 +223,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named Paragraphs  %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A paragraph marker that takes a title and key-value options. If the paragraph
-% is labeled, then any reference to it will give the abbreviation rather than
-% a counter number when one is supplied.
+% A paragraph marker that takes a title and key-value options. If the paragraph  is labeled, then any reference to it will give the abbreviation rather than a counter number.
 
 \makeatletter
 \ExplSyntaxOn
