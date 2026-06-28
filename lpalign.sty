@@ -71,35 +71,65 @@
 % Spacing helpers for overindexed display operators. These preserve the usual
 % subscript/superscript syntax while applying \smashoperator to the operator.
 
-\ExplSyntaxOn
-\cs_new_protected:Npn \lpalign_print_smashed_operator:nnn #1#2#3
+\NewDocumentCommand{\SUM}{e{_^}}
  {
   \smashoperator
    {
-    #1
-    \tl_if_blank:nF {#2} {_{#2}}
-    \tl_if_blank:nF {#3} {^{#3}}
+    \sum
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
    }
  }
 
-\NewDocumentCommand{\SUM}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \sum {#1} {#2} }
+\NewDocumentCommand{\PROD}{e{_^}}
+ {
+  \smashoperator
+   {
+    \prod
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
+   }
+ }
 
-\NewDocumentCommand{\PROD}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \prod {#1} {#2} }
+\NewDocumentCommand{\CUP}{e{_^}}
+ {
+  \smashoperator
+   {
+    \bigcup
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
+   }
+ }
 
-\NewDocumentCommand{\CUP}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \bigcup {#1} {#2} }
+\NewDocumentCommand{\CAP}{e{_^}}
+ {
+  \smashoperator
+   {
+    \bigcap
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
+   }
+ }
 
-\NewDocumentCommand{\CAP}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \bigcap {#1} {#2} }
+\NewDocumentCommand{\VEE}{e{_^}}
+ {
+  \smashoperator
+   {
+    \bigvee
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
+   }
+ }
 
-\NewDocumentCommand{\VEE}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \bigvee {#1} {#2} }
-
-\NewDocumentCommand{\WEDGE}{E{_^}{{}{}}}
- { \lpalign_print_smashed_operator:nnn \bigwedge {#1} {#2} }
-\ExplSyntaxOff
+\NewDocumentCommand{\WEDGE}{e{_^}}
+ {
+  \smashoperator
+   {
+    \bigwedge
+    \IfValueT{#1}{_{#1}}
+    \IfValueT{#2}{^{#2}}
+   }
+ }
 	
 
 
