@@ -1,4 +1,4 @@
-\ProvidesPackage{lpalign}[Jun 26, 2026: v1.3 of Jamie Fravel's lpalign macro package]
+\ProvidesPackage{lpalign}[Jun 28, 2026: v1.4 of Jamie Fravel's lpalign macro package]
 
 \RequirePackage{amsmath, expl3, l3keys2e, stackengine}
 %%begin novalidate
@@ -108,12 +108,17 @@
 % An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aesthetically.
 
 \ExplSyntaxOn
+% Package defaults
+\dim_new:N \g_lpalign_default_objective_sep
+\dim_new:N \g_lpalign_default_qualifier_sep
+\dim_new:N \g_lpalign_default_gutter_sep
+\dim_gset:Nn \g_lpalign_default_objective_sep { 0em }
+\dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
+\dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
 % Text Inputs
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
 \tl_new:N \lpalign_st_text
-\tl_new:N \lpalign_sense_pos_tl
-\tl_new:N \lpalign_st_pos_tl
 % Boxes
 \box_new:N \lpalign_sense_box
 \box_new:N \lpalign_st_box
@@ -126,34 +131,49 @@
 \dim_new:N \lpalign_qualifier_sep
 \dim_new:N \lpalign_gutter_sep
 \dim_new:N \lpalign_gutter_width
+% Package options
+\keys_define:nn { lpalign/package }
+	{
+	lp_objective-sep .dim_gset:N = \g_lpalign_default_objective_sep,
+	lp_objective-sep .initial:n = 0em,
+	lp_qualifier-sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
+	lp_qualifier-sep .initial:n = 2em,
+	lp_gutter-sep .dim_gset:N = \g_lpalign_default_gutter_sep,
+	lp_gutter-sep .initial:n = 0.75em,
+	}
 % Key Options
 \keys_define:nn { lpalign/lp }
 	{
 	vars .tl_set:N = \lpalign_vars_text,
-	vars .initial:n = ,
 	vars-style .tl_set:N = \lpalign_vars_style,
-	vars-style .initial:n = \scriptstyle,
 	% Sense Parameters
 	sense-shift .dim_set:N = \lpalign_sense_shift,
-	sense-shift .initial:n = 0pt,
 	% s.t. Parameters
 	st .tl_set:N = \lpalign_st_text,
-	st .initial:n = s.t.,
 	st-shift .dim_set:N = \lpalign_st_shift,
-	st-shift .initial:n = 0pt,
 	% Objective Sep
 	objective-sep .dim_set:N = \lpalign_objective_sep,
-	objective-sep .initial:n = 0em,
 	% Qualifier Sep
 	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
-	qualifier-sep .initial:n = 2em,
 	% Gutter Seo
 	gutter-sep .dim_set:N = \lpalign_gutter_sep,
-	gutter-sep .initial:n = 0.75em,
+	}
+\cs_new_protected:Npn \lpalign_lp_reset:
+	{
+	\tl_clear:N \lpalign_vars_text
+	\tl_set:Nn \lpalign_vars_style { \scriptstyle }
+	\tl_set:Nn \lpalign_st_text { s.t. }
+	\dim_set:Nn \lpalign_sense_shift { 0pt }
+	\dim_set:Nn \lpalign_st_shift { 0pt }
+	\dim_set_eq:NN \lpalign_objective_sep \g_lpalign_default_objective_sep
+	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
+	\dim_set_eq:NN \lpalign_gutter_sep \g_lpalign_default_gutter_sep
 	}
 % lpalign Environment Setup
-\cs_new_protected:Npn \lpalign_lp_setup:nn #1#2#3
-	{ \keys_set:nn { lpalign/lp } { #1 }
+\cs_new_protected:Npn \lpalign_lp_setup:nn #1#2
+	{
+	\lpalign_lp_reset:
+	\keys_set:nn { lpalign/lp } { #1 }
   % Sense Box/width
   \hbox_set:Nn \lpalign_sense_box
 		{ \stackunder
@@ -199,7 +219,7 @@
 % Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
-  \lpalign_lp_setup:nn {#1}{#2}{#3}
+  \lpalign_lp_setup:nn {#1}{#2}
   \begin{alignat}{2}
   \lpalign_print_sense: 
   \begin{aligned}#3\end{aligned}
@@ -212,7 +232,7 @@
  % Environment* Main
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
-  \lpalign_lp_setup:nn {#1} {#2} {#3}
+  \lpalign_lp_setup:nn {#1} {#2}
     \begin{alignat*}{2}
       \lpalign_print_sense: 
       \begin{aligned}#3\end{aligned}
@@ -229,10 +249,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named Paragraphs  %%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A paragraph marker that takes a title and key-value options. If the paragraph  is labeled, then any reference to it will give the abbreviation rather than a counter number.
+% A paragraph marker that takes a title and key-value options. If the paragraph
+% is labeled, then references use the abbreviation rather than a counter
+% number when one is supplied.
 
 \makeatletter
 \ExplSyntaxOn
+% Package defaults
 \tl_new:N \g_lpalign_namedpara_default_indent_tl
 \tl_new:N \g_lpalign_namedpara_default_flush_tl
 \tl_new:N \g_lpalign_namedpara_default_before_tl
@@ -250,6 +273,7 @@
   namedparaflush .initial:n = left,
  }
 \ProcessKeysOptions{ lpalign/package }
+% Local state
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
 \tl_new:N \l_lpalign_namedpara_indent_tl
 \tl_new:N \l_lpalign_namedpara_before_tl
@@ -354,7 +378,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named SubEquations  %%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A subequations-style environment will use (#1) as the first index in any
+% A subequations-style environment that uses (#1) as the first index in any
 % enclosed equation reference tag. The optional key-value argument controls the
 % second-index style and the punctuation between the main tag and the sub-tag.
 
@@ -362,6 +386,7 @@
 \newcounter{lpalignNamedEqSavedEquation}
 \makeatletter
 \ExplSyntaxOn
+% Option state
 \tl_new:N \l_lpalign_namedsubeq_style_tl
 \tl_new:N \l_lpalign_namedsubeq_punct_tl
 \keys_define:nn { lpalign/namedsubeqs }
@@ -390,6 +415,7 @@
   \tl_use:N \l_lpalign_namedsubeq_punct_tl
  }
 \ExplSyntaxOff
+% Helpers for storing the sub-index text used by \lpsubref/\lpsubeqref.
 \newcommand{\lpalign@storesubreftext}[2]{%
   \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
 }
@@ -477,6 +503,7 @@
 % subequations, ordinary \label stores this text automatically. \sublabel
 % remains as a compatibility wrapper around \label.
 \makeatletter
+% Hyperref wrapper used by both sub-reference commands.
 \newcommand{\lpalignhyperref}[2]{%
   \@ifundefined{hyperref}{#2}{\hyperref[#1]{#2}}%
 }

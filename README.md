@@ -2,12 +2,13 @@
 
 `lpalign` is a small LaTeX package for formatting mathematical programs and for naming or referencing related displayed objects.
 
-This branch, `codex/lpalign-redesign`, is a design-and-experiment branch for the next `lpalign` layout revision. The goal here is to rethink the mathematical-programming environments before updating the full package documentation.
+Current release:
+- `v1.4`
+- published June 28, 2026
 
-It currently provides:
-
+The package currently provides:
 - `lpalign` and `lpalign*` for optimization problems aligned on constraint relations
-- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`, with `\sublabel` retained for compatibility
+- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`
 - `\paratitle` and `\namedpara` for named paragraphs
 - quick horizontal and vertical spacing helpers
 - display-style sum/product/union/intersection helpers with zero-width lower indices
@@ -20,27 +21,25 @@ Place [`lpalign.sty`](/repos/lpalign/lpalign.sty) alongside your main `.tex` fil
 \usepackage{lpalign}
 ```
 
-The package requires `amsmath` and `expl3`. Loading `hyperref` is optional but recommended if you want clickable references.
+The package loads:
+- `amsmath`
+- `expl3`
+- `l3keys2e`
+- `stackengine`
 
-## Current Focus
+Loading `hyperref` is optional but recommended if you want clickable references.
 
-The current redesign target is the `lpalign` / `lpalign*` environment pair.
+## `lpalign`
 
-The present `v1.3` implementation still has one structural annoyance inherited from the original `alignat` approach: the left-hand `sense` and `s.t.` labels are part of the alignment grid, so users must reserve their space indirectly with extra alignment structure. In practice this shows up most visibly as the trailing `&&` at the end of each constraint row.
-
-The redesign goal is to keep the source as close as possible to ordinary `alignat` syntax while removing that fake left column.
-
-## Proposed Direction
-
-The current design target is:
+The main environment is:
 
 ```tex
 \begin{lpalign}[<keys>]{<sense>}{<objective>}
-  <raw aligned constraint body>
+  <constraint rows>
 \end{lpalign}
 ```
 
-with the starred form
+The starred form suppresses automatic tags unless you add them explicitly:
 
 ```tex
 \begin{lpalign*}[<keys>]{<sense>}{<objective>}
@@ -48,75 +47,98 @@ with the starred form
 \end{lpalign*}
 ```
 
-### Main ideas
-
-- Keep `sense` and `objective` as mandatory arguments.
-- Keep the constraint body close to raw `alignat` / `align` source.
-- Remove the current fake left alignment column for `sense` and `s.t.`.
-- Reserve a real left gutter whose width is measured from the `sense` and `s.t.` boxes.
-- Place the left labels inside that gutter instead of forcing them into the alignment structure.
-- Remove the structural `\\&&` placeholder at the end of ordinary constraint rows.
-- Keep the qualifier column working during the first pass, even if that still means using `&& \forall ...` for now.
-
-### Draft option keys
-
-The current planned keys are:
-
+Supported keys include:
 - `vars`
+- `vars-style`
 - `st`
-- `sense-pos = c|t|b`
-- `st-pos = c|t|b`
-- `sense-shift = <length>`
-- `st-shift = <length>`
-- `qualifier-sep = <length>`
-- possibly `gutter-sep = <length>`
+- `objective-sep`
+- `qualifier-sep`
+- `gutter-sep`
+- `sense-shift`
+- `st-shift`
 
-The current default direction is:
-
-- `sense-pos = c`
-- `st-pos = t`
-- `sense-shift = 0pt`
-- `st-shift = 0pt`
-- `st = s.t.`
-
-`sense` and `objective` stay mandatory because they are central to the visual structure and read naturally in the same order as a printed mathematical program.
-
-### Example target syntax
+Example:
 
 ```tex
-\begin{lpalign}[vars={x \in \mathbb{R}_+^n}]{max}{c^\top x}
-  Ax &= b & \forall i \in I \\
-  x  &\ge 0
+\begin{lpalign}[vars=\mathbf{x}\in\mathbb{R}_+^n]{Maximize}{\mathbf{c}^\top\mathbf{x}}
+  A\mathbf{x} &\le \mathbf{b} \\
+   \mathbf{x} &\ge \mathbf{0}
 \end{lpalign}
 ```
 
-The intended improvement over the current implementation is that the constraint body remains familiar to anyone who already reads `align` / `alignat`, but the old end-of-line `\\&&` boilerplate disappears on ordinary rows.
+Qualified constraints still use `&&`:
 
-## Experiment Notes
-
-For this phase, the README is the design note. The full user documentation in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex) is intentionally not being updated in parallel, so that experiments can stay lightweight and can be tested locally without depending on the documentation toolchain.
-
-When running quick TeX experiments from the repository root, the basic pattern is:
-
-```bash
-pdflatex -interaction=nonstopmode <scratch-file>.tex
-pdflatex -interaction=nonstopmode <scratch-file>.tex
+```tex
+\begin{lpalign}{Maximize}{\sum_{j=1}^m c_j x_j}
+  \mathbf{a}_i^\top \mathbf{x} &\le b_i && \forall i \in [n] \\
+  x_i                          &\ge 0   && \forall i \in [n]
+\end{lpalign}
 ```
 
-## Status
+Package-load defaults are available for the three main spacing keys:
 
-`v1.3` was published on June 26, 2026. The main visible changes since `v1.2` are the new `\namedpara` command, namespaced sub-equation references via `\lpsubref` and `\lpsubeqref`, and more robust parent-label handling inside `namedsubeqs` and traditional `subequations`.
+```tex
+\usepackage[
+  lp_objective-sep=1em,
+  lp_qualifier-sep=3em,
+  lp_gutter-sep=1em
+]{lpalign}
+```
 
-This branch is not a release branch. It is a working branch for the next `lpalign` design cycle.
+## Named Paragraphs
 
-## Roadmap
+`namedpara` displays a paragraph marker and, when labeled, uses the supplied abbreviation as the reference text.
 
-Items intentionally deferred until after the first redesign pass:
+```tex
+\namedpara{Named Paragraph}[abv=NPg]\label{npara}
+Paragraph \ref{npara} is a named paragraph.
+```
 
-- custom variable-line styling beneath the `sense` marker
-- explicit gutter-width override keys
-- more expressive vertical-position syntax beyond `t/c/b` plus additive shifts
-- richer subject-to formatting beyond a single `st` label
-- reducing the qualifier column from `&& <qualifier>` to a single `& <qualifier>` without losing alignment
-- deciding whether the backend should remain `alignat` or switch to a different display engine if the gutter approach proves too fragile
-- broader documentation updates in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex) once the design stabilizes
+Supported keys include:
+- `abv`
+- `indent`
+- `before`
+- `after`
+- `flush`
+
+The package-load default indent can be changed with:
+
+```tex
+\usepackage[namedpara_indent=3em]{lpalign}
+```
+
+The legacy `\paratitle` command remains available unchanged.
+
+## Named Sub-equations
+
+`namedsubeqs` gives a shared main tag to a group of equations while letting each line carry its own sub-index.
+
+```tex
+\begin{namedsubeqs}{EQ}
+\begin{align}
+  A\mathbf{x} &= \mathbf{b} \label{eq:1} \\
+  C\mathbf{y} &= \mathbf{d} \label{eq:2}
+\end{align}
+\end{namedsubeqs}
+```
+
+Use:
+- `\ref` / `\eqref` for the full tag
+- `\lpsubref` / `\lpsubeqref` for the sub-index only
+
+Example:
+
+```tex
+Equation \ref{eq:1} has sub-reference \lpsubref{eq:1}.
+```
+
+## Documentation
+
+The full package documentation is in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex).
+
+Build it from the repository root with:
+
+```bash
+pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
+pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
+```
