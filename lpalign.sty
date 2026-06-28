@@ -72,7 +72,7 @@
 % subscript/superscript syntax while applying \smashoperator to the operator.
 
 \makeatletter
-\newcommand{\lpalignDeclareSmashedOperator}[2]{%
+\def\lpalignDeclareSmashedOperator#1#2{%
   \expandafter\def\csname #1\endcsname{%
     \@ifnextchar_{\csname lpalign@#1@sub\endcsname{%
       \@ifnextchar^{\csname lpalign@#1@sup\endcsname{%
