@@ -71,65 +71,30 @@
 % Spacing helpers for overindexed display operators. These preserve the usual
 % subscript/superscript syntax while applying \smashoperator to the operator.
 
-\NewDocumentCommand{\SUM}{e{_^}}
- {
-  \smashoperator
-   {
-    \sum
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
+\makeatletter
+\newcommand{\lpalignDeclareSmashedOperator}[2]{%
+  \expandafter\def\csname #1\endcsname{%
+    \@ifnextchar_{\csname lpalign@#1@sub\endcsname{%
+      \@ifnextchar^{\csname lpalign@#1@sup\endcsname{%
+        \smashoperator{#2}}}}}%
+  \expandafter\def\csname lpalign@#1@sub\endcsname_##1{%
+    \@ifnextchar^{\csname lpalign@#1@subsup\endcsname{##1}}{%
+      \smashoperator{#2_{##1}}}}%
+  \expandafter\def\csname lpalign@#1@subsup\endcsname##1^##2{%
+    \smashoperator{#2_{##1}^{##2}}}%
+  \expandafter\def\csname lpalign@#1@sup\endcsname^##1{%
+    \@ifnextchar_{\csname lpalign@#1@supsub\endcsname{##1}}{%
+      \smashoperator{#2^{##1}}}}%
+  \expandafter\def\csname lpalign@#1@supsub\endcsname##1_##2{%
+    \smashoperator{#2_{##2}^{##1}}}}
 
-\NewDocumentCommand{\PROD}{e{_^}}
- {
-  \smashoperator
-   {
-    \prod
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
-
-\NewDocumentCommand{\CUP}{e{_^}}
- {
-  \smashoperator
-   {
-    \bigcup
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
-
-\NewDocumentCommand{\CAP}{e{_^}}
- {
-  \smashoperator
-   {
-    \bigcap
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
-
-\NewDocumentCommand{\VEE}{e{_^}}
- {
-  \smashoperator
-   {
-    \bigvee
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
-
-\NewDocumentCommand{\WEDGE}{e{_^}}
- {
-  \smashoperator
-   {
-    \bigwedge
-    \IfValueT{#1}{_{#1}}
-    \IfValueT{#2}{^{#2}}
-   }
- }
+\lpalignDeclareSmashedOperator{SUM}{\sum}
+\lpalignDeclareSmashedOperator{PROD}{\prod}
+\lpalignDeclareSmashedOperator{CUP}{\bigcup}
+\lpalignDeclareSmashedOperator{CAP}{\bigcap}
+\lpalignDeclareSmashedOperator{VEE}{\bigvee}
+\lpalignDeclareSmashedOperator{WEDGE}{\bigwedge}
+\makeatother
 	
 
 
