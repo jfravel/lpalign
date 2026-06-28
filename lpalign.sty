@@ -1,6 +1,6 @@
 \ProvidesPackage{lpalign}[Jun 28, 2026: v1.4 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3, l3keys2e, stackengine}
+\RequirePackage{amsmath, expl3, l3keys2e, mathtools, stackengine}
 %%begin novalidate
 
 
@@ -68,37 +68,38 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Overindexed Delimiters  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A correction (personal preference) for the spacing display style summation notation when the indexing term is over-long.
+% Spacing helpers for overindexed display operators. These preserve the usual
+% subscript/superscript syntax while applying \smashoperator to the operator.
 
-\NewDocumentCommand{\SUM}{mo}{
-	\IfNoValueTF{#2}
-	{\sum_{\rlap{\scriptsize$#1$}}}
-	{\sum_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
-	
-\NewDocumentCommand{\PROD}{mo}{
-	\IfNoValueTF{#2}
-	{\prod_{\rlap{\scriptsize$#1$}}}
-	{\prod_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
-	
-\NewDocumentCommand{\CUP}{mo}{
-	\IfNoValueTF{#2}
-	{\bigcup_{\rlap{\scriptsize$#1$}}}
-	{\bigcup_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
-	
-\NewDocumentCommand{\CAP}{mo}{
-	\IfNoValueTF{#2}
-	{\bigcap_{\rlap{\scriptsize$#1$}}}
-	{\bigcap_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
-	
-\NewDocumentCommand{\VEE}{mo}{
-	\IfNoValueTF{#2}
-	{\bigvee_{\rlap{\scriptsize$#1$}}}
-	{\bigvee_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
-	
-\NewDocumentCommand{\WEDGE}{mo}{
-	\IfNoValueTF{#2}
-	{\bigwedge_{\rlap{\scriptsize$#1$}}}
-	{\bigwedge_{\rlap{\scriptsize$#1$}}^{\rlap{\scriptsize$#2$}}}}
+\ExplSyntaxOn
+\cs_new_protected:Npn \lpalign_print_smashed_operator:nnn #1#2#3
+ {
+  \smashoperator
+   {
+    #1
+    \tl_if_blank:nF {#2} {_{#2}}
+    \tl_if_blank:nF {#3} {^{#3}}
+   }
+ }
+
+\NewDocumentCommand{\SUM}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \sum {#1} {#2} }
+
+\NewDocumentCommand{\PROD}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \prod {#1} {#2} }
+
+\NewDocumentCommand{\CUP}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \bigcup {#1} {#2} }
+
+\NewDocumentCommand{\CAP}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \bigcap {#1} {#2} }
+
+\NewDocumentCommand{\VEE}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \bigvee {#1} {#2} }
+
+\NewDocumentCommand{\WEDGE}{E{_^}{{}{}}}
+ { \lpalign_print_smashed_operator:nnn \bigwedge {#1} {#2} }
+\ExplSyntaxOff
 	
 
 

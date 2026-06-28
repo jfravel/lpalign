@@ -585,7 +585,7 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 
 \subsection*{Summation Spacing}
 
-Some macros for correctly spacing display-style summation notation when the lower index set is overfull. This is done by placing the subscript in a zero-width box and should not be used in inline math.
+Some macros for tightening display-style operator spacing when the indexing is over-long. These preserve the usual subscript and superscript syntax while applying \verb|\smashoperator| to the operator. They are meant for display math and are not generally useful inline.
 	\vtrg\begin{multicols}{3}
 	\begin{compactitem}
 	\item \verb|\SUM|   = $\displaystyle\sum$
@@ -596,22 +596,16 @@ Some macros for correctly spacing display-style summation notation when the lowe
 	\item \verb|\WEDGE| = $\displaystyle\bigwedge$
 	\end{compactitem}
 	\end{multicols}\Vtrg\vtrg
-These each take two arguments\Vtrg
-	\begin{compactitem}
-		\item[\texttt M.] The lower index set
-		\item[\texttt O.] The upper index
-	\end{compactitem}
-	
-This spacing is a personal preference; I think it makes things more consistent and legible. The below example is comically exaggerated, please use \verb|\substack| to illuminate any \emph{really} long indexing.
+These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing is a personal preference; I think it makes things more consistent and legible. The example below is comically exaggerated; please use \verb|\substack| to illuminate any \emph{really} long indexing.
 \begin{tcolorbox}
 	\begin{Verbatim}
 	X=\sum_{i\in way too much indexing} x_i
 	
-	                    X=\SUM{i\in way too much indexing}x_i
+	                    X=\SUM_{i\in way too much indexing} x_i
 	                    
-	X=\SUM{\substack{i\in way to \\ much indexing}}x_i
+	X=\SUM_{\substack{i\in way to \\ much indexing}} x_i
 	   
-	                        X=\SUM{i=1,300,000}[1,300,001]x_i
+	                        X=\SUM_{i=1,300,000}^{1,300,001} x_i
 	\end{Verbatim}
 	\begin{center}$\downarrow$\end{center}
 	\begin{minipage}{0.5\textwidth}
@@ -619,15 +613,15 @@ This spacing is a personal preference; I think it makes things more consistent a
 		X=\sum_{i\in way too much indexing} x_i
 		$$
 		$$
-		X=\SUM{\substack{i\in way to \\ much indexing}}x_i
+		X=\SUM_{\substack{i\in way to \\ much indexing}} x_i
 		$$
 	\end{minipage}
 	\begin{minipage}{0.5\textwidth}
 		$$
-		X=\SUM{i\in way too much indexing}x_i
+		X=\SUM_{i\in way too much indexing} x_i
 		$$
 		$$
-		X=\SUM{i=1,300,000}[1,300,001]x_i
+		X=\SUM_{i=1,300,000}^{1,300,001} x_i
 		$$
 	\end{minipage}
 \end{tcolorbox}

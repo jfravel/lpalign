@@ -11,7 +11,7 @@ The package currently provides:
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`
 - `\paratitle` and `\namedpara` for named paragraphs
 - quick horizontal and vertical spacing helpers
-- display-style sum/product/union/intersection helpers with zero-width lower indices
+- display-style operator helpers that preserve ordinary `_`/`^` syntax while applying `\smashoperator`
 
 ## Installation
 
@@ -25,6 +25,7 @@ The package loads:
 - `amsmath`
 - `expl3`
 - `l3keys2e`
+- `mathtools`
 - `stackengine`
 
 Loading `hyperref` is optional but recommended if you want clickable references.
