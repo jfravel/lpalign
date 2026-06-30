@@ -112,6 +112,7 @@
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
 \tl_new:N \lpalign_st_text
+\tl_new:N \lpalign_gutter_mode
 % Boxes
 \box_new:N \lpalign_sense_box
 \box_new:N \lpalign_st_box
@@ -150,12 +151,17 @@
 	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
 	% Gutter Sep
 	gutter-sep .dim_set:N = \lpalign_gutter_sep,
+	% Gutter Mode
+	gutter-mode .choice:,
+	gutter-mode / overlay .code:n = \tl_set:Nn \lpalign_gutter_mode { overlay },
+	gutter-mode / aligned .code:n = \tl_set:Nn \lpalign_gutter_mode { aligned },
 	}
 \cs_new_protected:Npn \lpalign_lp_reset:
 	{
 	\tl_clear:N \lpalign_vars_text
 	\tl_set:Nn \lpalign_vars_style { \scriptstyle }
 	\tl_set:Nn \lpalign_st_text { s.t. }
+	\tl_set:Nn \lpalign_gutter_mode { overlay }
 	\dim_set:Nn \lpalign_sense_shift { 0pt }
 	\dim_set:Nn \lpalign_st_shift { 0pt }
 	\dim_set_eq:NN \lpalign_objective_sep \g_lpalign_default_objective_sep
@@ -209,30 +215,76 @@
 		{\hspace{\dim_use:N \lpalign_qualifier_sep} &&}
 	\tl_use:N \l_tmpa_tl
 	}
+% Add Qualifier Sep and prepend an empty gutter cell on later rows.
+\cs_new_protected:Npn \lpalign_lp_format_body_aligned:n #1
+	{
+	\tl_set:Nn \l_tmpa_tl {#1}
+	\tl_replace_all:Nnn \l_tmpa_tl
+		{&&}
+		{\hspace{\dim_use:N \lpalign_qualifier_sep} &&}
+	\tl_replace_all:Nnn \l_tmpa_tl
+		{\\}
+		{\\ &}
+	\tl_use:N \l_tmpa_tl
+	}
+% Overlay gutter mode.
+\cs_new_protected:Npn \lpalign_lp_print_overlay:nn #1#2
+	{
+	\begin{alignat}{2}
+	\lpalign_print_sense:
+	\begin{aligned}#1\end{aligned}
+	\span\span\span\omit\hfill
+	\\[\dim_use:N \lpalign_objective_sep]
+	\lpalign_print_st: \lpalign_lp_format_body:n {#2}
+	\end{alignat}
+	}
+% Aligned gutter mode.
+\cs_new_protected:Npn \lpalign_lp_print_aligned:nn #1#2
+	{
+	\begin{alignat}{2}
+	\lpalign_print_sense: & \begin{aligned}#1\end{aligned}
+	\span\span\omit\hfill
+	\\[\dim_use:N \lpalign_objective_sep]
+	\lpalign_print_st: & \lpalign_lp_format_body_aligned:n {#2}
+	\end{alignat}
+	}
+% Overlay gutter mode, starred.
+\cs_new_protected:Npn \lpalign_lp_print_overlay_star:nn #1#2
+	{
+	\begin{alignat*}{2}
+	\lpalign_print_sense:
+	\begin{aligned}#1\end{aligned}
+	\span\span\span\omit\hfill
+	\\[\dim_use:N \lpalign_objective_sep]
+	\lpalign_print_st: \lpalign_lp_format_body:n {#2}
+	\end{alignat*}
+	}
+% Aligned gutter mode, starred.
+\cs_new_protected:Npn \lpalign_lp_print_aligned_star:nn #1#2
+	{
+	\begin{alignat*}{2}
+	\lpalign_print_sense: & \begin{aligned}#1\end{aligned}
+	\span\span\omit\hfill
+	\\[\dim_use:N \lpalign_objective_sep]
+	\lpalign_print_st: & \lpalign_lp_format_body_aligned:n {#2}
+	\end{alignat*}
+	}
 % Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1}{#2}
-  \begin{alignat}{2}
-  \lpalign_print_sense: 
-  \begin{aligned}#3\end{aligned}
-	\span\span\span\omit\hfill 
-	\\[\dim_use:N \lpalign_objective_sep]
-  \lpalign_print_st: \lpalign_lp_format_body:n {#4}
-  \end{alignat}
+  \tl_if_eq:NnTF \lpalign_gutter_mode { aligned }
+  	{ \lpalign_lp_print_aligned:nn {#3}{#4} }
+  	{ \lpalign_lp_print_overlay:nn {#3}{#4} }
 	}
 	{\ignorespacesafterend}
  % Environment* Main
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1} {#2}
-    \begin{alignat*}{2}
-      \lpalign_print_sense: 
-      \begin{aligned}#3\end{aligned}
-    	\span\span\span\omit\hfill 
-			\\[\dim_use:N \lpalign_objective_sep]
-      \lpalign_print_st: \lpalign_lp_format_body:n {#4}
-    \end{alignat*}
+  \tl_if_eq:NnTF \lpalign_gutter_mode { aligned }
+  	{ \lpalign_lp_print_aligned_star:nn {#3}{#4} }
+  	{ \lpalign_lp_print_overlay_star:nn {#3}{#4} }
 	}
 	{\ignorespacesafterend}
 \ExplSyntaxOff
