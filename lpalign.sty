@@ -117,13 +117,10 @@
 \box_new:N \lpalign_st_box
 % Dimensions
 \dim_new:N \lpalign_sense_shift
-\dim_new:N \lpalign_sense_width
 \dim_new:N \lpalign_st_shift
-\dim_new:N \lpalign_st_width
 \dim_new:N \lpalign_objective_sep
 \dim_new:N \lpalign_qualifier_sep
 \dim_new:N \lpalign_gutter_sep
-\dim_new:N \lpalign_gutter_width
 % Package options
 \keys_define:nn { lpalign/package }
 	{
@@ -167,39 +164,27 @@
 	{
 	\lpalign_lp_reset:
 	\keys_set:nn { lpalign/lp } { #1 }
-  % Sense Box/width
+  % Sense Box
   \hbox_set:Nn \lpalign_sense_box
 		{ \stackunder
 			{ #2 }
 			{ \tl_if_blank:VF \lpalign_vars_text
 				{$\lpalign_vars_style\tl_use:N \lpalign_vars_text$ }
 		}}
-  \dim_set:Nn \lpalign_sense_width{ \box_wd:N \lpalign_sense_box }
-  % s.t. Box/Width
-  \hbox_set:Nn \lpalign_st_box{ \tl_use:N \lpalign_st_text }
-  \dim_set:Nn \lpalign_st_width{ \box_wd:N \lpalign_st_box }
-	% Gutter Width
-	\dim_compare:nNnTF \lpalign_sense_width > \lpalign_st_width
-			{ \dim_set:Nn \lpalign_gutter_width 
-				{ \lpalign_sense_width + \lpalign_gutter_sep }}
-			{ \dim_set:Nn \lpalign_gutter_width 
-				{ \lpalign_st_width + \lpalign_gutter_sep }}
 	}
 % Print Sense Box
 \cs_new_protected:Npn \lpalign_print_sense:
-	{\makebox[\dim_use:N \lpalign_gutter_width][r]
-		{\raisebox
-			{\dim_use:N \lpalign_sense_shift}
-			{\box_use:N \lpalign_sense_box}
-		\hspace{\dim_use:N \lpalign_gutter_sep}}
+	{
+	\raisebox
+		{\dim_use:N \lpalign_sense_shift}
+		{\box_use:N \lpalign_sense_box}
 	}
 % Print s.t. Box
 \cs_new_protected:Npn \lpalign_print_st:
-	{\makebox[\dim_use:N \lpalign_gutter_width][r]
-		{\raisebox
-			{\dim_use:N \lpalign_st_shift}
-			{\box_use:N \lpalign_st_box}
-		\hspace{\dim_use:N \lpalign_gutter_sep}}
+	{
+	\raisebox
+		{\dim_use:N \lpalign_st_shift}
+		{\tl_use:N \lpalign_st_text}
 	}
 % Add Qualifier Sep and prepend an empty gutter cell on later rows.
 \cs_new_protected:Npn \lpalign_lp_format_body:n #1
@@ -215,34 +200,29 @@
 	}
 \cs_new_protected:Npn \lpalign_lp_print:nn #1#2
 	{
-	\begin{alignat}{3}
-	\lpalign_print_sense: && \begin{aligned}#1\end{aligned}
+	\lpalign_print_sense: 
+	& \hspace{\dim_use:N \lpalign_gutter_sep} & 
+	\begin{aligned}#1\end{aligned}
 	\span\span\span\omit\hfill
 	\\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && \lpalign_lp_format_body:n {#2}
-	\end{alignat}
-	}
-\cs_new_protected:Npn \lpalign_lp_print_star:nn #1#2
-	{
-	\begin{alignat*}{3}
-	\lpalign_print_sense: && \begin{aligned}#1\end{aligned}
-	\span\span\span\omit\hfill
-	\\[\dim_use:N \lpalign_objective_sep]
-	\lpalign_print_st: && \lpalign_lp_format_body:n {#2}
-	\end{alignat*}
 	}
 % Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1}{#2}
-  \lpalign_lp_print:nn {#3}{#4}
+ 	\begin{alignat}{3}
+ 	\lpalign_lp_print:nn {#3}{#4}
+ 	\end{alignat}
 	}
 	{\ignorespacesafterend}
  % Environment* Main
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1} {#2}
-  \lpalign_lp_print_star:nn {#3}{#4}
+	\begin{alignat*}{3}
+	\lpalign_lp_print:nn {#3}{#4}
+	\end{alignat*}
 	}
 	{\ignorespacesafterend}
 \ExplSyntaxOff
