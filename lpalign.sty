@@ -202,44 +202,168 @@
 % raw \\ tokens in place.
 \seq_new:N \lpalign_lp_rows_seq
 \seq_new:N \lpalign_lp_breaks_seq
+\tl_new:N \lpalign_lp_formatted_body_tl
+\tl_new:N \lpalign_lp_remaining_tl
 \tl_new:N \lpalign_lp_current_row_tl
 \tl_new:N \lpalign_lp_current_break_tl
-\int_new:N \lpalign_lp_group_depth_int
+\int_new:N \lpalign_lp_env_depth_int
 \cs_new_protected:Npn \lpalign_lp_parser_reset:
 	{
 	\seq_clear:N \lpalign_lp_rows_seq
 	\seq_clear:N \lpalign_lp_breaks_seq
+	\tl_clear:N \lpalign_lp_formatted_body_tl
+	\tl_clear:N \lpalign_lp_remaining_tl
 	\tl_clear:N \lpalign_lp_current_row_tl
 	\tl_clear:N \lpalign_lp_current_break_tl
-	\int_zero:N \lpalign_lp_group_depth_int
+	\int_zero:N \lpalign_lp_env_depth_int
 	}
-% Add Qualifier Sep and prepend an empty gutter cell on later rows.
-% Add qualifier spacing, but leave row breaks alone so nested alignments and
-% optional linebreak skips still work.
-\cs_new_protected:Npn \lpalign_lp_format_body:n #1
+\cs_generate_variant:Nn \tl_if_head_eq_meaning:nNTF { V }
+\cs_generate_variant:Nn \tl_if_head_eq_charcode:nNTF { V }
+\cs_new_protected:Npn \lpalign_lp_append_head:
+	{
+	\exp_args:NNo \tl_set:Nn \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
+	\tl_put_right:NV \lpalign_lp_current_row_tl \l_tmpa_tl
+	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_environment:N #1
+	{
+	\lpalign_lp_append_head:
+	\tl_if_empty:NF \lpalign_lp_remaining_tl
+		{
+		\lpalign_lp_append_head:
+		#1
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_optional_break:
+	{
+	\tl_if_empty:NF \lpalign_lp_remaining_tl
+		{
+		\tl_if_head_eq_charcode:VNTF
+			\lpalign_lp_remaining_tl
+			[
+			{
+			\lpalign_lp_append_head_to_break:
+			\lpalign_lp_parse_optional_break_loop:
+			}
+			{ }
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_append_head_to_break:
+	{
+	\exp_args:NNo \tl_set:Nn \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
+	\tl_put_right:NV \lpalign_lp_current_break_tl \l_tmpa_tl
+	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_optional_break_loop:
+	{
+	\tl_if_empty:NF \lpalign_lp_remaining_tl
+		{
+		\lpalign_lp_append_head_to_break:
+		\tl_if_head_eq_charcode:VNTF
+			\l_tmpa_tl
+			]
+			{ }
+			{ \lpalign_lp_parse_optional_break_loop: }
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_finish_row:
+	{
+	\seq_put_right:NV \lpalign_lp_rows_seq \lpalign_lp_current_row_tl
+	\seq_put_right:NV \lpalign_lp_breaks_seq \lpalign_lp_current_break_tl
+	\tl_clear:N \lpalign_lp_current_row_tl
+	\tl_clear:N \lpalign_lp_current_break_tl
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_row_break:
+	{
+	\tl_set:Nn \lpalign_lp_current_break_tl { \\ }
+	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	\lpalign_lp_parse_optional_break:
+	\lpalign_lp_finish_row:
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_next:
+	{
+	\tl_if_head_eq_meaning:VNTF
+		\lpalign_lp_remaining_tl
+		\begin
+		{ \lpalign_lp_parse_environment:N \int_incr:N \lpalign_lp_env_depth_int }
+		{
+		\tl_if_head_eq_meaning:VNTF
+			\lpalign_lp_remaining_tl
+			\end
+			{ \lpalign_lp_parse_environment:N \int_decr:N \lpalign_lp_env_depth_int }
+			{
+			\int_compare:nNnTF { \lpalign_lp_env_depth_int } > { 0 }
+				{ \lpalign_lp_append_head: }
+				{
+				\tl_if_head_eq_meaning:VNTF
+					\lpalign_lp_remaining_tl
+					\\
+					{ \lpalign_lp_parse_row_break: }
+					{ \lpalign_lp_append_head: }
+				}
+			}
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_loop:
+	{
+	\tl_if_empty:NF \lpalign_lp_remaining_tl
+		{
+		\lpalign_lp_parse_next:
+		\lpalign_lp_parse_loop:
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_body:n #1
+	{
+	\lpalign_lp_parser_reset:
+	\tl_set:Nn \lpalign_lp_remaining_tl {#1}
+	\lpalign_lp_parse_loop:
+	\tl_if_blank:VF \lpalign_lp_current_row_tl
+		{ \seq_put_right:NV \lpalign_lp_rows_seq \lpalign_lp_current_row_tl }
+	}
+\cs_new_protected:Npn \lpalign_lp_spaced_row:n #1
 	{
 	\tl_set:Nn \l_tmpa_tl {#1}
 	\tl_replace_all:Nnn \l_tmpa_tl
 		{&&}
 		{\hspace{\dim_use:N \lpalign_qualifier_sep} &&}
-	\tl_use:N \l_tmpa_tl
+	\tl_put_right:NV \lpalign_lp_formatted_body_tl \l_tmpa_tl
 	}
-\cs_new_protected:Npn \lpalign_lp_print:nn #1#2
+\cs_generate_variant:Nn \lpalign_lp_spaced_row:n { V }
+\cs_new_protected:Npn \lpalign_lp_build_body:n #1
+	{
+	\lpalign_lp_parse_body:n {#1}
+	\tl_clear:N \lpalign_lp_formatted_body_tl
+	\seq_if_empty:NF \lpalign_lp_rows_seq
+		{
+		\seq_pop_left:NN \lpalign_lp_rows_seq \l_tmpb_tl
+		\tl_put_right:Nn \lpalign_lp_formatted_body_tl { \lpalign_print_st: && }
+		\lpalign_lp_spaced_row:V \l_tmpb_tl
+		\seq_map_inline:Nn \lpalign_lp_breaks_seq
+			{
+			\tl_set:Nn \l_tmpb_tl {##1}
+			\tl_put_right:Nx \lpalign_lp_formatted_body_tl
+				{ \exp_not:V \l_tmpb_tl && }
+			\seq_pop_left:NN \lpalign_lp_rows_seq \l_tmpb_tl
+			\lpalign_lp_spaced_row:V \l_tmpb_tl
+			}
+		}
+	}
+\cs_new_protected:Npn \lpalign_lp_print:n #1
 	{
 	\lpalign_print_sense: 
 	& \hspace{\dim_use:N \lpalign_gutter_sep} & 
 	\begin{aligned}#1\end{aligned}
 	\span\span\span\omit\hfill
 	\\[\dim_use:N \lpalign_objective_sep]
-	\everycr{&&}
-	\lpalign_print_st: && \lpalign_lp_format_body:n {#2}
+	\tl_use:N \lpalign_lp_formatted_body_tl
 	}
 % Environment Main
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1}{#2}
+	\lpalign_lp_build_body:n {#4}
  	\begin{alignat}{3}
- 	\lpalign_lp_print:nn {#3}{#4}
+ 	\lpalign_lp_print:n {#3}
  	\end{alignat}
 	}
 	{\ignorespacesafterend}
@@ -247,8 +371,9 @@
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
   \lpalign_lp_setup:nn {#1} {#2}
+	\lpalign_lp_build_body:n {#4}
 	\begin{alignat*}{3}
-	\lpalign_lp_print:nn {#3}{#4}
+	\lpalign_lp_print:n {#3}
 	\end{alignat*}
 	}
 	{\ignorespacesafterend}
