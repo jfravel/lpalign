@@ -57,7 +57,6 @@ The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|
   \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective_sep| option; see Section \ref{sec:options}.
   \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
   \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter_sep| option.
-  \item[\Verb|gutter-mode|] -- chooses how the left gutter is anchored. The default \verb|overlay| mode aligns the gutter to the first constraint row; \verb|aligned| places the gutter in the \textsf{alignat} columns so it follows the furthest-left constraint row.
   \item[\Verb|sense-shift|] -- adds a vertical shift to the `sense' term.
   \item[\Verb|st-shift|] -- adds a vertical shift to the `subject to' term.
   \end{compactitem}
@@ -121,10 +120,6 @@ Qualified constraints are also possible. A double-ampersand \verb|&&| will prope
          x_i &\ge 0   && \gl{$\forall\ i\in \{1,2,...,n\}$}  
     \end{lpalign*}
 \end{tcolorbox}
-
-If a later constraint begins further to the left than the first one, \verb|gutter-mode=aligned| will anchor the `sense' and `subject to' terms to that widest left-hand column instead of to the first row.
-
-
 
 \subsection*{Variable Ranges}
 Subscripts can be placed under the `sense' term via the \verb|vars| option. 
@@ -228,23 +223,6 @@ The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down
       \end{aligned}&\le b_i
     \end{lpalign}
 \end{tcolorbox}
-
-
-
-\begin{lpalign}[gutter-mode=aligned]
-{max}{\mathbf{c}^\top\mathbf{x} longer than it should be isnt that funney}
-A\mathbf{x} \leq \mathbf{b}& \\
-d_1x_1 + \dots + d_nx-n \EQ \mathrm{frac}(p)& && \forall shit
-\end{lpalign}
-\begin{lpalign}[gutter-mode=overlay]
-{max}{\mathbf{c}^\top\mathbf{x} longer than it should be isnt that funney}
-A\mathbf{x} \leq \mathbf{b}& \\
-d_1x_1 + \dots + d_nx-n \EQ \mathrm{frac}(p)& && \forall shit
-\end{lpalign}
-
-
-
-
 
 
 \section{Named Paragraphs}\label{sec:paragraphs}

@@ -55,7 +55,6 @@ Supported keys include:
 - `objective-sep`
 - `qualifier-sep`
 - `gutter-sep`
-- `gutter-mode`
 - `sense-shift`
 - `st-shift`
 
@@ -76,8 +75,6 @@ Qualified constraints still use `&&`:
   x_i                          &\ge 0   && \forall i \in [n]
 \end{lpalign}
 ```
-
-`gutter-mode=overlay` is the default. Set `gutter-mode=aligned` if you want the left gutter to live in the `alignat` columns and follow the furthest-left constraint row instead of the first one.
 
 Package-load defaults are available for the three main spacing keys:
 
