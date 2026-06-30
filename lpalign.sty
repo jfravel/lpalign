@@ -52,7 +52,7 @@
 \dim_gset:Nn \evaluator_spacing { 0.25em }
 \keys_define:nn { lpalign/package }
 	{
-	evaluator-spacing .dim_gset:N = \evaluator_spacing
+	evaluator_spacing .dim_gset:N = \evaluator_spacing
 	}
 
 \newcommand{\eq}{=}
@@ -127,12 +127,12 @@
 % Package options
 \keys_define:nn { lpalign/package }
 	{
-	lp_objective-sep .dim_gset:N = \g_lpalign_default_objective_sep,
-	lp_objective-sep .initial:n = 0em,
-	lp_qualifier-sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
-	lp_qualifier-sep .initial:n = 2em,
-	lp_gutter-sep .dim_gset:N = \g_lpalign_default_gutter_sep,
-	lp_gutter-sep .initial:n = 0.75em,
+	lp_objective_sep .dim_gset:N = \g_lpalign_default_objective_sep,
+	lp_objective_sep .initial:n = 0em,
+	lp_qualifier_sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
+	lp_qualifier_sep .initial:n = 2em,
+	lp_gutter_sep .dim_gset:N = \g_lpalign_default_gutter_sep,
+	lp_gutter_sep .initial:n = 0.75em,
 	}
 % Key Options
 \keys_define:nn { lpalign/lp }
