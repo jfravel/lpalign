@@ -11,7 +11,7 @@ The package currently provides:
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`
 - `\paratitle` and `\namedpara` for named paragraphs
 - quick horizontal and vertical spacing helpers
-- display-style operator helpers that preserve ordinary `_`/`^` syntax while applying `\smashoperator`
+- display-style operator helpers that preserve ordinary `_`/`^` syntax while placing long limits in `\mathclap` boxes
 
 ## Installation
 
@@ -80,9 +80,10 @@ Package-load defaults are available for the three main spacing keys:
 
 ```tex
 \usepackage[
-  lp_objective-sep=1em,
-  lp_qualifier-sep=3em,
-  lp_gutter-sep=1em
+  lp_objective_sep=1em,
+  lp_qualifier_sep=3em,
+  lp_gutter_sep=1em,
+  evaluator_spacing=0.35em
 ]{lpalign}
 ```
 
