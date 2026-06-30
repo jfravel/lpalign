@@ -227,17 +227,6 @@
 		{\\ &&}
 	\tl_use:N \l_tmpa_tl
 	}
-% Overlay gutter mode.
-\cs_new_protected:Npn \lpalign_lp_print_overlay:nn #1#2
-	{
-	\begin{alignat}{2}
-	\lpalign_print_sense:
-	\begin{aligned}#1\end{aligned}
-	\span\span\span\omit\hfill
-	\\[\dim_use:N \lpalign_objective_sep]
-	\lpalign_print_st: \lpalign_lp_format_body:n {#2}
-	\end{alignat}
-	}
 % Aligned gutter mode.
 \cs_new_protected:Npn \lpalign_lp_print_aligned:nn #1#2
 	{
@@ -247,17 +236,6 @@
 	\\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && \lpalign_lp_format_body_aligned:n {#2}
 	\end{alignat}
-	}
-% Overlay gutter mode, starred.
-\cs_new_protected:Npn \lpalign_lp_print_overlay_star:nn #1#2
-	{
-	\begin{alignat*}{2}
-	\lpalign_print_sense:
-	\begin{aligned}#1\end{aligned}
-	\span\span\span\omit\hfill
-	\\[\dim_use:N \lpalign_objective_sep]
-	\lpalign_print_st: \lpalign_lp_format_body:n {#2}
-	\end{alignat*}
 	}
 % Aligned gutter mode, starred.
 \cs_new_protected:Npn \lpalign_lp_print_aligned_star:nn #1#2
@@ -275,7 +253,15 @@
   \lpalign_lp_setup:nn {#1}{#2}
   \tl_if_eq:NnTF \lpalign_gutter_mode { aligned }
   	{ \lpalign_lp_print_aligned:nn {#3}{#4} }
-  	{ \lpalign_lp_print_overlay:nn {#3}{#4} }
+  	{
+  	\begin{alignat}{2}
+  	\lpalign_print_sense:
+  	\begin{aligned}#3\end{aligned}
+		\span\span\span\omit\hfill
+		\\[\dim_use:N \lpalign_objective_sep]
+  	\lpalign_print_st: \lpalign_lp_format_body:n {#4}
+  	\end{alignat}
+  	}
 	}
 	{\ignorespacesafterend}
  % Environment* Main
@@ -284,7 +270,15 @@
   \lpalign_lp_setup:nn {#1} {#2}
   \tl_if_eq:NnTF \lpalign_gutter_mode { aligned }
   	{ \lpalign_lp_print_aligned_star:nn {#3}{#4} }
-  	{ \lpalign_lp_print_overlay_star:nn {#3}{#4} }
+  	{
+    \begin{alignat*}{2}
+      \lpalign_print_sense:
+      \begin{aligned}#3\end{aligned}
+    	\span\span\span\omit\hfill
+			\\[\dim_use:N \lpalign_objective_sep]
+      \lpalign_print_st: \lpalign_lp_format_body:n {#4}
+    \end{alignat*}
+  	}
 	}
 	{\ignorespacesafterend}
 \ExplSyntaxOff
