@@ -47,21 +47,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % A few binary evaluators with extra space on either side. I like these for aligned inequality constraints.
 
+\ExplSyntaxOn
+\dim_new:N \evaluator_spacing
+\dim_gset:Nn \evaluator_spacing { 0.25em }
+\keys_define:nn { lpalign/package }
+	{
+	evaluator-spacing .dim_gset:N = \evaluator_spacing
+	}
+
 \newcommand{\eq}{=}
 
-\newcommand{\EQ}{\hskp=\hskp}
-\newcommand{\LS}{\hskp<\hskp}
-\newcommand{\GS}{\hskp>\hskp}
-\newcommand{\LE}{\hskp\leq\hskp}
-\newcommand{\GE}{\hskp\geq\hskp}
-\newcommand{\IN}{\hskp\in\hskp}
+\newcommand{\EQ}{\hspace{\dim_use:N \evaluator_spacing}=\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\LS}{\hspace{\dim_use:N \evaluator_spacing}<\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\GS}{\hspace{\dim_use:N \evaluator_spacing}>\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\LE}{\hspace{\dim_use:N \evaluator_spacing}\leq\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\GE}{\hspace{\dim_use:N \evaluator_spacing}\geq\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\IN}{\hspace{\dim_use:N \evaluator_spacing}\in\hspace{\dim_use:N \evaluator_spacing}}
 
-\newcommand{\NEQ}{\hskp\neq\hskp}
-\newcommand{\SUB}{\hskp\subset\hskp}
-\newcommand{\SUP}{\hskp\supset\hskp}
-\newcommand{\SEQ}{\hskp\subseteq\hskp}
-\newcommand{\SPQ}{\hskp\supseteq\hskp}
-\newcommand{\NIN}{\hskp\notin\hskp}
+\newcommand{\NEQ}{\hspace{\dim_use:N \evaluator_spacing}\neq\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\SUB}{\hspace{\dim_use:N \evaluator_spacing}\subset\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\SUP}{\hspace{\dim_use:N \evaluator_spacing}\supset\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\SEQ}{\hspace{\dim_use:N \evaluator_spacing}\subseteq\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\SPQ}{\hspace{\dim_use:N \evaluator_spacing}\supseteq\hspace{\dim_use:N \evaluator_spacing}}
+\newcommand{\NIN}{\hspace{\dim_use:N \evaluator_spacing}\notin\hspace{\dim_use:N \evaluator_spacing}}
+\ExplSyntaxOff
 
 
 
@@ -70,29 +79,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Spacing helpers for overindexed display operators. These preserve the usual
 % subscript/superscript syntax while applying \smashoperator to the operator.
-
-
-%\NewDocumentCommand{\SUM}{e{_^}}{
-%  \sum
-%  \IfValueT{#1}{_{\mathclap{#1}}}
-%  \IfValueT{#2}{^{\mathclap{#2}}}
-%}
-
-%\ExplSyntaxOn
-%\cs_new_protected:Npn \lpalign_smashprep:nnn #1#2#3
-%  {
-%    #1
-%    \IfValueT{#2}{\sb{#2}}
-%    \IfValueT{#3}{\sp{#3}}
-%  }
-%
-%\NewDocumentCommand{\SUM}{e{_^}}
-%  {
-%    \smashoperator{\lpalign_smashprep:nnn { \sum } {#1} {#2}}
-%  }
-%\ExplSyntaxOff
-
-
 
 \NewDocumentCommand{\smashprep}{mmm}
   {
@@ -107,64 +93,6 @@
 \NewDocumentCommand{\VEE}{e{_^}}{\smashprep{\bigvee}{#1}{#2}}
 \NewDocumentCommand{\WEDGE}{e{_^}}{\smashprep{\bigwedge}{#1}{#2}}
 
-
-
-%\makeatletter
-%\def\SUM{%
-%  \@ifnextchar_{\SUMsub}{\@ifnextchar^{\SUMsup}{\smashoperator{\sum}}}}
-%\def\SUMsub_#1{%
-%  \@ifnextchar^{\SUMsubsup{#1}}{\smashoperator{\sum_{#1}}}}
-%\def\SUMsubsup#1^#2{\smashoperator{\sum_{#1}^{#2}}}
-%\def\SUMsup^#1{%
-%  \@ifnextchar_{\SUMsupsub{#1}}{\smashoperator{\sum^{#1}}}}
-%\def\SUMsupsub#1_#2{\smashoperator{\sum_{#2}^{#1}}}
-%
-%\def\PROD{%
-%  \@ifnextchar_{\PRODsub}{\@ifnextchar^{\PRODsup}{\smashoperator{\prod}}}}
-%\def\PRODsub_#1{%
-%  \@ifnextchar^{\PRODsubsup{#1}}{\smashoperator{\prod_{#1}}}}
-%\def\PRODsubsup#1^#2{\smashoperator{\prod_{#1}^{#2}}}
-%\def\PRODsup^#1{%
-%  \@ifnextchar_{\PRODsupsub{#1}}{\smashoperator{\prod^{#1}}}}
-%\def\PRODsupsub#1_#2{\smashoperator{\prod_{#2}^{#1}}}
-%
-%\def\CUP{%
-%  \@ifnextchar_{\CUPsub}{\@ifnextchar^{\CUPsup}{\smashoperator{\bigcup}}}}
-%\def\CUPsub_#1{%
-%  \@ifnextchar^{\CUPsubsup{#1}}{\smashoperator{\bigcup_{#1}}}}
-%\def\CUPsubsup#1^#2{\smashoperator{\bigcup_{#1}^{#2}}}
-%\def\CUPsup^#1{%
-%  \@ifnextchar_{\CUPsupsub{#1}}{\smashoperator{\bigcup^{#1}}}}
-%\def\CUPsupsub#1_#2{\smashoperator{\bigcup_{#2}^{#1}}}
-%
-%\def\CAP{%
-%  \@ifnextchar_{\CAPsub}{\@ifnextchar^{\CAPsup}{\smashoperator{\bigcap}}}}
-%\def\CAPsub_#1{%
-%  \@ifnextchar^{\CAPsubsup{#1}}{\smashoperator{\bigcap_{#1}}}}
-%\def\CAPsubsup#1^#2{\smashoperator{\bigcap_{#1}^{#2}}}
-%\def\CAPsup^#1{%
-%  \@ifnextchar_{\CAPsupsub{#1}}{\smashoperator{\bigcap^{#1}}}}
-%\def\CAPsupsub#1_#2{\smashoperator{\bigcap_{#2}^{#1}}}
-%
-%\def\VEE{%
-%  \@ifnextchar_{\VEEsub}{\@ifnextchar^{\VEEsup}{\smashoperator{\bigvee}}}}
-%\def\VEEsub_#1{%
-%  \@ifnextchar^{\VEEsubsup{#1}}{\smashoperator{\bigvee_{#1}}}}
-%\def\VEEsubsup#1^#2{\smashoperator{\bigvee_{#1}^{#2}}}
-%\def\VEEsup^#1{%
-%  \@ifnextchar_{\VEEsupsub{#1}}{\smashoperator{\bigvee^{#1}}}}
-%\def\VEEsupsub#1_#2{\smashoperator{\bigvee_{#2}^{#1}}}
-%
-%\def\WEDGE{%
-%  \@ifnextchar_{\WEDGEsub}{\@ifnextchar^{\WEDGEsup}{\smashoperator{\bigwedge}}}}
-%\def\WEDGEsub_#1{%
-%  \@ifnextchar^{\WEDGEsubsup{#1}}{\smashoperator{\bigwedge_{#1}}}}
-%\def\WEDGEsubsup#1^#2{\smashoperator{\bigwedge_{#1}^{#2}}}
-%\def\WEDGEsup^#1{%
-%  \@ifnextchar_{\WEDGEsupsub{#1}}{\smashoperator{\bigwedge^{#1}}}}
-%\def\WEDGEsupsub#1_#2{\smashoperator{\bigwedge_{#2}^{#1}}}
-%\makeatother
-	
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

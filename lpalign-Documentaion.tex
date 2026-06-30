@@ -515,7 +515,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
 
 
-\section{Spacing Macros}
+\section{Spacing Macros}\label{sec:spacing}
 
 \subsection*{Quick Spacing}
 
@@ -583,7 +583,7 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 
 
 
-\subsection*{Summation Spacing}
+\subsection*{Delimiter Spacing}
 
 Some macros for tightening display-style operator spacing when the indexing is over-long. These preserve the usual subscript and superscript syntax while applying \verb|\smashoperator| to the operator. They are meant for display math and are not generally useful inline.
 	\vtrg\begin{multicols}{3}
@@ -628,9 +628,9 @@ These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing 
 
 
 
-\subsection*{Equation Spacing}
+\subsection*{Evaluator Spacing}
 
-A few binary relations with extra space on either side. I like these for aligned inequality constraints.
+A few binary relations with extra space on either side. I like these for aligned equations or inequality constraints.
     \vtrg\begin{multicols}{4}
     \begin{compactitem}
     	\item\verb|\EQ| $\EQ$ 
@@ -670,11 +670,14 @@ A few binary relations with extra space on either side. I like these for aligned
   \end{lpalign*}
 \end{minipage}
 \end{tcolorbox}
+The spacing defaults to 0.25em is controlled by the package option \verb|evaluator-spacing|. 
 
 
 
-
-
+\section{Package Options}
+\begin{compactitem}
+\item[\Verb|evaluator-spacing|] -- Controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}
+\end{compactitem}
 
 
 \section{Known Bugs}
