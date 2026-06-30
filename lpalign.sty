@@ -187,15 +187,14 @@
 		{\tl_use:N \lpalign_st_text}
 	}
 % Add Qualifier Sep and prepend an empty gutter cell on later rows.
+% Add qualifier spacing, but leave row breaks alone so nested alignments and
+% optional linebreak skips still work.
 \cs_new_protected:Npn \lpalign_lp_format_body:n #1
 	{
 	\tl_set:Nn \l_tmpa_tl {#1}
 	\tl_replace_all:Nnn \l_tmpa_tl
 		{&&}
 		{\hspace{\dim_use:N \lpalign_qualifier_sep} &&}
-	\tl_replace_all:Nnn \l_tmpa_tl
-		{\\}
-		{\\ &&}
 	\tl_use:N \l_tmpa_tl
 	}
 \cs_new_protected:Npn \lpalign_lp_print:nn #1#2
@@ -205,6 +204,7 @@
 	\begin{aligned}#1\end{aligned}
 	\span\span\span\omit\hfill
 	\\[\dim_use:N \lpalign_objective_sep]
+	\everycr{&&}
 	\lpalign_print_st: && \lpalign_lp_format_body:n {#2}
 	}
 % Environment Main
