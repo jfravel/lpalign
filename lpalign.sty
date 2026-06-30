@@ -1,6 +1,17 @@
 \ProvidesPackage{lpalign}[Jun 28, 2026: v1.4 final of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3, l3keys2e, mathtools, stackengine}
+\RequirePackage{amsmath, expl3, l3keys2e}
+\IfFileExists{stackengine.sty}
+  {\RequirePackage{stackengine}}
+  {\newcommand{\stackunder}[2]{\shortstack[c]{##1\\##2}}}
+\IfFileExists{mathtools.sty}
+  {\RequirePackage{mathtools}}
+  {%
+    \makeatletter
+    \def\mathclap##1{\mathpalette\lpalignmathclap{##1}}
+    \def\lpalignmathclap##1##2{\hbox to 0pt{\hss$\m@th##1##2$\hss}}
+    \makeatother
+  }
 %%begin novalidate
 
 
@@ -185,6 +196,22 @@
 	\raisebox
 		{\dim_use:N \lpalign_st_shift}
 		{\tl_use:N \lpalign_st_text}
+	}
+% Parser workbench. The long-term plan is to split the body into top-level rows
+% and rewrite those rows before handing them to alignat, instead of modifying
+% raw \\ tokens in place.
+\seq_new:N \lpalign_lp_rows_seq
+\seq_new:N \lpalign_lp_breaks_seq
+\tl_new:N \lpalign_lp_current_row_tl
+\tl_new:N \lpalign_lp_current_break_tl
+\int_new:N \lpalign_lp_group_depth_int
+\cs_new_protected:Npn \lpalign_lp_parser_reset:
+	{
+	\seq_clear:N \lpalign_lp_rows_seq
+	\seq_clear:N \lpalign_lp_breaks_seq
+	\tl_clear:N \lpalign_lp_current_row_tl
+	\tl_clear:N \lpalign_lp_current_break_tl
+	\int_zero:N \lpalign_lp_group_depth_int
 	}
 % Add Qualifier Sep and prepend an empty gutter cell on later rows.
 % Add qualifier spacing, but leave row breaks alone so nested alignments and

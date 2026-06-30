@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\usepackage{lpalign}
+\usepackage{amssymb}
+
+\newcommand{\amthbf}[1]{\mathbf{#1}}
+
+\begin{document}
+
+\begin{lpalign}
+    [
+    vars=\amthbf{x},
+    st=subject to,
+    objective-sep=2em,
+    qualifier-sep=4em,
+    gutter-sep=4em,
+    ]
+  {Maximize}
+  {c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+      &+c_5x_5+...+c_mx_m}
+  \begin{aligned}
+    a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3\\
+          &+a_{i4}x_4+...+a_{im}x_nm
+  \end{aligned}
+          &\le b_i   && \forall\ i\in [\![n]\!]   \\[2em]
+   \mathbf{x} &\ge \mathbf{0}
+\end{lpalign}
+
+\end{document}
