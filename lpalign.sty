@@ -221,18 +221,20 @@
 \cs_generate_variant:Nn \tl_if_head_eq_charcode:nNTF { V }
 \cs_new_protected:Npn \lpalign_lp_append_head:
 	{
-	\exp_args:NNo \tl_set:Nn \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
+	\tl_set:Nx \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
 	\tl_put_right:NV \lpalign_lp_current_row_tl \l_tmpa_tl
-	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	\tl_set:Nx \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
 	}
 \cs_new_protected:Npn \lpalign_lp_parse_environment:N #1
 	{
 	\lpalign_lp_append_head:
-	\tl_if_empty:NF \lpalign_lp_remaining_tl
-		{
-		\lpalign_lp_append_head:
-		#1
-		}
+	\exp_args:No \lpalign_lp_parse_environment_aux:w \lpalign_lp_remaining_tl \q_stop #1
+	}
+\cs_new_protected:Npn \lpalign_lp_parse_environment_aux:w #1#2 \q_stop #3
+	{
+	\tl_put_right:Nn \lpalign_lp_current_row_tl {#1}
+	\tl_set:Nn \lpalign_lp_remaining_tl {#2}
+	#3
 	}
 \cs_new_protected:Npn \lpalign_lp_parse_optional_break:
 	{
@@ -250,9 +252,9 @@
 	}
 \cs_new_protected:Npn \lpalign_lp_append_head_to_break:
 	{
-	\exp_args:NNo \tl_set:Nn \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
+	\tl_set:Nx \l_tmpa_tl { \tl_head:N \lpalign_lp_remaining_tl }
 	\tl_put_right:NV \lpalign_lp_current_break_tl \l_tmpa_tl
-	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	\tl_set:Nx \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
 	}
 \cs_new_protected:Npn \lpalign_lp_parse_optional_break_loop:
 	{
@@ -276,7 +278,7 @@
 \cs_new_protected:Npn \lpalign_lp_parse_row_break:
 	{
 	\tl_set:Nn \lpalign_lp_current_break_tl { \\ }
-	\exp_args:NNo \tl_set:Nn \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
+	\tl_set:Nx \lpalign_lp_remaining_tl { \tl_tail:N \lpalign_lp_remaining_tl }
 	\lpalign_lp_parse_optional_break:
 	\lpalign_lp_finish_row:
 	}
