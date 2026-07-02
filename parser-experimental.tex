@@ -11,11 +11,11 @@
 
 \tl_new:N \lp_parser_output
 \tl_new:N \g_temp_head_tl
+\tl_new:N \g_prev_head_tl
 \int_new:N \g_nest_depth
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
 \tl_new:N \lpalign_st_text
-\tl_new:N \l_lpalign_objective_tl
 \box_new:N \lpalign_sense_box
 \dim_new:N \lpalign_sense_shift
 \dim_new:N \lpalign_st_shift
@@ -35,37 +35,29 @@
     gutter-sep .dim_set:N = \lpalign_gutter_sep,
   }
 
-\cs_new_protected:Npn \lpalign_reset:
+\cs_new_protected:Npn \lpalign_setup:n #1
   {
-    \tl_clear:N \lpalign_vars_text
-    \tl_set:Nn \lpalign_vars_style { \scriptstyle }
-    \tl_set:Nn \lpalign_st_text { s.t. }
-    \dim_set:Nn \lpalign_sense_shift { 0pt }
-    \dim_set:Nn \lpalign_st_shift { 0pt }
-    \dim_set:Nn \lpalign_objective_sep { 0em }
-    \dim_set:Nn \lpalign_qualifier_sep { 2em }
-    \dim_set:Nn \lpalign_gutter_sep { 0.75em }
-    \tl_clear:N \l_lpalign_objective_tl
+	\tl_clear:N \lpalign_vars_text
+	\tl_set:Nn \lpalign_vars_style { \scriptstyle }
+	\tl_set:Nn \lpalign_st_text { s.t. }
+	\dim_set:Nn \lpalign_sense_shift { 0pt }
+	\dim_set:Nn \lpalign_st_shift { 0pt }
+	\dim_set:Nn \lpalign_objective_sep { 0em }
+	\dim_set:Nn \lpalign_qualifier_sep { 2em }
+	\dim_set:Nn \lpalign_gutter_sep { 0.75em }
+	\keys_set:nn { parserlpalign } { #1 }
   }
 
-\cs_new_protected:Npn \lpalign_setup:nn #1#2
+\cs_new:Npn \lpalign_print_sense:n #1
   {
-    \lpalign_reset:
-    \keys_set:nn { parserlpalign } { #1 }
-    \hbox_set:Nn \lpalign_sense_box
-      {
-        \stackunder
-          { #2 }
-          {
-            \tl_if_blank:VF \lpalign_vars_text
-              { $\tl_use:N \lpalign_vars_style \tl_use:N \lpalign_vars_text$ }
-          }
-      }
-  }
-
-\cs_new:Npn \lpalign_print_sense:
-  {
-    \raisebox{\dim_use:N \lpalign_sense_shift}{\box_use:N \lpalign_sense_box}
+    \raisebox{\dim_use:N \lpalign_sense_shift}
+    {
+    \stackunder{ #1 }
+			{
+			\tl_if_blank:VF \lpalign_vars_text
+			  { $\tl_use:N \lpalign_vars_style \tl_use:N \lpalign_vars_text$ }
+			}
+    }
   }
 
 \cs_new:Npn \lpalign_print_st:
@@ -73,15 +65,8 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
-\cs_new_protected:Npn \lpalign_parser_append_qualifier_sep:
-  {
-    \tl_gput_right:Nn \lp_parser_output { & }
-    \tl_gput_right:Nx \lp_parser_output
-      { \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } }
-    \tl_gput_right:Nn \lp_parser_output { & }
-  }
 
-\cs_new:Npn \lpalign_parser:n #1
+\cs_new:Npn \lpalign_parserold:n #1
 	{
 	% End loop if token list is empty
 	\tl_if_empty:nF { #1 }
@@ -100,6 +85,7 @@
 				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 				}
 				{
+				\tl_gset_eq:NN \g_prev_head_tl \g_temp_head_tl
 				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
 				% Resolve nest depth
 				\str_if_eq:eeT { \tl_to_str:n { \begin } } { \tl_to_str:V \g_temp_head_tl }
@@ -109,44 +95,90 @@
         % Replace depth zero double ampersands with qualifier spacing
         \str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V \g_temp_head_tl }
           {
-          \str_if_eq:eeTF { \tl_to_str:n { & } } { \exp_args:Ne \tl_to_str:n { \tl_head:n { \tl_tail:n {#1} } } }
+					\str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V \g_prev_head_tl }
             {
             \int_compare:nTF { \g_nest_depth > 0 }
-              { \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
+              { \tl_gput_right:Nn \lp_parser_output { & } }
               {
-              \lpalign_parser_append_qualifier_sep:
-              \exp_args:Ne \lpalign_parser:n { \tl_tail:n { \tl_tail:n {#1} } }
+              \tl_gput_right:Nx \lp_parser_output
+                {
+                \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } 
+                &
+                }
+              \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
               }
             }
             {
-            % Check if token is a line break
-            \str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
-              {
-              % Replace depth zero linebreaks
-              \int_compare:nTF { \g_nest_depth > 0 }
-                {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-                {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
-              }
-              {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+            \tl_gput_right:Nn \lp_parser_output { & }
             \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
             }
           }
           {
-				% Check if token is a line break
-				\str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
-					{
-					% Replace depth zero linebreaks
-					\int_compare:nTF { \g_nest_depth > 0 }
+					% Add columns after depth zero linebreaks
+					\str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
+						{
+						\int_compare:nTF { \g_nest_depth > 0 }
+							{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+							{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
+						}
 						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
+					\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 					}
-					{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
-				}
-          }
+        }
 			}
 		}
 	}
+
+\cs_new:Npn \lpalign_parser:n #1
+	{
+	% End loop if token list is empty
+	\tl_if_empty:nF { #1 }
+		{
+		% Trim leading spaces
+		\tl_if_head_is_space:nTF { #1 }
+			{
+			\tl_gput_right:Nn \lp_parser_output { ~ }
+			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
+			}
+			{
+			% Skip head if it is a group
+			\tl_if_head_is_group:nTF { #1 }
+				{ \tl_gput_right:Nx \lp_parser_output  { {\tl_head:n {#1}} } }
+				{
+				\tl_gset_eq:NN \g_prev_head_tl \g_temp_head_tl
+				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
+				% Resolve nest depth
+				\str_if_eq:eeT { \tl_to_str:n { \begin } } { \tl_to_str:V \g_temp_head_tl }
+					{ \int_gincr:N \g_nest_depth }
+				\str_if_eq:eeT { \tl_to_str:n { \end } } { \tl_to_str:V \g_temp_head_tl }
+					{ \int_gdecr:N \g_nest_depth }
+				% If depth is zero
+				\int_compare:nTF { \g_nest_depth > 0 }
+					{
+					% Add qualifier spacing 
+					\str_if_eq:eeT { \tl_to_str:n { & } } { \tl_to_str:V \g_temp_head_tl }
+						{
+						\str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V \g_prev_head_tl }
+							{
+							\tl_gput_right:Nx \lp_parser_output
+	              { \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } & }
+	            }
+    					{ \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
+    				}
+    				{
+    				% Add columns to line breaks
+						\str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
+							{ \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
+							{ \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&} }
+						}
+					}
+					{ \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
+        }
+      \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
+			}
+		}
+	}
+
 
 
 
@@ -161,22 +193,38 @@
 	
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
-	\lpalign_setup:nn { #1 } { #2 }
-  \tl_set:Nn \l_lpalign_objective_tl { #3 }
+	\lpalign_setup:n { #1 }
 	\tl_gclear:N \lp_parser_output
 	\int_gzero:N \g_nest_depth
 	\lpalign_parser:n { #4 }
 	\begin{alignat}{3}
-	\lpalign_print_sense:
+	\lpalign_print_sense:n { #2 }
   &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \tl_use:N \l_lpalign_objective_tl
+  \begin{aligned}#3\end{aligned}
+  \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
 	\tl_use:N \lp_parser_output
 	\end{alignat}
 	}
 	{\ignorespacesafterend}
-
+\NewDocumentEnvironment{lpalign*}{O{}mm+b}
+	{
+	\lpalign_setup:n { #1 }
+	\tl_gclear:N \lp_parser_output
+	\int_gzero:N \g_nest_depth
+	\lpalign_parser:n { #4 }
+	\begin{alignat*}{3}
+	\lpalign_print_sense:n { #2 }
+  &\hspace{\dim_use:N \lpalign_gutter_sep}&
+  \begin{aligned}#3\end{aligned}
+  \span\span\span\omit\hfill
+  \\[\dim_use:N \lpalign_objective_sep]
+	\lpalign_print_st: && 
+	\tl_use:N \lp_parser_output
+	\end{alignat*}
+	}
+	{\ignorespacesafterend}
 
 
 
@@ -186,18 +234,29 @@
 
 \begin{document}
 
-\begin{lpalign}[vars=\mathbf x,st=subject\ to,objective-sep=1em,qualifier-sep=4em,gutter-sep=1em]{Maximize}{\mathbf c^\top\mathbf x}
+\begin{lpalign}
+%[vars=\mathbf x,st=subject\ to,objective-sep=1em,qualifier-sep=4em,gutter-sep=1em]
+{Maximize}{\mathbf c^\top\mathbf x}
 \mathbf a_i^\top\mathbf k &\leq \mathbf b && \forall i\in I \\
-	\begin{aligned}
-	a_1&x_1 + a_2x_2 + a_3x_3 \\
+	\begin{alignedat}{2}
+	a_1&x_1 + a_2x_2 + a_3x_3 h\\
 	   &+ a_4x_4 + x_5 
-	\end{aligned}
+	\end{alignedat}
  &\leq f \\
 \mathbf x &\geq \mathbf 0
 \end{lpalign}
 
 
 
+\begin{alignat}{3}
+	&&
+	\begin{alignedat}{2}
+	a_1&x_1 + a_2x_2 + a_3x_3 &&h\\
+	   &+ a_4x_4 + x_5 
+	\end{alignedat}
+	&\geq 2
+	&&\forall i
+\end{alignat}
 
 
 \end{document}
