@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{mathtools}
+\usepackage{amsmath}
 \usepackage{expl3}
 
 \ExplSyntaxOn
@@ -18,14 +18,14 @@
 		\tl_if_head_is_space:nTF { #1 }
 			{
 			\tl_gput_right:Nn \lp_parser_output { ~ }
-			\lpalign_parser:e { \tl_trim_spaces: { #1 } }
+			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
 			}
 			{
 			% Check if the head is a group
 			\tl_if_head_is_group:nTF { #1 }
 				{
 				\tl_gput_right:Nx \lp_parser_output  { {\tl_head:n {#1}} }
-				\lpalign_parser:e { \tl_tail:n {#1} }
+				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 				}
 				{
 				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
@@ -43,7 +43,7 @@
 						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
 					}
 					{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-				\lpalign_parser:e { \tl_tail:n {#1} }
+				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 				}
 			}
 		}
@@ -63,7 +63,7 @@
 \NewDocumentEnvironment{lpalign}{mm+b}
 	{
 	\tl_gclear:N \lp_parser_output
-	\int_gset_zero:N \g_nest_depth
+	\int_gzero:N \g_nest_depth
 	\lpalign_parser:n { #3 }
 	\begin{alignat}{3}
 	\mathrm{#1}&\quad&#2 \\ 
