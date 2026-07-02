@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{amsmath}
 \usepackage{expl3}
+\usepackage{xparse}
 
 \ExplSyntaxOn
 
@@ -8,6 +9,23 @@
 \tl_new:N \lp_parser_output
 \tl_new:N \g_temp_head_tl
 \int_new:N \g_nest_depth
+\tl_new:N \l_lpalign_vars_tl
+\tl_new:N \l_lpalign_st_tl
+\dim_new:N \l_lpalign_qualifier_sep_dim
+
+\keys_define:nn { parserlpalign }
+  {
+    vars .tl_set:N = \l_lpalign_vars_tl,
+    st .tl_set:N = \l_lpalign_st_tl,
+    qualifier-sep .dim_set:N = \l_lpalign_qualifier_sep_dim,
+  }
+
+\cs_new_protected:Npn \lpalign_reset:
+  {
+    \tl_clear:N \l_lpalign_vars_tl
+    \tl_set:Nn \l_lpalign_st_tl { subject\ to }
+    \dim_set:Nn \l_lpalign_qualifier_sep_dim { 2em }
+  }
 
 \cs_new:Npn \lpalign_parser:n #1
 	{
@@ -40,7 +58,12 @@
 					% Replace depth zero linebreaks
 					\int_compare:nTF { \g_nest_depth > 0 }
 						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
+						{
+						\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }
+						\tl_gput_right:Nn \lp_parser_output { & }
+						\tl_gput_right:Nx \lp_parser_output { \exp_not:N \hspace { \dim_use:N \l_lpalign_qualifier_sep_dim } }
+						\tl_gput_right:Nn \lp_parser_output { & }
+						}
 					}
 					{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
 				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
@@ -60,14 +83,21 @@
 	 $$\tl_use:N \lp_parser_output$$
 	}
 	
-\NewDocumentEnvironment{lpalign}{mm+b}
+\NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
+	\lpalign_reset:
+	\keys_set:nn { parserlpalign } { #1 }
 	\tl_gclear:N \lp_parser_output
 	\int_gzero:N \g_nest_depth
-	\lpalign_parser:n { #3 }
+	\lpalign_parser:n { #4 }
 	\begin{alignat}{3}
-	\mathrm{#1}&\quad&#2 \\ 
-	\mathrm{subject\ to} && 
+	\mathrm{#2}
+  \tl_if_blank:VF \l_lpalign_vars_tl
+    { _{\l_lpalign_vars_tl} }
+  &\quad&
+  #3
+  \\
+	\mathrm{\tl_use:N \l_lpalign_st_tl} && 
 	\tl_use:N \lp_parser_output
 	\end{alignat}
 	}
@@ -82,7 +112,7 @@
 
 \begin{document}
 
-\begin{lpalign}{Maximize}{\mathbf c^\top\mathbf x}
+\begin{lpalign}[vars=\mathbf x,st=subject\ to,qualifier-sep=4em]{Maximize}{\mathbf c^\top\mathbf x}
 \mathbf a_i^\top\mathbf k &\leq \mathbf b && \forall i\in I \\
 	\begin{aligned}
 	a_1&x_1 + a_2x_2 + a_3x_3 \\
