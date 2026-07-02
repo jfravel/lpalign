@@ -73,6 +73,14 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
+\cs_new_protected:Npn \lpalign_parser_append_qualifier_sep:
+  {
+    \tl_gput_right:Nn \lp_parser_output { & }
+    \tl_gput_right:Nx \lp_parser_output
+      { \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } }
+    \tl_gput_right:Nn \lp_parser_output { & }
+  }
+
 \cs_new:Npn \lpalign_parser:n #1
 	{
 	% End loop if token list is empty
@@ -106,9 +114,7 @@
             \int_compare:nTF { \g_nest_depth > 0 }
               { \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
               {
-              \tl_gput_right:Nn \lp_parser_output { & }
-              \tl_gput_right:Nx \lp_parser_output { \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } }
-              \tl_gput_right:Nn \lp_parser_output { & }
+              \lpalign_parser_append_qualifier_sep:
               \exp_args:Ne \lpalign_parser:n { \tl_tail:n { \tl_tail:n {#1} } }
               }
             }
