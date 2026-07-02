@@ -12,6 +12,8 @@
 \tl_new:N \l_lpalign_vars_tl
 \tl_new:N \l_lpalign_st_tl
 \dim_new:N \l_lpalign_qualifier_sep_dim
+\tl_new:N \l_lpalign_sense_tl
+\tl_new:N \l_lpalign_objective_tl
 
 \keys_define:nn { parserlpalign }
   {
@@ -25,6 +27,20 @@
     \tl_clear:N \l_lpalign_vars_tl
     \tl_set:Nn \l_lpalign_st_tl { subject\ to }
     \dim_set:Nn \l_lpalign_qualifier_sep_dim { 2em }
+    \tl_clear:N \l_lpalign_sense_tl
+    \tl_clear:N \l_lpalign_objective_tl
+  }
+
+\cs_new:Npn \lpalign_print_sense:
+  {
+    \tl_if_blank:VTF \l_lpalign_vars_tl
+      { \mathrm{\tl_use:N \l_lpalign_sense_tl} }
+      {
+        \begin{gathered}
+        \mathrm{\tl_use:N \l_lpalign_sense_tl} \\
+        \scriptstyle \tl_use:N \l_lpalign_vars_tl
+        \end{gathered}
+      }
   }
 
 \cs_new:Npn \lpalign_parser:n #1
@@ -52,22 +68,46 @@
 					{ \int_gincr:N \g_nest_depth }
 				\str_if_eq:eeT { \tl_to_str:n { \end } } { \tl_to_str:V \g_temp_head_tl }
 					{ \int_gdecr:N \g_nest_depth }
+        % Replace depth zero double ampersands with qualifier spacing
+        \str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V \g_temp_head_tl }
+          {
+          \str_if_eq:eeTF { \tl_to_str:n { & } } { \exp_args:Ne \tl_to_str:n { \tl_head:n { \tl_tail:n {#1} } } }
+            {
+            \int_compare:nTF { \g_nest_depth > 0 }
+              { \tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} } }
+              {
+              \tl_gput_right:Nn \lp_parser_output { & }
+              \tl_gput_right:Nx \lp_parser_output { \exp_not:N \hspace { \dim_use:N \l_lpalign_qualifier_sep_dim } }
+              \tl_gput_right:Nn \lp_parser_output { & }
+              \exp_args:Ne \lpalign_parser:n { \tl_tail:n { \tl_tail:n {#1} } }
+              }
+            }
+            {
+            % Check if token is a line break
+            \str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
+              {
+              % Replace depth zero linebreaks
+              \int_compare:nTF { \g_nest_depth > 0 }
+                {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+                {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
+              }
+              {\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+            \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
+            }
+          }
+          {
 				% Check if token is a line break
 				\str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
 					{
 					% Replace depth zero linebreaks
 					\int_compare:nTF { \g_nest_depth > 0 }
 						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
-						{
-						\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }
-						\tl_gput_right:Nn \lp_parser_output { & }
-						\tl_gput_right:Nx \lp_parser_output { \exp_not:N \hspace { \dim_use:N \l_lpalign_qualifier_sep_dim } }
-						\tl_gput_right:Nn \lp_parser_output { & }
-						}
+						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
 					}
 					{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
 				\exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 				}
+          }
 			}
 		}
 	}
@@ -87,15 +127,15 @@
 	{
 	\lpalign_reset:
 	\keys_set:nn { parserlpalign } { #1 }
+  \tl_set:Nn \l_lpalign_sense_tl { #2 }
+  \tl_set:Nn \l_lpalign_objective_tl { #3 }
 	\tl_gclear:N \lp_parser_output
 	\int_gzero:N \g_nest_depth
 	\lpalign_parser:n { #4 }
 	\begin{alignat}{3}
-	\mathrm{#2}
-  \tl_if_blank:VF \l_lpalign_vars_tl
-    { _{\l_lpalign_vars_tl} }
+	\lpalign_print_sense:
   &\quad&
-  #3
+  \tl_use:N \l_lpalign_objective_tl
   \\
 	\mathrm{\tl_use:N \l_lpalign_st_tl} && 
 	\tl_use:N \lp_parser_output
