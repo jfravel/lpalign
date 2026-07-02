@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{mathtools}
+\usepackage{expl3}
+
+\ExplSyntaxOn
+
+
+\tl_new:N \lp_parser_output
+\tl_new:N \g_temp_head_tl
+\int_new:N \g_nest_depth
+
+\cs_new:Npn \lpalign_parser:n #1
+	{
+	% End loop if token list is empty
+	\tl_if_empty:nF { #1 }
+		{
+		% Trim leading spaces
+		\tl_if_head_is_space:nTF { #1 }
+			{
+			\tl_gput_right:Nn \lp_parser_output { ~ }
+			\lpalign_parser:e { \tl_trim_spaces: { #1 } }
+			}
+			{
+			% Check if the head is a group
+			\tl_if_head_is_group:nTF { #1 }
+				{
+				\tl_gput_right:Nx \lp_parser_output  { {\tl_head:n {#1}} }
+				\lpalign_parser:e { \tl_tail:n {#1} }
+				}
+				{
+				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
+				% Resolve nest depth
+				\str_if_eq:eeT { \tl_to_str:n { \begin } } { \tl_to_str:V \g_temp_head_tl }
+					{ \int_gincr:N \g_nest_depth }
+				\str_if_eq:eeT { \tl_to_str:n { \end } } { \tl_to_str:V \g_temp_head_tl }
+					{ \int_gdecr:N \g_nest_depth }
+				% Check if token is a line break
+				\str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V \g_temp_head_tl }
+					{
+					% Replace depth zero linebreaks
+					\int_compare:nTF { \g_nest_depth > 0 }
+						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+						{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} &&}}
+					}
+					{\tl_gput_right:Nx \lp_parser_output { \tl_head:n {#1} }}
+				\lpalign_parser:e { \tl_tail:n {#1} }
+				}
+			}
+		}
+	}
+
+
+
+\NewDocumentCommand{\parseDisplay}{m}
+	{
+	 \tl_gclear:N \lp_parser_output
+	 \lpalign_parser:n { #1 }
+	 % Output the compiled token list to the page
+%	 \tl_log:N \lp_parser_output
+	 $$\tl_use:N \lp_parser_output$$
+	}
+	
+\NewDocumentEnvironment{lpalign}{mm+b}
+	{
+	\tl_gclear:N \lp_parser_output
+	\int_gset_zero:N \g_nest_depth
+	\lpalign_parser:n { #3 }
+	\begin{alignat}{3}
+	\mathrm{#1}&\quad&#2 \\ 
+	\mathrm{subject\ to} && 
+	\tl_use:N \lp_parser_output
+	\end{alignat}
+	}
+	{\ignorespacesafterend}
+
+
+
+
+
+\ExplSyntaxOff
+
+
+\begin{document}
+
+\begin{lpalign}{Maximize}{\mathbf c^\top\mathbf x}
+\mathbf a_i^\top\mathbf k &\leq \mathbf b && \forall i\in I \\
+	\begin{aligned}
+	a_1&x_1 + a_2x_2 + a_3x_3 \\
+	   &+ a_4x_4 + x_5 
+	\end{aligned}
+ &\leq f \\
+\mathbf x &\geq \mathbf 0
+\end{lpalign}
+
+
+
+
+
+\end{document}
