@@ -231,8 +231,12 @@
 			{
 			\lpalign_token_if_break:VTF \l_lpalign_parser_head_tl
 				{
-				\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
-				\tl_clear:N \l_lpalign_parser_head_tl
+				\int_compare:nTF { \l_lpalign_parser_nest_depth_int > 0 }
+					{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
+					{
+					\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
+					\tl_clear:N \l_lpalign_parser_head_tl
+					}
 				}
 				{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
 			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
