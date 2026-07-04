@@ -123,8 +123,8 @@
 \tl_new:N \lp_parser_output
 \tl_new:N \g_temp_head_tl
 \tl_new:N \g_prev_head_tl
-\bool_new:N \g_linebreak
 \int_new:N \g_nest_depth
+\bool_new:N \l_lpalign_break_optional_bool
 % Text Inputs
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
@@ -171,7 +171,8 @@
 	\dim_set_eq:NN \lpalign_objective_sep \g_lpalign_default_objective_sep
 	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
 	\dim_set_eq:NN \lpalign_gutter_sep \g_lpalign_default_gutter_sep
-	\bool_set_false:N \g_linebreak
+	\bool_set_false:N \l_lpalign_break_optional_bool
+	\keys_set:nn { lpalign/lp } { #1 }
   }
 
 \cs_new:Npn \lpalign_print_sense:n #1
@@ -220,11 +221,10 @@
 					{ \int_gdecr:N \g_nest_depth }
 				\str_if_eq:eeT { \tl_to_str:n { ] } } { \tl_to_str:V \g_temp_head_tl }
 					{
-					\bool_if:NT \g_linebreak
+					\bool_if:NT \l_lpalign_break_optional_bool
 						{
-						\bool_set_false:N \g_linebreak 
+						\bool_set_false:N \l_lpalign_break_optional_bool 
 						\tl_gput_right:Nn \g_temp_head_tl { && }
-						\int_gdecr:N \g_nest_depth
 						}
 					}
 				% Skip head if its depth is positive
@@ -244,8 +244,7 @@
 						{
 						\str_if_eq:eeTF { \tl_to_str:n { [ } } { \tl_to_str:V \g_temp_head_tl }
 							{ 
-							\bool_set_true:N \g_linebreak 
-							\int_gincr:N \g_nest_depth
+							\bool_set_true:N \l_lpalign_break_optional_bool 
 							}
 							{ 
 							\tl_gput_left:Nn \g_temp_head_tl { && } 
