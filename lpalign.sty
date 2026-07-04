@@ -120,10 +120,10 @@
 \dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
 \dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
 % Parser Variables
-\tl_new:N \lp_parser_output
-\tl_new:N \g_temp_head_tl
-\tl_new:N \g_prev_head_tl
-\int_new:N \g_nest_depth
+\tl_new:N \l_lpalign_parser_output_tl
+\tl_new:N \l_lpalign_parser_head_tl
+\tl_new:N \l_lpalign_parser_prev_head_tl
+\int_new:N \l_lpalign_parser_nest_depth_int
 \bool_new:N \l_lpalign_break_optional_bool
 % Text Inputs
 \tl_new:N \lpalign_vars_text
@@ -218,65 +218,65 @@
 		% Trim leading spaces
 		\tl_if_head_is_space:nTF { #1 }
 			{
-			\tl_gput_right:Nn \lp_parser_output { ~ }
+			\tl_put_right:Nn \l_lpalign_parser_output_tl { ~ }
 			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
 			}
 			{
 			% Skip head if it is a group
 			\tl_if_head_is_group:nTF { #1 }
-				{ \tl_gput_right:Nx \lp_parser_output  { {\tl_head:n {#1}} } }
+				{ \tl_put_right:Nx \l_lpalign_parser_output_tl  { {\tl_head:n {#1}} } }
 				{
-				\tl_gset_eq:NN \g_prev_head_tl \g_temp_head_tl
-				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
+				\tl_set_eq:NN \l_lpalign_parser_prev_head_tl \l_lpalign_parser_head_tl
+				\tl_set:Nx \l_lpalign_parser_head_tl { \tl_head:n {#1} }
 				% Resolve nest depth and line breaks
-				\lpalign_token_if_begin:VTF \g_temp_head_tl
+				\lpalign_token_if_begin:VTF \l_lpalign_parser_head_tl
 					{ 
-					\int_gincr:N \g_nest_depth
-					\lpalign_token_if_break:VTF \g_prev_head_tl
-						{\tl_gput_left:Nn \g_temp_head_tl { && }}
+					\int_incr:N \l_lpalign_parser_nest_depth_int
+					\lpalign_token_if_break:VTF \l_lpalign_parser_prev_head_tl
+						{\tl_put_left:Nn \l_lpalign_parser_head_tl { && }}
 						{ }
 					}
 					{ }
-				\lpalign_token_if_end:VTF \g_temp_head_tl
-					{ \int_gdecr:N \g_nest_depth }
+				\lpalign_token_if_end:VTF \l_lpalign_parser_head_tl
+					{ \int_decr:N \l_lpalign_parser_nest_depth_int }
 					{ }
-				\lpalign_token_if_rbrack:VTF \g_temp_head_tl
+				\lpalign_token_if_rbrack:VTF \l_lpalign_parser_head_tl
 					{
 					\bool_if:NT \l_lpalign_break_optional_bool
 						{
 						\bool_set_false:N \l_lpalign_break_optional_bool 
-						\tl_gput_right:Nn \g_temp_head_tl { && }
+						\tl_put_right:Nn \l_lpalign_parser_head_tl { && }
 						}
 					}
 					{ }
 				% Skip head if its depth is positive
-				\int_compare:nF { \g_nest_depth > 0 }
+				\int_compare:nF { \l_lpalign_parser_nest_depth_int > 0 }
 					{
 	        % Add spacing to qualifier column (&&)
-	        \lpalign_token_if_amp:VTF \g_temp_head_tl
+	        \lpalign_token_if_amp:VTF \l_lpalign_parser_head_tl
 	          {
-						\lpalign_token_if_amp:VTF \g_prev_head_tl
+						\lpalign_token_if_amp:VTF \l_lpalign_parser_prev_head_tl
 							{ 
-							\tl_gput_left:Nn \g_temp_head_tl 
+							\tl_put_left:Nn \l_lpalign_parser_head_tl 
 								{ \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } } 
 							}
 							{ }
 	          }
 	          { }
 					% Add columns (&&) after linebreaks (\\) to skip gutter
-					\lpalign_token_if_break:VTF \g_prev_head_tl
+					\lpalign_token_if_break:VTF \l_lpalign_parser_prev_head_tl
 						{
-						\lpalign_token_if_lbrack:VTF \g_temp_head_tl
+						\lpalign_token_if_lbrack:VTF \l_lpalign_parser_head_tl
 							{ 
 							\bool_set_true:N \l_lpalign_break_optional_bool 
 							}
 							{ 
-							\tl_gput_left:Nn \g_temp_head_tl { && } 
+							\tl_put_left:Nn \l_lpalign_parser_head_tl { && } 
 							}
 						}
 						{ }
 					}
-				\tl_gput_right:NV \lp_parser_output \g_temp_head_tl
+				\tl_put_right:NV \l_lpalign_parser_output_tl \l_lpalign_parser_head_tl
 				}
       \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
 			}
@@ -286,8 +286,10 @@
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
 	\lpalign_setup:n { #1 }
-	\tl_gclear:N \lp_parser_output
-	\int_gzero:N \g_nest_depth
+	\tl_clear:N \l_lpalign_parser_output_tl
+	\tl_clear:N \l_lpalign_parser_head_tl
+	\tl_clear:N \l_lpalign_parser_prev_head_tl
+	\int_zero:N \l_lpalign_parser_nest_depth_int
 	\lpalign_parser:n { #4 }
 	\begin{alignat}{3}
 	\lpalign_print_sense:n { #2 }
@@ -296,15 +298,17 @@
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
-	\tl_use:N \lp_parser_output
+	\tl_use:N \l_lpalign_parser_output_tl
 	\end{alignat}
 	}
 	{\ignorespacesafterend}
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
 	\lpalign_setup:n { #1 }
-	\tl_gclear:N \lp_parser_output
-	\int_gzero:N \g_nest_depth
+	\tl_clear:N \l_lpalign_parser_output_tl
+	\tl_clear:N \l_lpalign_parser_head_tl
+	\tl_clear:N \l_lpalign_parser_prev_head_tl
+	\int_zero:N \l_lpalign_parser_nest_depth_int
 	\lpalign_parser:n { #4 }
 	\begin{alignat*}{3}
 	\lpalign_print_sense:n { #2 }
@@ -313,7 +317,7 @@
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
-	\tl_use:N \lp_parser_output
+	\tl_use:N \l_lpalign_parser_output_tl
 	\end{alignat*}
 	}
 	{\ignorespacesafterend}
