@@ -210,6 +210,9 @@
 \cs_new:Npn \lpalign_token_if_rbrack:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { ] } } { \tl_to_str:V #1 } {#2} {#3} }
 
+\cs_new:Npn \lpalign_token_if_par:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { \par } } { \tl_to_str:V #1 } {#2} {#3} }
+
 \cs_new:Npn \lpalign_parser:n #1
 	{
 	% End loop if token list is empty
@@ -218,10 +221,16 @@
 		% Trim leading spaces
 		\tl_if_head_is_space:nTF { #1 }
 			{
-			\tl_put_right:Nn \l_lpalign_parser_output_tl { ~ }
+			\lpalign_token_if_break:VTF \l_lpalign_parser_head_tl
+				{ }
+				{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
 			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
 			}
 			{
+			\tl_set:Nx \l_tmpa_tl { \tl_head:n {#1} }
+			\lpalign_token_if_par:VTF \l_tmpa_tl
+				{ \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} } }
+				{
 			% Skip head if it is a group
 			\tl_if_head_is_group:nTF { #1 }
 				{ \tl_put_right:Nx \l_lpalign_parser_output_tl  { {\tl_head:n {#1}} } }
@@ -267,18 +276,15 @@
 					\lpalign_token_if_break:VTF \l_lpalign_parser_prev_head_tl
 						{
 						\lpalign_token_if_lbrack:VTF \l_lpalign_parser_head_tl
-							{ 
-							\bool_set_true:N \l_lpalign_break_optional_bool 
-							}
-							{ 
-							\tl_put_left:Nn \l_lpalign_parser_head_tl { && } 
-							}
+							{ \bool_set_true:N \l_lpalign_break_optional_bool }
+							{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
 						}
 						{ }
 					}
 				\tl_put_right:NV \l_lpalign_parser_output_tl \l_lpalign_parser_head_tl
 				}
       \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
+				}
 			}
 		}
 	}
