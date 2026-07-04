@@ -129,6 +129,8 @@
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
 \tl_new:N \lpalign_st_text
+\tl_new:N \l_lpalign_sense_text_tl
+\tl_new:N \l_lpalign_objective_text_tl
 % Boxes
 \box_new:N \lpalign_sense_box
 \box_new:N \lpalign_st_box
@@ -192,6 +194,12 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
+\cs_new_protected:Npn \lpalign_strip_pars:Nn #1#2
+  {
+    \tl_set:Nn #1 {#2}
+    \tl_replace_all:Nnn #1 { \par } { ~ }
+  }
+
 \cs_new:Npn \lpalign_token_if_begin:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { \begin } } { \tl_to_str:V #1 } {#2} {#3} }
 
@@ -222,7 +230,10 @@
 		\tl_if_head_is_space:nTF { #1 }
 			{
 			\lpalign_token_if_break:VTF \l_lpalign_parser_head_tl
-				{ }
+				{
+				\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
+				\tl_clear:N \l_lpalign_parser_head_tl
+				}
 				{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
 			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
 			}
@@ -292,15 +303,17 @@
 \NewDocumentEnvironment{lpalign}{O{}mm+b}
 	{
 	\lpalign_setup:n { #1 }
+	\lpalign_strip_pars:Nn \l_lpalign_sense_text_tl { #2 }
+	\lpalign_strip_pars:Nn \l_lpalign_objective_text_tl { #3 }
 	\tl_clear:N \l_lpalign_parser_output_tl
 	\tl_clear:N \l_lpalign_parser_head_tl
 	\tl_clear:N \l_lpalign_parser_prev_head_tl
 	\int_zero:N \l_lpalign_parser_nest_depth_int
 	\lpalign_parser:n { #4 }
 	\begin{alignat}{3}
-	\lpalign_print_sense:n { #2 }
+	\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
   &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \begin{aligned}#3\end{aligned}
+  \begin{aligned}\tl_use:N \l_lpalign_objective_text_tl\end{aligned}
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
@@ -311,15 +324,17 @@
 \NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
 	\lpalign_setup:n { #1 }
+	\lpalign_strip_pars:Nn \l_lpalign_sense_text_tl { #2 }
+	\lpalign_strip_pars:Nn \l_lpalign_objective_text_tl { #3 }
 	\tl_clear:N \l_lpalign_parser_output_tl
 	\tl_clear:N \l_lpalign_parser_head_tl
 	\tl_clear:N \l_lpalign_parser_prev_head_tl
 	\int_zero:N \l_lpalign_parser_nest_depth_int
 	\lpalign_parser:n { #4 }
 	\begin{alignat*}{3}
-	\lpalign_print_sense:n { #2 }
+	\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
   &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \begin{aligned}#3\end{aligned}
+  \begin{aligned}\tl_use:N \l_lpalign_objective_text_tl\end{aligned}
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
