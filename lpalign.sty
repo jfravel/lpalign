@@ -202,21 +202,31 @@
 
 \cs_new:Npn \lpalign_token_if_begin:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { \begin } } { \tl_to_str:V #1 } {#2} {#3} }
+\cs_new:Npn \lpalign_token_if_begin:VT #1#2
+  { \lpalign_token_if_begin:VTF #1 {#2} { } }
 
 \cs_new:Npn \lpalign_token_if_end:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { \end } } { \tl_to_str:V #1 } {#2} {#3} }
+\cs_new:Npn \lpalign_token_if_end:VT #1#2
+  { \lpalign_token_if_end:VTF #1 {#2} { } }
 
 \cs_new:Npn \lpalign_token_if_amp:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V #1 } {#2} {#3} }
+\cs_new:Npn \lpalign_token_if_amp:VT #1#2
+  { \lpalign_token_if_amp:VTF #1 {#2} { } }
 
 \cs_new:Npn \lpalign_token_if_break:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V #1 } {#2} {#3} }
+\cs_new:Npn \lpalign_token_if_break:VT #1#2
+  { \lpalign_token_if_break:VTF #1 {#2} { } }
 
 \cs_new:Npn \lpalign_token_if_lbrack:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { [ } } { \tl_to_str:V #1 } {#2} {#3} }
 
 \cs_new:Npn \lpalign_token_if_rbrack:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { ] } } { \tl_to_str:V #1 } {#2} {#3} }
+\cs_new:Npn \lpalign_token_if_rbrack:VT #1#2
+  { \lpalign_token_if_rbrack:VTF #1 {#2} { } }
 
 \cs_new:Npn \lpalign_token_if_par:VTF #1#2#3
   { \str_if_eq:eeTF { \tl_to_str:n { \par } } { \tl_to_str:V #1 } {#2} {#3} }
@@ -253,18 +263,15 @@
 				\tl_set_eq:NN \l_lpalign_parser_prev_head_tl \l_lpalign_parser_head_tl
 				\tl_set:Nx \l_lpalign_parser_head_tl { \tl_head:n {#1} }
 				% Resolve nest depth and line breaks
-				\lpalign_token_if_begin:VTF \l_lpalign_parser_head_tl
+				\lpalign_token_if_begin:VT \l_lpalign_parser_head_tl
 					{ 
 					\int_incr:N \l_lpalign_parser_nest_depth_int
-					\lpalign_token_if_break:VTF \l_lpalign_parser_prev_head_tl
-						{\tl_put_left:Nn \l_lpalign_parser_head_tl { && }}
-						{ }
+					\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
+						{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
 					}
-					{ }
-				\lpalign_token_if_end:VTF \l_lpalign_parser_head_tl
+				\lpalign_token_if_end:VT \l_lpalign_parser_head_tl
 					{ \int_decr:N \l_lpalign_parser_nest_depth_int }
-					{ }
-				\lpalign_token_if_rbrack:VTF \l_lpalign_parser_head_tl
+				\lpalign_token_if_rbrack:VT \l_lpalign_parser_head_tl
 					{
 					\bool_if:NT \l_lpalign_break_optional_bool
 						{
@@ -272,29 +279,25 @@
 						\tl_put_right:Nn \l_lpalign_parser_head_tl { && }
 						}
 					}
-					{ }
 				% Skip head if its depth is positive
 				\int_compare:nF { \l_lpalign_parser_nest_depth_int > 0 }
 					{
 	        % Add spacing to qualifier column (&&)
-	        \lpalign_token_if_amp:VTF \l_lpalign_parser_head_tl
+	        \lpalign_token_if_amp:VT \l_lpalign_parser_head_tl
 	          {
-						\lpalign_token_if_amp:VTF \l_lpalign_parser_prev_head_tl
+						\lpalign_token_if_amp:VT \l_lpalign_parser_prev_head_tl
 							{ 
 							\tl_put_left:Nn \l_lpalign_parser_head_tl 
 								{ \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } } 
 							}
-							{ }
 	          }
-	          { }
 					% Add columns (&&) after linebreaks (\\) to skip gutter
-					\lpalign_token_if_break:VTF \l_lpalign_parser_prev_head_tl
+					\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
 						{
 						\lpalign_token_if_lbrack:VTF \l_lpalign_parser_head_tl
 							{ \bool_set_true:N \l_lpalign_break_optional_bool }
 							{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
 						}
-						{ }
 					}
 				\tl_put_right:NV \l_lpalign_parser_output_tl \l_lpalign_parser_head_tl
 				}
@@ -406,8 +409,7 @@
 \cs_new_protected:Npn \lpalign_namedpara_setup:n #1
  {
   \lpalign_namedpara_reset:
-  \tl_if_blank:nTF {#1}
-   { }
+  \tl_if_blank:nF {#1}
    {
     \tl_if_in:nnTF {#1} {=}
      { \keys_set:nn { lpalign/namedpara } { #1 } }
@@ -433,8 +435,7 @@
     \hspace*{\tl_use:N \l_lpalign_namedpara_indent_tl}
     \tl_use:N \l_lpalign_namedpara_before_tl
     \textbf{#1}
-    \tl_if_blank:VTF \l_lpalign_namedpara_abbreviation_tl
-     { }
+    \tl_if_blank:VF \l_lpalign_namedpara_abbreviation_tl
      {
       \hspace{0.5em}\textbf{(\tl_use:N \l_lpalign_namedpara_abbreviation_tl)}
       \tl_use:N \l_lpalign_namedpara_after_tl
