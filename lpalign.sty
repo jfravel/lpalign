@@ -192,6 +192,24 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
+\cs_new:Npn \lpalign_token_if_begin:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { \begin } } { \tl_to_str:V #1 } {#2} {#3} }
+
+\cs_new:Npn \lpalign_token_if_end:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { \end } } { \tl_to_str:V #1 } {#2} {#3} }
+
+\cs_new:Npn \lpalign_token_if_amp:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V #1 } {#2} {#3} }
+
+\cs_new:Npn \lpalign_token_if_break:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V #1 } {#2} {#3} }
+
+\cs_new:Npn \lpalign_token_if_lbrack:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { [ } } { \tl_to_str:V #1 } {#2} {#3} }
+
+\cs_new:Npn \lpalign_token_if_rbrack:VTF #1#2#3
+  { \str_if_eq:eeTF { \tl_to_str:n { ] } } { \tl_to_str:V #1 } {#2} {#3} }
+
 \cs_new:Npn \lpalign_parser:n #1
 	{
 	% End loop if token list is empty
@@ -211,15 +229,18 @@
 				\tl_gset_eq:NN \g_prev_head_tl \g_temp_head_tl
 				\tl_gset:Nx \g_temp_head_tl { \tl_head:n {#1} }
 				% Resolve nest depth and line breaks
-				\str_if_eq:eeT { \tl_to_str:n { \begin } } { \tl_to_str:V \g_temp_head_tl }
+				\lpalign_token_if_begin:VTF \g_temp_head_tl
 					{ 
 					\int_gincr:N \g_nest_depth
-					\str_if_eq:eeT { \tl_to_str:n { \\ } } { \tl_to_str:V \g_prev_head_tl }
+					\lpalign_token_if_break:VTF \g_prev_head_tl
 						{\tl_gput_left:Nn \g_temp_head_tl { && }}
+						{ }
 					}
-				\str_if_eq:eeT { \tl_to_str:n { \end } } { \tl_to_str:V \g_temp_head_tl }
+					{ }
+				\lpalign_token_if_end:VTF \g_temp_head_tl
 					{ \int_gdecr:N \g_nest_depth }
-				\str_if_eq:eeT { \tl_to_str:n { ] } } { \tl_to_str:V \g_temp_head_tl }
+					{ }
+				\lpalign_token_if_rbrack:VTF \g_temp_head_tl
 					{
 					\bool_if:NT \l_lpalign_break_optional_bool
 						{
@@ -227,22 +248,25 @@
 						\tl_gput_right:Nn \g_temp_head_tl { && }
 						}
 					}
+					{ }
 				% Skip head if its depth is positive
 				\int_compare:nF { \g_nest_depth > 0 }
 					{
 	        % Add spacing to qualifier column (&&)
-	        \str_if_eq:eeT { \tl_to_str:n { & } } { \tl_to_str:V \g_temp_head_tl }
+	        \lpalign_token_if_amp:VTF \g_temp_head_tl
 	          {
-						\str_if_eq:eeT { \tl_to_str:n { & } } { \tl_to_str:V \g_prev_head_tl }
+						\lpalign_token_if_amp:VTF \g_prev_head_tl
 							{ 
 							\tl_gput_left:Nn \g_temp_head_tl 
 								{ \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } } 
 							}
+							{ }
 	          }
+	          { }
 					% Add columns (&&) after linebreaks (\\) to skip gutter
-					\str_if_eq:eeT { \tl_to_str:n { \\ } } { \tl_to_str:V \g_prev_head_tl }
+					\lpalign_token_if_break:VTF \g_prev_head_tl
 						{
-						\str_if_eq:eeTF { \tl_to_str:n { [ } } { \tl_to_str:V \g_temp_head_tl }
+						\lpalign_token_if_lbrack:VTF \g_temp_head_tl
 							{ 
 							\bool_set_true:N \l_lpalign_break_optional_bool 
 							}
@@ -250,6 +274,7 @@
 							\tl_gput_left:Nn \g_temp_head_tl { && } 
 							}
 						}
+						{ }
 					}
 				\tl_gput_right:NV \lp_parser_output \g_temp_head_tl
 				}
