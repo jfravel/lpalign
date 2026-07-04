@@ -174,7 +174,12 @@
 	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
 	\dim_set_eq:NN \lpalign_gutter_sep \g_lpalign_default_gutter_sep
 	\bool_set_false:N \l_lpalign_break_optional_bool
-	\keys_set:nn { lpalign/lp } { #1 }
+	\tl_if_blank:nF {#1}
+		{
+		\tl_if_in:nnTF {#1} {=}
+			{ \keys_set:nn { lpalign/lp } { #1 } }
+			{ \tl_set:Nn \lpalign_vars_text {#1} }
+		}
   }
 
 \cs_new:Npn \lpalign_print_sense:n #1
