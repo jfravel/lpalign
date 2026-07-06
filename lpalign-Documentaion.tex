@@ -172,14 +172,14 @@ Remember that space can be added between individual rows (or lines of text) via 
 
 
 \subsection*{Multiline Objectives}
-The \gl{objective function} is wrapped in an \textsf{aligned} environment from \textsf{amsmath}. This means that very long objectives can easily be expressed in multiple lines rather than overflowing the margins or creating awkward spacing.
+Very long \gl{objective functions} can be expressed in multiple lines by supplying an explicit \textsf{aligned} environment from \textsf{amsmath}. This avoids overflow and keeps the objective aligned with the guttered `sense' term.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{lpalign}{Maximize}
-    @gl~{ |
-    	@gl~c_1&x_1+c_2x_2+c_3x_3+c_4x_4 \\|
-         @gl~&+c_5x_5+...+c_mx_m |
-    @gl~}|
+    @gl~\begin{aligned}|
+      @gl~c_1&x_1+c_2x_2+c_3x_3+c_4x_4 \\|
+           @gl~&+c_5x_5+...+c_mx_m |
+    @gl~\end{aligned}|
     @hl~\begin{aligned}|
       @hl~a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3 \\|
             @hl~&+a_{i4}x_4+...+a_{im}x_nm |
@@ -189,8 +189,10 @@ The \gl{objective function} is wrapped in an \textsf{aligned} environment from \
   \end{Verbatim}
 $$\downarrow$$
     \begin{lpalign}{Maximize}
-      { \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
-           &\gl{$+c_5x_5+...+c_mx_m$} }
+      \begin{aligned}
+        \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
+             &\gl{$+c_5x_5+...+c_mx_m$}
+      \end{aligned}
       \begin{aligned}
         \hl{$a_{i1}$}&\hl{$x_1+a_{i2}x_2+a_{i3}x_3$}\\
               &\hl{$+a_{i4}x_4+...+a_{im}x_nm$} 
@@ -213,8 +215,10 @@ $$\downarrow$$
     		st-shift=0.6\baselineskip,
     		st=\hl{s.t.}]
       {\gl{Maximize}}
-      { c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
-           &+c_5x_5+...+c_mx_m }
+      {\begin{aligned}
+        c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+           &+c_5x_5+...+c_mx_m
+      \end{aligned}}
       \begin{aligned}
         a_1&x_1+a_2x_2+a_3x_3 \\
               &+a_4x_4+...+a_mx_m 
