@@ -76,13 +76,14 @@ Qualified constraints still use `&&`:
 \end{lpalign}
 ```
 
-Package-load defaults are available for the three main spacing keys:
+Package-load defaults are available for several spacing keys:
 
 ```tex
 \usepackage[
-  lp_objective_sep=1em,
-  lp_qualifier_sep=3em,
-  lp_gutter_sep=1em,
+  lp_objective_sep=0em,
+  lp_qualifier_sep=2em,
+  lp_gutter_sep=0.75em,
+  namedpara_indent=2em,
   evaluator_spacing=0.35em
 ]{lpalign}
 ```
@@ -92,7 +93,7 @@ Package-load defaults are available for the three main spacing keys:
 `namedpara` displays a paragraph marker and, when labeled, uses the supplied abbreviation as the reference text.
 
 ```tex
-\namedpara{Named Paragraph}[abv=NPg]\label{npara}
+\namedpara{Named Paragraph}[NPg]\label{npara}
 Paragraph \ref{npara} is a named paragraph.
 ```
 
@@ -144,3 +145,6 @@ Build it from the repository root with:
 pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
 pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
 ```
+
+## Contributions
+This package was, from versions 1.2-1.5, developed with assistance of OpenAI Codex.
