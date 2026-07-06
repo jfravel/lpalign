@@ -167,14 +167,8 @@ For package-load style defaults, use the style names rather than raw control seq
 
 ## Documentation
 
-The full package documentation is in [`lpalign-Documentaion.tex`](/repos/lpalign/lpalign-Documentaion.tex).
+The full package documentation is in [`lpalign-Documentaion.pdf`](/repos/lpalign/lpalign-Documentaion.pdf).
 
-Build it from the repository root with:
-
-```bash
-pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
-pdflatex -interaction=nonstopmode lpalign-Documentaion.tex
-```
 
 ## Contributions
 This package was, from versions 1.2-1.5, developed with assistance of OpenAI Codex.
