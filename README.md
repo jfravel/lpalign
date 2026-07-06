@@ -58,6 +58,13 @@ Supported keys include:
 - `sense-shift`
 - `st-shift`
 
+Package-load defaults are available for:
+- `lp_objective_sep`
+- `lp_qualifier_sep`
+- `lp_gutter_sep`
+- `lp_vars_style`
+- `lp_st`
+
 Example:
 
 ```tex
@@ -76,18 +83,6 @@ Qualified constraints still use `&&`:
 \end{lpalign}
 ```
 
-Package-load defaults are available for several spacing keys:
-
-```tex
-\usepackage[
-  lp_objective_sep=0em,
-  lp_qualifier_sep=2em,
-  lp_gutter_sep=0.75em,
-  namedpara_indent=2em,
-  evaluator_spacing=0.35em
-]{lpalign}
-```
-
 ## Named Paragraphs
 
 `namedpara` displays a paragraph marker and, when labeled, uses the supplied abbreviation as the reference text.
@@ -103,12 +98,6 @@ Supported keys include:
 - `before`
 - `after`
 - `flush`
-
-The package-load default indent can be changed with:
-
-```tex
-\usepackage[namedpara_indent=3em]{lpalign}
-```
 
 The legacy `\paratitle` command remains available unchanged.
 
@@ -134,6 +123,47 @@ Example:
 ```tex
 Equation \ref{eq:1} has sub-reference \lpsubref{eq:1}.
 ```
+
+Package-load defaults are available for:
+- `namedsubeqs_style`
+- `namedsubeqs_punct`
+
+## Package-Load Options
+
+The package supports the following load-time defaults:
+
+- `lp_objective_sep`
+- `lp_qualifier_sep`
+- `lp_gutter_sep`
+- `lp_vars_style`
+- `lp_st`
+- `namedpara_indent`
+- `namedparabefore`
+- `namedparaafter`
+- `namedparaflush`
+- `namedsubeqs_style`
+- `namedsubeqs_punct`
+- `evaluator_spacing`
+
+Example:
+
+```tex
+\usepackage[
+  lp_objective_sep=0em,
+  lp_qualifier_sep=2em,
+  lp_gutter_sep=0.75em,
+  lp_vars_style=scriptstyle,
+  lp_st=subject\ to,
+  namedpara_indent=2em,
+  namedsubeqs_style=roman,
+  namedsubeqs_punct=:,
+  evaluator_spacing=0.35em
+]{lpalign}
+```
+
+For package-load style defaults, use the style names rather than raw control sequences:
+- `lp_vars_style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
+- `namedsubeqs_style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
 
 ## Documentation
 

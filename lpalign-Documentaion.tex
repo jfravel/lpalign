@@ -52,8 +52,8 @@ Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|vars|] -- subscript on the `sense' term. Commonly used to state variables and ranges.
-  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle|.
-  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.|.
+  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed during package load by \verb|lp_vars_style|; see Section \ref{sec:options}.
+  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|lp_st|; see Section \ref{sec:options}.
   \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective_sep| option; see Section \ref{sec:options}.
   \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
   \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter_sep| option.
@@ -429,7 +429,7 @@ $$\downarrow$$
   \end{minipage}
 \end{tcolorbox}
 
-A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument.
+A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed during package load with \verb|namedsubeqs_style| and \verb|namedsubeqs_punct|; see Section \ref{sec:options}.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{namedsubeqs}{EQ}[\sffamily\Alph]
@@ -460,7 +460,7 @@ $$\downarrow$$
 
 
 
-\section{Sub-References}
+\section{Sub-References}\label{sec:subrefs}
 
 Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
 \begin{tcolorbox}
@@ -727,11 +727,19 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
+For package-load style defaults, use style names rather than raw control sequences. Thus \verb|lp_vars_style=scriptstyle| and \verb|namedsubeqs_style=roman| are valid package options.
 	\begin{compactitem}
 	\item[\Verb|lp\_objective\_sep|] -- controls the spacing between objective function and the first constraint. Defaults to \verb|0em|. Section \ref{sec:lpalign}.
 	\item[\Verb|lp\_qualifier\_sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. Section \ref{sec:lpalign}.
 	\item[\Verb|lp\_gutter\_sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. Section \ref{sec:lpalign}.
+	\item[\Verb|lp\_vars\_style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. Section \ref{sec:lpalign}.
+	\item[\Verb|lp\_st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. Section \ref{sec:lpalign}.
 	\item[\Verb|namedpara\_indent|] -- controls the indent of named paragraph markers. Defaults to \verb|2em|. Section \ref{sec:paragraphs}.
+	\item[\Verb|namedparabefore|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
+	\item[\Verb|namedparaafter|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
+	\item[\Verb|namedparaflush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. Section \ref{sec:paragraphs}.
+	\item[\Verb|namedsubeqs\_style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
+	\item[\Verb|namedsubeqs\_punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. Section \ref{sec:subrefs}.
 	\item[\Verb|evaluator\_spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
 	\end{compactitem}
 

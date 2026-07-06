@@ -129,6 +129,8 @@
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
 \tl_new:N \lpalign_st_text
+\tl_new:N \g_lpalign_default_vars_style_tl
+\tl_new:N \g_lpalign_default_st_tl
 \tl_new:N \l_lpalign_sense_text_tl
 \tl_new:N \l_lpalign_objective_text_tl
 % Boxes
@@ -149,6 +151,12 @@
 	lp_qualifier_sep .initial:n = 2em,
 	lp_gutter_sep .dim_gset:N = \g_lpalign_default_gutter_sep,
 	lp_gutter_sep .initial:n = 0.75em,
+	lp_vars_style .choices:nn =
+	  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
+	  { \tl_gset_eq:NN \g_lpalign_default_vars_style_tl \l_keys_choice_tl },
+	lp_vars_style .initial:n = scriptstyle,
+	lp_st .tl_gset:N = \g_lpalign_default_st_tl,
+	lp_st .initial:n = s.t.,
 	}
 % Key Options
 \keys_define:nn { lpalign/lp }
@@ -166,8 +174,8 @@
 \cs_new_protected:Npn \lpalign_setup:n #1
   {
 	\tl_clear:N \lpalign_vars_text
-	\tl_set:Nn \lpalign_vars_style { \scriptstyle }
-	\tl_set:Nn \lpalign_st_text { s.t. }
+	\tl_set_eq:NN \lpalign_vars_style \g_lpalign_default_vars_style_tl
+	\tl_set_eq:NN \lpalign_st_text \g_lpalign_default_st_tl
 	\dim_set:Nn \lpalign_sense_shift { 0pt }
 	\dim_set:Nn \lpalign_st_shift { 0pt }
 	\dim_set_eq:NN \lpalign_objective_sep \g_lpalign_default_objective_sep
@@ -180,6 +188,7 @@
 			{ \keys_set:nn { lpalign/lp } { #1 } }
 			{ \tl_set:Nn \lpalign_vars_text {#1} }
 		}
+  \lpalign_unbrace_tl:N \lpalign_vars_style
   }
 
 \cs_new:Npn \lpalign_print_sense:n #1
@@ -203,6 +212,13 @@
   {
     \tl_set:Nn #1 {#2}
     \tl_replace_all:Nnn #1 { \par } { ~ }
+  }
+
+\cs_new_protected:Npn \lpalign_unbrace_tl:N #1
+  {
+    \exp_args:NV \tl_if_head_is_group:nTF #1
+      { \tl_set:Nx #1 { \exp_after:wN \use:n \exp_after:wN { \tl_use:N #1 } } }
+      { }
   }
 
 \cs_new:Npn \lpalign_token_if_begin:VTF #1#2#3
@@ -382,7 +398,6 @@
    { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
   namedparaflush .initial:n = left,
  }
-\ProcessKeysOptions{ lpalign/package }
 % Local state
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
 \tl_new:N \l_lpalign_namedpara_indent_tl
@@ -497,22 +512,44 @@
 % Option state
 \tl_new:N \l_lpalign_namedsubeq_style_tl
 \tl_new:N \l_lpalign_namedsubeq_punct_tl
+\tl_new:N \g_lpalign_namedsubeq_default_style_tl
+\tl_new:N \g_lpalign_namedsubeq_default_punct_tl
+\tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \alph }
+\tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
+\keys_define:nn { lpalign/package }
+ {
+  namedsubeqs_style .choices:nn = { alph, Alph, arabic, roman, Roman }
+   {
+    \str_case:Vn \l_keys_choice_tl
+     {
+      {alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \alph } }
+      {Alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Alph } }
+      {arabic} { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \arabic } }
+      {roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \roman } }
+      {Roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Roman } }
+     }
+   },
+  namedsubeqs_style .initial:n = alph,
+  namedsubeqs_punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
+  namedsubeqs_punct .initial:n = .,
+ }
+\ProcessKeysOptions{ lpalign/package }
 \keys_define:nn { lpalign/namedsubeqs }
  {
   style .tl_set:N = \l_lpalign_namedsubeq_style_tl,
   punct .tl_set:N = \l_lpalign_namedsubeq_punct_tl,
-  style .initial:n = \alph,
-  punct .initial:n = .,
  }
 \cs_new_protected:Npn \lpalign@namedsubeqsetup #1
  {
-  \tl_if_blank:nTF {#1}
-   { \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = . } }
+  \tl_set_eq:NN \l_lpalign_namedsubeq_style_tl \g_lpalign_namedsubeq_default_style_tl
+  \tl_set_eq:NN \l_lpalign_namedsubeq_punct_tl \g_lpalign_namedsubeq_default_punct_tl
+  \tl_if_blank:nF {#1}
    {
     \tl_if_in:nnTF {#1} {=}
-     { \keys_set:nn { lpalign/namedsubeqs } { style = \alph, punct = ., #1 } }
-     { \keys_set:nn { lpalign/namedsubeqs } { style = #1, punct = . } }
+     { \keys_set:nn { lpalign/namedsubeqs } { #1 } }
+     { \tl_set:Nn \l_lpalign_namedsubeq_style_tl {#1} }
    }
+  \lpalign_unbrace_tl:N \l_lpalign_namedsubeq_style_tl
  }
 \cs_new:Npn \lpalign@namedsubeqstyle #1
  {
