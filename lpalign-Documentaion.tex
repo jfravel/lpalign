@@ -172,14 +172,14 @@ Remember that space can be added between individual rows (or lines of text) via 
 
 
 \subsection*{Multiline Objectives}
-Very long \gl{objective functions} can be expressed in multiple lines by supplying an explicit \textsf{aligned} environment from \textsf{amsmath}. This avoids overflow and keeps the objective aligned with the guttered `sense' term.
+Very long \gl{objective functions} can be expressed in multiple lines by supplying an explicit \textsf{aligned} environment from \textsf{amsmath}. This avoids overflow and keeps the objective aligned with the guttered `sense' term. The same can be done within the \hl{constraints}. Tags and qualifiers will be placed correctly.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{lpalign}{Maximize}
-    @gl~\begin{aligned}|
+    @gl~{\begin{aligned}|
       @gl~c_1&x_1+c_2x_2+c_3x_3+c_4x_4 \\|
            @gl~&+c_5x_5+...+c_mx_m |
-    @gl~\end{aligned}|
+    @gl~\end{aligned}}|
     @hl~\begin{aligned}|
       @hl~a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3 \\|
             @hl~&+a_{i4}x_4+...+a_{im}x_nm |
@@ -189,10 +189,10 @@ Very long \gl{objective functions} can be expressed in multiple lines by supplyi
   \end{Verbatim}
 $$\downarrow$$
     \begin{lpalign}{Maximize}
-      \begin{aligned}
+      {\begin{aligned}
         \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
              &\gl{$+c_5x_5+...+c_mx_m$}
-      \end{aligned}
+      \end{aligned}}
       \begin{aligned}
         \hl{$a_{i1}$}&\hl{$x_1+a_{i2}x_2+a_{i3}x_3$}\\
               &\hl{$+a_{i4}x_4+...+a_{im}x_nm$} 
@@ -200,12 +200,17 @@ $$\downarrow$$
        \mathbf{x} &\ge \mathbf{0}
     \end{lpalign}
 \end{tcolorbox}
-Multiline \hl{constraints} can be displayed by nesting their own \textsf{aligned} environments in the constraint cells. Tags and qualifiers will be placed correctly. The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down.
+The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. Other \textsf{amsmath}-compatible wrappers or environments can be nested within the objective. 
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{lpalign}
   	[ @gl~sense-shift=0.5\baselineskip|,
   		@hl~st-shift=0.5\baselineskip| ]
+  	{Maximize}
+		{\fbox{$\begin{aligned}
+		 c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+		    &+c_5x_5+...+c_mx_m
+		\end{aligned}$}}
   	...
   \end{lpalign}
   \end{Verbatim}
@@ -215,14 +220,15 @@ $$\downarrow$$
     		st-shift=0.6\baselineskip,
     		st=\hl{s.t.}]
       {\gl{Maximize}}
-      {\begin{aligned}
+      {\fbox{$\begin{aligned}
         c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
            &+c_5x_5+...+c_mx_m
-      \end{aligned}}
+      \end{aligned}$}}
       \begin{aligned}
         a_1&x_1+a_2x_2+a_3x_3 \\
               &+a_4x_4+...+a_mx_m 
-      \end{aligned}&\le b_i
+      \end{aligned}&\le b_i   && \forall\ i\in [\![n]\!]   \\
+             \mathbf{x} &\ge \mathbf{0}
     \end{lpalign}
 \end{tcolorbox}
 
