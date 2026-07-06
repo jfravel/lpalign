@@ -99,8 +99,6 @@ Supported keys include:
 - `after`
 - `flush`
 
-The legacy `\paratitle` command remains available unchanged.
-
 ## Named Sub-equations
 
 `namedsubeqs` gives a shared main tag to a group of equations while letting each line carry its own sub-index.
@@ -145,22 +143,6 @@ The package supports the following load-time defaults:
 - `namedsubeqs_punct`
 - `evaluator_spacing`
 
-Example:
-
-```tex
-\usepackage[
-  lp_objective_sep=0em,
-  lp_qualifier_sep=2em,
-  lp_gutter_sep=0.75em,
-  lp_vars_style=scriptstyle,
-  lp_st=subject\ to,
-  namedpara_indent=2em,
-  namedsubeqs_style=roman,
-  namedsubeqs_punct=:,
-  evaluator_spacing=0.35em
-]{lpalign}
-```
-
 For package-load style defaults, use the style names rather than raw control sequences:
 - `lp_vars_style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
 - `namedsubeqs_style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
@@ -172,7 +154,6 @@ For `lp_st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the 
 ## Documentation
 
 The full package documentation is in [`lpalign-Documentaion.pdf`](/repos/lpalign/lpalign-Documentaion.pdf).
-
 
 ## Contributions
 This package was, from versions 1.2-1.5, developed with assistance of OpenAI Codex.
