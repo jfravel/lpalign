@@ -188,6 +188,7 @@
 			{ \keys_set:nn { lpalign/lp } { #1 } }
 			{ \tl_set:Nn \lpalign_vars_text {#1} }
 		}
+  \lpalign_normalize_spaces:N \lpalign_st_text
   \lpalign_unbrace_tl:N \lpalign_vars_style
   }
 
@@ -212,6 +213,11 @@
   {
     \tl_set:Nn #1 {#2}
     \tl_replace_all:Nnn #1 { \par } { ~ }
+  }
+
+\cs_new_protected:Npn \lpalign_normalize_spaces:N #1
+  {
+    \tl_replace_all:Nnn #1 { ~ } { \c_space_tl }
   }
 
 \cs_new_protected:Npn \lpalign_unbrace_tl:N #1

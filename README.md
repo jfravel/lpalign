@@ -165,6 +165,10 @@ For package-load style defaults, use the style names rather than raw control seq
 - `lp_vars_style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
 - `namedsubeqs_style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
 
+For `lp_st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the package sees the option value. Use either:
+- `lp_st={subject to}`
+- `lp_st=subject~to`
+
 ## Documentation
 
 The full package documentation is in [`lpalign-Documentaion.pdf`](/repos/lpalign/lpalign-Documentaion.pdf).

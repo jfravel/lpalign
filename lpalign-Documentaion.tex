@@ -728,6 +728,7 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
 For package-load style defaults, use style names rather than raw control sequences. Thus \verb|lp_vars_style=scriptstyle| and \verb|namedsubeqs_style=roman| are valid package options.
+For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|lp_st={subject to}| or \verb|lp_st=subject~to| instead.
 	\begin{compactitem}
 	\item[\Verb|lp\_objective\_sep|] -- controls the spacing between objective function and the first constraint. Defaults to \verb|0em|. Section \ref{sec:lpalign}.
 	\item[\Verb|lp\_qualifier\_sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. Section \ref{sec:lpalign}.
