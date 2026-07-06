@@ -3,8 +3,8 @@
 `lpalign` is a small LaTeX package for formatting mathematical programs and for naming or referencing related displayed objects.
 
 Current release:
-- `v1.4 final`
-- published June 28, 2026
+- `v1.5`
+- published July 6, 2026
 
 The package currently provides:
 - `lpalign` and `lpalign*` for optimization problems aligned on constraint relations
