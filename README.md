@@ -7,11 +7,11 @@ Current release:
 - published July 6, 2026
 
 The package currently provides:
-- `lpalign` and `lpalign*` for optimization problems aligned on constraint relations
-- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref`
-- `\paratitle` and `\namedpara` for named paragraphs
-- quick horizontal and vertical spacing helpers
-- display-style operator helpers that preserve ordinary `_`/`^` syntax while placing long limits in `\mathclap` boxes
+- `lpalign` and `lpalign*` environments for writing mathematical programs within `alignat`,
+- `\namedpara` for named paragraphs with referencable abbreviations,
+- `namedsubeqs` plus `\lpsubref` and `\lpsubeqref` for referencing subequations in a named environment,
+- quick horizontal and vertical spacing helpers and
+- display-style operator helpers which mimic `\smashoperator` from `mathtools` while prexerving ordinary `_`/`^` syntax.
 
 ## Installation
 
