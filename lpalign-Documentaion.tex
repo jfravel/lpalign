@@ -40,12 +40,12 @@
 
 \section{Installation}
 
-Copy \textsf{lpalign.sty} to the same directory as your main \textsf{.tex} file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
+Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
 
 
 
 
-\section{The \textsf{lpalign} Environment}\label{sec:lpalign}
+\section{The \texttt{lpalign} Environment}\label{sec:lpalign}
 
 \textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary function is to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the \textsf{alignat} body. These terms are aligned with the objective and first constraint respectively.
 
@@ -68,7 +68,7 @@ The \textsf{lpalign*} environment is identical without printing equation referen
      \mathbf{x} &\ge \mathbf{0} 
   \end{lpalign} 
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{lpalign}{Maximize}{\mathbf{c}^\top\mathbf{x}}
       A\mathbf{x} &\le \mathbf{b}  \\
        \mathbf{x} &\ge \mathbf{0} 
@@ -76,13 +76,13 @@ The \textsf{lpalign*} environment is identical without printing equation referen
 \end{tcolorbox}
 
 
-Just like in vanilla \textsf{alignat}, ampersands \verb|&| control alignment; the constraint rows will be aligned at the ampersand.
+Just like the vanilla \verb|alignat| environment, ampersands \verb|&| control alignment; the constraint rows will be aligned at the ampersand.
 \begin{tcolorbox}
 	\begin{Verbatim}
 		@hl&Ax+s = b+0 \\    Ax+s @gl&= b+0 \\    Ax+s = b+0@hl& \\
 		@hl&x,s \ge 0         x,s @gl&\ge 0        x,s \ge 0@hl& 
 	\end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
 \begin{minipage}{0.32\textwidth}
 		\begin{lpalign*}{max}{c^\top x}
       &\hl{$A$}x+s = b+0 \\
@@ -112,8 +112,9 @@ Qualified constraints are also possible. A double-ampersand \verb|&&| will prope
     \mathbf{a}_i^\top\mathbf{x} &\le b_i  
                       @gl~&& \forall\ i\in [\![n]\!]|     \\
        x_i &\ge 0     @gl~&& \forall\ i\in \{1,2,...,n\}|
+       
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{lpalign*}{Maximize}{\sum_{j=1}^mc_jx_j}
       \mathbf{a}_i^\top\mathbf{x} &\le b_i  
                       && \gl{$\forall\ i\in [\![n]\!]$}     \\
@@ -130,7 +131,7 @@ Subscripts can be placed under the `sense' term via the \verb|vars| option.
     A\mathbf{x} &\le \mathbf{b}
   \end{lpalign*} 
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
   \begin{lpalign*}[vars=\hl{$\scriptstyle\mathbf{x}\in\mathbb{R}_+$}]
   {Maximize}{c_1x_1 + \dots + c_mx_m}
     A\mathbf{x} &\le \mathbf{b}
@@ -154,7 +155,7 @@ The \verb|sep| options can be used to modify the whitespace between elements. Th
      \mathbf{x} &\ge \mathbf{0} 
   \end{lpalign} 
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{lpalign}
       [
       objective-sep=2em,
@@ -186,7 +187,7 @@ The \gl{objective function} is wrapped in an \textsf{aligned} environment from \
     \mathbf{x} &\ge \mathbf{0}
   \end{lpalign}
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{lpalign}{Maximize}
       { \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
            &\gl{$+c_5x_5+...+c_mx_m$} }
@@ -197,19 +198,16 @@ The \gl{objective function} is wrapped in an \textsf{aligned} environment from \
        \mathbf{x} &\ge \mathbf{0}
     \end{lpalign}
 \end{tcolorbox}
-Multiline \hl{constraints} can be displayed by nesting their own \textsf{aligned} environments in the constraint cells. Tags and qualifiers will be placed correctly.
-
-The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down
+Multiline \hl{constraints} can be displayed by nesting their own \textsf{aligned} environments in the constraint cells. Tags and qualifiers will be placed correctly. The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{lpalign}
   	[ @gl~sense-shift=0.5\baselineskip|,
   		@hl~st-shift=0.5\baselineskip| ]
   	...
-  	...
   \end{lpalign}
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{lpalign}
     	[ sense-shift=0.6\baselineskip,
     		st-shift=0.6\baselineskip,
@@ -224,6 +222,54 @@ The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down
     \end{lpalign}
 \end{tcolorbox}
 
+\subsection*{\textsf{amsmath} Formatting}
+The \verb|\span| command tells \verb|alignat| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
+\begin{tcolorbox}
+	\begin{Verbatim}
+	\begin{lpalign}{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
+		&\mathbf{a}_i^\top\mathbf{x} \GE b_i 
+														&&\forall\ i\in[\![m]\!] \\
+		& \begin{bmatrix} 
+				a_{11} & a_{12} & \dots  & a_{1n} \\
+				a_{21} & a_{22} & \dots  & a_{2n} \\
+				\vdots & \vdots & \ddots &        \\
+				a_{m1} & a_{m2} &        & a_{mn}
+			\end{bmatrix}
+			\begin{bmatrix}
+				x_1 \\ x_2 \\ \vdots \\ x_n
+			\end{bmatrix}
+		\GE
+			\begin{bmatrix}
+				b_1 \\ b_2 \\ \vdots \\ b_m
+			\end{bmatrix}
+		@hl~\span\span| \\
+		@gl~\span\span\span\omit| $\mathbf{x}\in\mathbb{R}^n$
+	\end{lpalign}
+	\end{Verbatim}
+	$$\downarrow$$
+	\begin{lpalign}
+	{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
+	&\mathbf{a}_i^\top\mathbf{x} \GE b_i &&\hl{$\forall\ i\in[\![m]\!]$} \\
+	& \begin{bmatrix} 
+		a_{11} & a_{12} & \dots  & a_{1n} \\
+		a_{21} & a_{22} & \dots  & a_{2n} \\
+		\vdots & \vdots & \ddots &        \\
+		a_{m1} & a_{m2} &        & a_{mn}
+		\end{bmatrix}
+		\begin{bmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+		\end{bmatrix} 
+	\GE
+		\begin{bmatrix}
+		b_1 \\ b_2 \\ \vdots \\ b_m
+		\end{bmatrix}
+	\span\span\\
+	\span\span\span\omit \gl{$\mathbf{x}\in\mathbb{R}^n$}
+	\end{lpalign}
+\end{tcolorbox}
+Three \verb|\span|'s and one \verb|\omit| will right-flush the row. \verb|\omit| ignores the column's formatting, so you will need to re-enter math mode. Using it in earlier columns may break reference tagging.
+
+
 
 \section{Named Paragraphs}\label{sec:paragraphs}
 The \verb|namedpara| command displays a paragraph marker that takes an abbreviation, which is useful for referencing specific problems or conventions.
@@ -232,7 +278,7 @@ The \verb|namedpara| command displays a paragraph marker that takes an abbreviat
 \namedpara{Named Paragraph}[NPg]\label{npara1} \\
 Paragraph \ref{npara1} is a named paragraph.
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
 \namedpara{Named Paragraph}
           [abv=NPg]\label{npara1}
 Paragraph \ref{npara1} is a named paragraph.
@@ -251,21 +297,23 @@ Currently supported optional keys include\Vtrg
   \begin{Verbatim}
 \namedpara{Indented}[abv=IND, indent=6em]
 
-\namedpara{Surrounded}[abv=SUR, before=$>>>$, after=$<<<$]
+\namedpara{Surrounded}
+					[abv=SUR, flush=center, before=$>>>$, after=$<<<$]
 
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
-\namedpara{Indented}[abv=IND, indent=6em]
-\namedpara{Surrounded}[abv=SUR, before=$>>>$ , after=$<<<$ ]
+$$\downarrow$$
+\namedpara{Indented}[abv=IND, indent=6em] \\
+\namedpara{Surrounded}[abv=SUR, flush=center, before=$>>>$ , after=$<<<$ ] \\
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
 \end{tcolorbox}
 
-The compatibility command \verb|paratitle| is left untouched from previous versions.
-
-
-
-
+\namedpara{testing}[par] 
+howdy
+\namedpara{testing}[par] \\
+howdy
+\namedpara{testing}[par] \par
+howdy
 
 
 
@@ -282,8 +330,9 @@ The \verb|namedsubeqs| environment uses a given name as the first index in any e
   \end{namedsubeqs}
   
   Equations \ref{eq:1} and \ref{eq:2} are equations.
+  
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{namedsubeqs}{EQ}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{eq:1}   \\
@@ -301,8 +350,9 @@ An optional argument allows you to change the style of the sub-tag. The currentl
   \begin{namedsubeqs}{EQ}[@hl~style=\roman|]
   
                   \begin{namedsubeqs}{EQ}[@gl~style=\arabic|]
+                  
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\roman]
     \begin{align}
@@ -329,8 +379,9 @@ Fonts can be changed using the appropriate switch commands.
   \begin{namedsubeqs}{EQ}[@hl~style=\itshape\roman|]
   
                   \begin{namedsubeqs}{EQ}[@gl~style=\scshape|]
+                  
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\roman]
     \begin{align}
@@ -356,8 +407,9 @@ The \verb|punct| argument controls the separator between the main tag and the su
 \begin{namedsubeqs}{EQ}[style=\scshape\roman, punct=@hl:]
   
 \begin{namedsubeqs}{EQ}[style=\bfseries\arabic, punct=@gl~$\sim$|]
+
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\scshape\roman, punct=\hl:]
     \begin{align}
@@ -383,8 +435,9 @@ A single optional argument which does not contain an \verb|=| sign is interprete
   \begin{namedsubeqs}{EQ}[\sffamily\Alph]
   
                 \begin{namedsubeqs}{EQ}[\bfseries\arabic]
+                
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[\sffamily\Alph]
     \begin{align}
@@ -422,8 +475,9 @@ Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \ver
 Just like \ref{nq:1} and \eqref{nq:2}, we can reference
 an equation's sub-tag @hl~\lpsubref{nq:1}| and @gl~\lpsubeqref{nq:2}|.
 The environment itself may also be referenced \ref{nq}.
+
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{namedsubeqs}{SQ}[style=\itshape\roman]\label{nq}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{nq:1}\\
@@ -441,18 +495,19 @@ The environment itself may also be referenced \ref{nq}.
   \begin{Verbatim}
 	  \begin{subequations}\label{sq}
 	  \renewcommand{\theequation}
-	  								{\theparentequation\textbar\arabic{equation}}
+	  					{\theparentequation\textbar\arabic{equation}}
 	  \begin{align}
 	    A\mathbf{x} = \mathbf{b}   \label{sq:1}\\
 	    C\mathbf{y} = \mathbf{d}   \label{sq:2}
 	  \end{align}
 	  \end{subequations}
 
-We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2}, or 
-sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a 
+We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2},
+or sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a 
 \textsf{subequations} environment.
+
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \begin{subequations}\label{sq}
 	  \renewcommand{\theequation}
   	  								{\theparentequation\textbar\arabic{equation}}
@@ -482,10 +537,11 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 
 Problem \eqref{para:NLP} is a nonlinear program.
 Equation \eqref{NLP.0} is the objective function.
-Equations (\ref{NLP.1}-\ref{NLP.3}) are the constraints.
+Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints. 
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
+
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
     \begin{namedsubeqs}{NLP}[style=\itshape\roman]
     \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
@@ -564,7 +620,7 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 	Some negative-vertical space between these \Vtrg
 	lines, so that they overlap.
 	\end{Verbatim}
-	\begin{center}$\downarrow$\end{center}
+	$$\downarrow$$
 	Some horizontal spacing between these \HSKP words \\
 	
 	Some vertical spacing between these \VSKp lines \\
@@ -600,8 +656,9 @@ These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing 
 	X=\CAP_{\substack{i\in way to \\ much indexing}} x_i
 	   
 	                  X=\PROD_{i=1,300,000}^{1,300,001} x_i
+	                  
 	\end{Verbatim}
-	\begin{center}$\downarrow$\end{center}
+	$$\downarrow$$
 	\begin{minipage}{0.5\textwidth}
 		$$
 		X=\sum_{i\in way too much indexing} x_i
@@ -650,7 +707,7 @@ A few binary relations with extra space on either side. I like these for aligned
      Ax+s &\eq b \\              Ax+s &\EQ b \\ 
       x,s &\ge 0                    x,s &\GE 0
   \end{Verbatim}
-\begin{center}$\downarrow$\end{center}
+$$\downarrow$$
 \begin{minipage}{0.5\textwidth}
   \begin{lpalign*}{max}{c^\top x}
     Ax+s &\eq b+0 \\
@@ -709,7 +766,7 @@ Default behaviors of many features can be changed with package-load options. Use
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
 	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, and added \verb|\lpsubref|/\verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
 	\item[v1.3] Jun. 26, 2026. Feature and compatibility update. Added \verb|\namedpara| with key-value options, namespaced the sub-equation reference commands as \verb|\lpsubref| and \verb|\lpsubeqref|, and hardened parent-label handling for both \verb|namedsubeqs| and traditional \textsf{subequations}.
-	\item[v1.4 final] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|, and the operator helpers now preserve standard \verb|_|/\verb|^| syntax.
+	\item[v1.4] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|, and the operator helpers now preserve standard \verb|_|/\verb|^| syntax.
 	\end{compactitem}
 
 

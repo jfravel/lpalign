@@ -186,11 +186,11 @@
   {
     \raisebox{\dim_use:N \lpalign_sense_shift}
     {
-    \stackunder{ #1 }
-			{
-			\tl_if_blank:VF \lpalign_vars_text
-			  { $\tl_use:N \lpalign_vars_style \tl_use:N \lpalign_vars_text$ }
-			}
+    \tl_if_blank:VTF \lpalign_vars_text
+      { #1 }
+      {
+        \stackunder{#1}{ $\tl_use:N \lpalign_vars_style \tl_use:N \lpalign_vars_text$ }
+      }
     }
   }
 
@@ -325,7 +325,7 @@
 	\begin{alignat}{3}
 	\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
   &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \begin{aligned}\tl_use:N \l_lpalign_objective_text_tl\end{aligned}
+  \begin{aligned}[t]\tl_use:N \l_lpalign_objective_text_tl\end{aligned}
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
@@ -425,9 +425,9 @@
  {
   \str_case:VnF \l_lpalign_namedpara_flush_tl
    {
-    {left}   { \noindent#1 \par }
-    {center} { \noindent \makebox[\linewidth][c]{#1} \par }
-    {right}  { \noindent\makebox[\linewidth][r]{#1} \par }
+    {left}   { \noindent#1 \@afterheading}
+    {center} { \noindent\makebox[\linewidth][c]{#1} \@afterheading}
+    {right}  { \noindent\makebox[\linewidth][r]{#1} \@afterheading}
    }
    { \noindent #1 }
  }
