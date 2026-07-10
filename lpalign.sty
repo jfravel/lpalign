@@ -125,6 +125,7 @@
 \tl_new:N \l_lpalign_parser_prev_head_tl
 \int_new:N \l_lpalign_parser_nest_depth_int
 \bool_new:N \l_lpalign_break_optional_bool
+\bool_new:N \l_lpalign_parser_gutter_bool
 % Text Inputs
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
@@ -182,6 +183,7 @@
 	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
 	\dim_set_eq:NN \lpalign_gutter_sep \g_lpalign_default_gutter_sep
 	\bool_set_false:N \l_lpalign_break_optional_bool
+	\bool_set_true:N \l_lpalign_parser_gutter_bool
 	\tl_if_blank:nF {#1}
 		{
 		\tl_if_in:nnTF {#1} {=}
@@ -271,8 +273,12 @@
 				\int_compare:nTF { \l_lpalign_parser_nest_depth_int > 0 }
 					{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
 					{
-					\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
-					\tl_clear:N \l_lpalign_parser_head_tl
+					\bool_if:NTF \l_lpalign_parser_gutter_bool
+						{
+						\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
+						\tl_clear:N \l_lpalign_parser_head_tl
+						}
+						{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
 					}
 				}
 				{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
@@ -293,8 +299,11 @@
 				\lpalign_token_if_begin:VT \l_lpalign_parser_head_tl
 					{ 
 					\int_incr:N \l_lpalign_parser_nest_depth_int
-					\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
-						{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
+					\bool_if:NT \l_lpalign_parser_gutter_bool
+						{
+						\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
+							{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
+						}
 					}
 				\lpalign_token_if_end:VT \l_lpalign_parser_head_tl
 					{ \int_decr:N \l_lpalign_parser_nest_depth_int }
@@ -303,7 +312,8 @@
 					\bool_if:NT \l_lpalign_break_optional_bool
 						{
 						\bool_set_false:N \l_lpalign_break_optional_bool 
-						\tl_put_right:Nn \l_lpalign_parser_head_tl { && }
+						\bool_if:NT \l_lpalign_parser_gutter_bool
+							{ \tl_put_right:Nn \l_lpalign_parser_head_tl { && } }
 						}
 					}
 				% Skip head if its depth is positive
@@ -323,7 +333,10 @@
 						{
 						\lpalign_token_if_lbrack:VTF \l_lpalign_parser_head_tl
 							{ \bool_set_true:N \l_lpalign_break_optional_bool }
-							{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
+							{
+							\bool_if:NT \l_lpalign_parser_gutter_bool
+								{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
+							}
 						}
 					}
 				\tl_put_right:NV \l_lpalign_parser_output_tl \l_lpalign_parser_head_tl
@@ -372,6 +385,35 @@
   \span\span\span\omit\hfill
   \\[\dim_use:N \lpalign_objective_sep]
 	\lpalign_print_st: && 
+	\tl_use:N \l_lpalign_parser_output_tl
+	\end{alignat*}
+	}
+	{\ignorespacesafterend}
+
+\NewDocumentEnvironment{lpregion}{O{}+b}
+	{
+	\lpalign_setup:n { #1 }
+	\bool_set_false:N \l_lpalign_parser_gutter_bool
+	\tl_clear:N \l_lpalign_parser_output_tl
+	\tl_clear:N \l_lpalign_parser_head_tl
+	\tl_clear:N \l_lpalign_parser_prev_head_tl
+	\int_zero:N \l_lpalign_parser_nest_depth_int
+	\lpalign_parser:n { #2 }
+	\begin{alignat}{2}
+	\tl_use:N \l_lpalign_parser_output_tl
+	\end{alignat}
+	}
+	{\ignorespacesafterend}
+\NewDocumentEnvironment{lpregion*}{O{}+b}
+	{
+	\lpalign_setup:n { #1 }
+	\bool_set_false:N \l_lpalign_parser_gutter_bool
+	\tl_clear:N \l_lpalign_parser_output_tl
+	\tl_clear:N \l_lpalign_parser_head_tl
+	\tl_clear:N \l_lpalign_parser_prev_head_tl
+	\int_zero:N \l_lpalign_parser_nest_depth_int
+	\lpalign_parser:n { #2 }
+	\begin{alignat*}{2}
 	\tl_use:N \l_lpalign_parser_output_tl
 	\end{alignat*}
 	}
