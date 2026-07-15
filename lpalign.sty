@@ -1,6 +1,6 @@
-\ProvidesPackage{lpalign}[Jun 28, 2026: v1.4 final of Jamie Fravel's lpalign macro package]
+\ProvidesPackage{lpalign}[Jun 28, 2026: v1.5 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{amsmath, expl3, l3keys2e}
+\RequirePackage{eqnarray, amsmath, expl3, l3keys2e, xstring}
 \IfFileExists{stackengine.sty}
   {\RequirePackage{stackengine}}
   {\newcommand{\stackunder}[2]{\shortstack[c]{##1\\##2}}}
@@ -109,67 +109,71 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  lpalign  %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% An environment macro built on the alignat environment from the amsmath package which helps to format mathematical programming problems aesthetically.
+% An environment macro built on the equationarray environment from the eqnarray package which helps to format mathematical programming problems aesthetically both in code and in text.
 
 \ExplSyntaxOn
-% Package defaults
-\dim_new:N \g_lpalign_default_objective_sep
-\dim_new:N \g_lpalign_default_qualifier_sep
-\dim_new:N \g_lpalign_default_gutter_sep
-\dim_gset:Nn \g_lpalign_default_objective_sep { 0em }
-\dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
-\dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
-% Parser Variables
-\tl_new:N \l_lpalign_parser_output_tl
-\tl_new:N \l_lpalign_parser_head_tl
-\tl_new:N \l_lpalign_parser_prev_head_tl
-\int_new:N \l_lpalign_parser_nest_depth_int
-\bool_new:N \l_lpalign_break_optional_bool
-\bool_new:N \l_lpalign_parser_gutter_bool
-% Text Inputs
-\tl_new:N \lpalign_vars_text
-\tl_new:N \lpalign_vars_style
-\tl_new:N \lpalign_st_text
-\tl_new:N \g_lpalign_default_vars_style_tl
-\tl_new:N \g_lpalign_default_st_tl
-\tl_new:N \l_lpalign_sense_text_tl
-\tl_new:N \l_lpalign_objective_text_tl
-% Boxes
-\box_new:N \lpalign_sense_box
-\box_new:N \lpalign_st_box
-% Dimensions
-\dim_new:N \lpalign_sense_shift
-\dim_new:N \lpalign_st_shift
-\dim_new:N \lpalign_objective_sep
-\dim_new:N \lpalign_qualifier_sep
-\dim_new:N \lpalign_gutter_sep
+%% Package defaults
+%\dim_new:N \g_lpalign_default_objective_sep
+%\dim_new:N \g_lpalign_default_row_sep
+%\dim_new:N \g_lpalign_default_qualifier_sep
+%\dim_new:N \g_lpalign_default_gutter_sep
+%\dim_gset:Nn \g_lpalign_default_objective_sep { 0em }
+%\dim_gset:Nn \g_lpalign_default_row_sep { 0.5em }
+%\dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
+%\dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
+%% Text Inputs
+%\tl_new:N \lpalign_vars_text
+%\tl_new:N \lpalign_vars_style
+%\tl_new:N \lpalign_st_text
+%\tl_new:N \g_lpalign_default_vars_style_tl
+%\tl_new:N \g_lpalign_default_st_tl
+%\tl_new:N \l_lpalign_sense_text_tl
+%\tl_new:N \l_lpalign_objective_text_tl
+
+%% Dimensions
+%\dim_new:N \lpalign_row_sep
+%\dim_new:N \lpalign_sense_shift
+%\dim_new:N \lpalign_st_shift
+%\dim_new:N \lpalign_objective_sep
+%\dim_new:N \lpalign_row_sep
+%\dim_new:N \lpalign_qualifier_sep
+%\dim_new:N \lpalign_gutter_sep
+
 % Package options
 \keys_define:nn { lpalign/package }
 	{
 	lp_objective_sep .dim_gset:N = \g_lpalign_default_objective_sep,
 	lp_objective_sep .initial:n = 0em,
+	lp_row_sep .dim_gset:N = \g_lpalign_default_row_sep,
+	lp_row_sep .initial:n = 0.5em,
 	lp_qualifier_sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
 	lp_qualifier_sep .initial:n = 2em,
 	lp_gutter_sep .dim_gset:N = \g_lpalign_default_gutter_sep,
 	lp_gutter_sep .initial:n = 0.75em,
 	lp_vars_style .choices:nn =
-	  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
+	  { \scriptstyle, \scriptscriptstyle, \textstyle, \displaystyle }
 	  { \tl_gset_eq:NN \g_lpalign_default_vars_style_tl \l_keys_choice_tl },
-	lp_vars_style .initial:n = scriptstyle,
+	lp_vars_style .initial:n = \scriptstyle,
 	lp_st .tl_gset:N = \g_lpalign_default_st_tl,
 	lp_st .initial:n = s.t.,
+	lp_flush .choices:nn =
+	  { a, l, c, r }
+	  { \tl_gset_eq:NN \g_lpalign_default_flush \l_keys_choice_tl },
+	lp_flush .initial:n = a,
 	}
-% Key Options
+% Environment Options
 \keys_define:nn { lpalign/lp }
   {
-    vars .tl_set:N = \lpalign_vars_text,
-    vars-style .tl_set:N = \lpalign_vars_style,
-    sense-shift .dim_set:N = \lpalign_sense_shift,
-    st .tl_set:N = \lpalign_st_text,
-    st-shift .dim_set:N = \lpalign_st_shift,
-    objective-sep .dim_set:N = \lpalign_objective_sep,
-    qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
-    gutter-sep .dim_set:N = \lpalign_gutter_sep,
+  vars .tl_set:N = \lpalign_vars_text,
+  vars-style .tl_set:N = \lpalign_vars_style,
+  sense-shift .dim_set:N = \lpalign_sense_shift,
+  st .tl_set:N = \lpalign_st_text,
+  flush .tl_set:N = \lpalign_flush,
+  st-shift .dim_set:N = \lpalign_st_shift,
+  objective-sep .dim_set:N = \lpalign_objective_sep,
+  row-sep .dim_set:N = \lpalign_row_sep,
+  qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
+  gutter-sep .dim_set:N = \lpalign_gutter_sep,
   }
 
 \cs_new_protected:Npn \lpalign_setup:n #1
@@ -177,21 +181,20 @@
 	\tl_clear:N \lpalign_vars_text
 	\tl_set_eq:NN \lpalign_vars_style \g_lpalign_default_vars_style_tl
 	\tl_set_eq:NN \lpalign_st_text \g_lpalign_default_st_tl
+	\tl_set_eq:NN \lpalign_flush \g_lpalign_default_flush
 	\dim_set:Nn \lpalign_sense_shift { 0pt }
 	\dim_set:Nn \lpalign_st_shift { 0pt }
 	\dim_set_eq:NN \lpalign_objective_sep \g_lpalign_default_objective_sep
+	\dim_set_eq:NN \lpalign_row_sep \g_lpalign_default_row_sep
 	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
 	\dim_set_eq:NN \lpalign_gutter_sep \g_lpalign_default_gutter_sep
-	\bool_set_false:N \l_lpalign_break_optional_bool
-	\bool_set_true:N \l_lpalign_parser_gutter_bool
 	\tl_if_blank:nF {#1}
 		{
 		\tl_if_in:nnTF {#1} {=}
 			{ \keys_set:nn { lpalign/lp } { #1 } }
 			{ \tl_set:Nn \lpalign_vars_text {#1} }
 		}
-  \lpalign_normalize_spaces:N \lpalign_st_text
-  \lpalign_unbrace_tl:N \lpalign_vars_style
+	\tl_replace_all:Nnn \lpalign_st_text { ~ } { \c_space_tl }
   }
 
 \cs_new:Npn \lpalign_print_sense:n #1
@@ -211,213 +214,279 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
-\cs_new_protected:Npn \lpalign_strip_pars:Nn #1#2
-  {
-    \tl_set:Nn #1 {#2}
-    \tl_replace_all:Nnn #1 { \par } { ~ }
-  }
 
-\cs_new_protected:Npn \lpalign_normalize_spaces:N #1
-  {
-    \tl_replace_all:Nnn #1 { ~ } { \c_space_tl }
-  }
-
-\cs_new_protected:Npn \lpalign_unbrace_tl:N #1
-  {
-    \exp_args:NV \tl_if_head_is_group:nTF #1
-      { \tl_set:Nx #1 { \exp_after:wN \use:n \exp_after:wN { \tl_use:N #1 } } }
-      { }
-  }
-
-\cs_new:Npn \lpalign_token_if_begin:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { \begin } } { \tl_to_str:V #1 } {#2} {#3} }
-\cs_new:Npn \lpalign_token_if_begin:VT #1#2
-  { \lpalign_token_if_begin:VTF #1 {#2} { } }
-
-\cs_new:Npn \lpalign_token_if_end:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { \end } } { \tl_to_str:V #1 } {#2} {#3} }
-\cs_new:Npn \lpalign_token_if_end:VT #1#2
-  { \lpalign_token_if_end:VTF #1 {#2} { } }
-
-\cs_new:Npn \lpalign_token_if_amp:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { & } } { \tl_to_str:V #1 } {#2} {#3} }
-\cs_new:Npn \lpalign_token_if_amp:VT #1#2
-  { \lpalign_token_if_amp:VTF #1 {#2} { } }
-
-\cs_new:Npn \lpalign_token_if_break:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { \\ } } { \tl_to_str:V #1 } {#2} {#3} }
-\cs_new:Npn \lpalign_token_if_break:VT #1#2
-  { \lpalign_token_if_break:VTF #1 {#2} { } }
-
-\cs_new:Npn \lpalign_token_if_lbrack:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { [ } } { \tl_to_str:V #1 } {#2} {#3} }
-
-\cs_new:Npn \lpalign_token_if_rbrack:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { ] } } { \tl_to_str:V #1 } {#2} {#3} }
-\cs_new:Npn \lpalign_token_if_rbrack:VT #1#2
-  { \lpalign_token_if_rbrack:VTF #1 {#2} { } }
-
-\cs_new:Npn \lpalign_token_if_par:VTF #1#2#3
-  { \str_if_eq:eeTF { \tl_to_str:n { \par } } { \tl_to_str:V #1 } {#2} {#3} }
-
-\cs_new:Npn \lpalign_parser:n #1
+\makeatletter
+\NewDocumentEnvironment{lpalign}{O{}mm}
 	{
-	% End loop if token list is empty
-	\tl_if_empty:nF { #1 }
+	\lpalign_setup:n { #1 }
+	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
+		\def\@argequationcr[##1]{%
+      \ifnum0=`{\fi}${}%
+      \vspace{\dim_use:N \lpalign_row_sep}
+      \@yargequationcr{##1}%
+      &
+    }%
+		\let\lpalign@orig@xequationcr\@xequationcr
+		\def\@xequationcr{%
+		  \@ifnextchar[{\@argequationcr}
+		  	{%
+		    \ifnum0=`{\fi}${}%
+		    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
+		    &
+		  	}%
+		}%
+	\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
+	\tl_if_eq:NnT \lpalign_flush {a}
 		{
-		% Trim leading spaces
-		\tl_if_head_is_space:nTF { #1 }
+		\begin{equationarray}
 			{
-			\lpalign_token_if_break:VTF \l_lpalign_parser_head_tl
-				{
-				\int_compare:nTF { \l_lpalign_parser_nest_depth_int > 0 }
-					{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
-					{
-					\bool_if:NTF \l_lpalign_parser_gutter_bool
-						{
-						\tl_put_right:Nn \l_lpalign_parser_output_tl { && }
-						\tl_clear:N \l_lpalign_parser_head_tl
-						}
-						{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
-					}
-				}
-				{ \tl_put_right:Nn \l_lpalign_parser_output_tl { ~ } }
-			\exp_args:Ne \lpalign_parser:n { \tl_trim_spaces:n { #1 } }
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			r@{}>{{}}l %body
+			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
 			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+ 		& #3 \span\span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: & 
+		}
+	\tl_if_eq:NnT \lpalign_flush {l}
+		{
+		\begin{equationarray}
 			{
-			\tl_set:Nx \l_tmpa_tl { \tl_head:n {#1} }
-			\lpalign_token_if_par:VTF \l_tmpa_tl
-				{ \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} } }
-				{
-			% Skip head if it is a group
-			\tl_if_head_is_group:nTF { #1 }
-				{ \tl_put_right:Nx \l_lpalign_parser_output_tl  { {\tl_head:n {#1}} } }
-				{
-				\tl_set_eq:NN \l_lpalign_parser_prev_head_tl \l_lpalign_parser_head_tl
-				\tl_set:Nx \l_lpalign_parser_head_tl { \tl_head:n {#1} }
-				% Resolve nest depth and line breaks
-				\lpalign_token_if_begin:VT \l_lpalign_parser_head_tl
-					{ 
-					\int_incr:N \l_lpalign_parser_nest_depth_int
-					\bool_if:NT \l_lpalign_parser_gutter_bool
-						{
-						\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
-							{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
-						}
-					}
-				\lpalign_token_if_end:VT \l_lpalign_parser_head_tl
-					{ \int_decr:N \l_lpalign_parser_nest_depth_int }
-				\lpalign_token_if_rbrack:VT \l_lpalign_parser_head_tl
-					{
-					\bool_if:NT \l_lpalign_break_optional_bool
-						{
-						\bool_set_false:N \l_lpalign_break_optional_bool 
-						\bool_if:NT \l_lpalign_parser_gutter_bool
-							{ \tl_put_right:Nn \l_lpalign_parser_head_tl { && } }
-						}
-					}
-				% Skip head if its depth is positive
-				\int_compare:nF { \l_lpalign_parser_nest_depth_int > 0 }
-					{
-	        % Add spacing to qualifier column (&&)
-	        \lpalign_token_if_amp:VT \l_lpalign_parser_head_tl
-	          {
-						\lpalign_token_if_amp:VT \l_lpalign_parser_prev_head_tl
-							{ 
-							\tl_put_left:Nn \l_lpalign_parser_head_tl 
-								{ \exp_not:N \hspace { \dim_use:N \lpalign_qualifier_sep } } 
-							}
-	          }
-					% Add columns (&&) after linebreaks (\\) to skip gutter
-					\lpalign_token_if_break:VT \l_lpalign_parser_prev_head_tl
-						{
-						\lpalign_token_if_lbrack:VTF \l_lpalign_parser_head_tl
-							{ \bool_set_true:N \l_lpalign_break_optional_bool }
-							{
-							\bool_if:NT \l_lpalign_parser_gutter_bool
-								{ \tl_put_left:Nn \l_lpalign_parser_head_tl { && } }
-							}
-						}
-					}
-				\tl_put_right:NV \l_lpalign_parser_output_tl \l_lpalign_parser_head_tl
-				}
-      \exp_args:Ne \lpalign_parser:n { \tl_tail:n {#1} }
-				}
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			l@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
 			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: & 
+		}
+	\tl_if_eq:NnT \lpalign_flush {c}
+		{
+		\begin{equationarray}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			c@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: & 
+		}
+	\tl_if_eq:NnT \lpalign_flush {r}
+		{
+		\begin{equationarray}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			r@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: & 
 		}
 	}
+	{
+	\end{equationarray}
+	\let\@xequationcr\lpalign@orig@xequationcr
+	\let\@argequationcr\lpalign@orig@argequationcr
+	\ignorespacesafterend
+	}
 
-\NewDocumentEnvironment{lpalign}{O{}mm+b}
+\NewDocumentEnvironment{lpalign*}{O{}mm}
 	{
 	\lpalign_setup:n { #1 }
-	\lpalign_strip_pars:Nn \l_lpalign_sense_text_tl { #2 }
-	\lpalign_strip_pars:Nn \l_lpalign_objective_text_tl { #3 }
-	\tl_clear:N \l_lpalign_parser_output_tl
-	\tl_clear:N \l_lpalign_parser_head_tl
-	\tl_clear:N \l_lpalign_parser_prev_head_tl
-	\int_zero:N \l_lpalign_parser_nest_depth_int
-	\lpalign_parser:n { #4 }
-	\begin{alignat}{3}
-	\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-  &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \tl_use:N \l_lpalign_objective_text_tl
-  \span\span\span\omit\hfill
-  \\[\dim_use:N \lpalign_objective_sep]
-	\lpalign_print_st: && 
-	\tl_use:N \l_lpalign_parser_output_tl
-	\end{alignat}
+	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
+		\def\@argequationcr[##1]{%
+      \ifnum0=`{\fi}${}%
+      \vspace{\dim_use:N \lpalign_row_sep}
+      \@yargequationcr{##1}%
+      &
+    }%
+		\let\lpalign@orig@xequationcr\@xequationcr
+		\def\@xequationcr{%
+		  \@ifnextchar[{\@argequationcr}
+		  	{%
+		    \ifnum0=`{\fi}${}%
+		    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
+		    &
+		  	}%
+		}%
+	\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
+	\tl_if_eq:NnT \lpalign_flush {a}
+		{
+		\begin{equationarray*}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			r@{}>{{}}l %body
+			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+ 		& #3 \span\span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: &
+		}
+	\tl_if_eq:NnT \lpalign_flush {l}
+		{
+		\begin{equationarray*}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			l@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: &
+		}
+	\tl_if_eq:NnT \lpalign_flush {c}
+		{
+		\begin{equationarray*}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			c@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: &
+		}
+	\tl_if_eq:NnT \lpalign_flush {r}
+		{
+		\begin{equationarray*}
+			{
+			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
+			r@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+		& #3 \span\hfill
+		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\lpalign_print_st: &
+		}
 	}
-	{\ignorespacesafterend}
-\NewDocumentEnvironment{lpalign*}{O{}mm+b}
 	{
-	\lpalign_setup:n { #1 }
-	\lpalign_strip_pars:Nn \l_lpalign_sense_text_tl { #2 }
-	\lpalign_strip_pars:Nn \l_lpalign_objective_text_tl { #3 }
-	\tl_clear:N \l_lpalign_parser_output_tl
-	\tl_clear:N \l_lpalign_parser_head_tl
-	\tl_clear:N \l_lpalign_parser_prev_head_tl
-	\int_zero:N \l_lpalign_parser_nest_depth_int
-	\lpalign_parser:n { #4 }
-	\begin{alignat*}{3}
-	\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-  &\hspace{\dim_use:N \lpalign_gutter_sep}&
-  \tl_use:N \l_lpalign_objective_text_tl
-  \span\span\span\omit\hfill
-  \\[\dim_use:N \lpalign_objective_sep]
-	\lpalign_print_st: && 
-	\tl_use:N \l_lpalign_parser_output_tl
-	\end{alignat*}
+	\end{equationarray*}
+	\let\@xequationcr\lpalign@orig@xequationcr
+	\let\@argequationcr\lpalign@orig@argequationcr
+	\ignorespacesafterend
 	}
-	{\ignorespacesafterend}
+\makeatother
+\ExplSyntaxOff
 
-\NewDocumentEnvironment{lpregion}{O{}+b}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  lpregion  %%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A truncated version of lpalign environment for formatting only the feasible region.
+
+\ExplSyntaxOn
+% Package options
+\keys_define:nn { lpalign/package }
 	{
-	\lpalign_setup:n { #1 }
-	\bool_set_false:N \l_lpalign_parser_gutter_bool
-	\tl_clear:N \l_lpalign_parser_output_tl
-	\tl_clear:N \l_lpalign_parser_head_tl
-	\tl_clear:N \l_lpalign_parser_prev_head_tl
-	\int_zero:N \l_lpalign_parser_nest_depth_int
-	\lpalign_parser:n { #2 }
-	\begin{alignat}{2}
-	\tl_use:N \l_lpalign_parser_output_tl
-	\end{alignat}
+	reg_flush .choices:nn =
+	  { a, l, c, r }
+	  { \tl_gset_eq:NN \g_lpregion_default_flush \l_keys_choice_tl },
+	reg_flush .initial:n = a,
 	}
-	{\ignorespacesafterend}
-\NewDocumentEnvironment{lpregion*}{O{}+b}
+
+\keys_define:nn { lpalign/region }
+  {
+  row-sep .dim_set:N = \lpalign_row_sep,
+  qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
+  flush .tl_set:N = \lpregion_flush,
+  }
+
+\cs_new_protected:Npn \lpregion_setup:n #1
 	{
-	\lpalign_setup:n { #1 }
-	\bool_set_false:N \l_lpalign_parser_gutter_bool
-	\tl_clear:N \l_lpalign_parser_output_tl
-	\tl_clear:N \l_lpalign_parser_head_tl
-	\tl_clear:N \l_lpalign_parser_prev_head_tl
-	\int_zero:N \l_lpalign_parser_nest_depth_int
-	\lpalign_parser:n { #2 }
-	\begin{alignat*}{2}
-	\tl_use:N \l_lpalign_parser_output_tl
-	\end{alignat*}
+	\tl_set_eq:NN \lpregion_flush \g_lpregion_default_flush
+	\dim_set_eq:NN \lpalign_row_sep \g_lpalign_default_row_sep
+	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
+	\tl_if_blank:nF {#1} { \keys_set:nn { lpalign/lp } { #1 } }
 	}
-	{\ignorespacesafterend}
+
+\makeatletter
+\NewDocumentEnvironment{lpregion}{O{}}
+	{
+	\lpregion_setup:n { #1 }
+	\let\lpalign@orig@xequationcr\@xequationcr
+	\def\@xequationcr{%
+	  \@ifnextchar[{\@argequationcr}
+	  	{%
+	    \ifnum0=`{\fi}${}%
+	    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
+	  	}%
+		}%
+	\tl_if_eq:NnT \lpregion_flush {a}
+		{
+		\begin{equationarray}
+			{
+			r@{}>{{}}l %body
+			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		}
+	\tl_if_eq:NnT \lpregion_flush {l}
+		{
+		\begin{equationarray}
+			{ l@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	\tl_if_eq:NnT \lpregion_flush {c}
+		{
+		\begin{equationarray}
+			{ c@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	\tl_if_eq:NnT \lpregion_flush {r}
+		{
+		\begin{equationarray}
+			{ r@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	}
+	{
+	\end{equationarray}
+	\let\@xequationcr\lpalign@orig@xequationcr
+	\let\@argequationcr\lpalign@orig@argequationcr
+	\ignorespacesafterend
+	}
+\NewDocumentEnvironment{lpregion*}{O{}}
+	{
+	\lpregion_setup:n { #1 }
+	\let\lpalign@orig@xequationcr\@xequationcr
+	\def\@xequationcr{%
+	  \@ifnextchar[{\@argequationcr}
+	  	{%
+	    \ifnum0=`{\fi}${}%
+	    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
+	  	}%
+		}%
+	\tl_if_eq:NnT \lpregion_flush {a}
+		{
+		\begin{equationarray*}
+			{
+			r@{}>{{}}l %body
+			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+			}
+		}
+	\tl_if_eq:NnT \lpregion_flush {l}
+		{
+		\begin{equationarray*}
+			{ l@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	\tl_if_eq:NnT \lpregion_flush {c}
+		{
+		\begin{equationarray*}
+			{ c@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	\tl_if_eq:NnT \lpregion_flush {r}
+		{
+		\begin{equationarray*}
+			{ r@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		}
+	}
+	{
+	\end{equationarray*}
+	\let\@xequationcr\lpalign@orig@xequationcr
+	\let\@argequationcr\lpalign@orig@argequationcr
+	\ignorespacesafterend
+	}
+\makeatother
 \ExplSyntaxOff
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -553,10 +622,17 @@
 % enclosed equation reference tag. The optional key-value argument controls the
 % second-index style and the punctuation between the main tag and the sub-tag.
 
+
 \newcounter{NamedEq}
 \newcounter{lpalignNamedEqSavedEquation}
 \makeatletter
 \ExplSyntaxOn
+\cs_new_protected:Npn \lpalign_unbrace_tl:N #1
+  {
+    \exp_args:NV \tl_if_head_is_group:nTF #1
+      { \tl_set:Nx #1 { \exp_after:wN \use:n \exp_after:wN { \tl_use:N #1 } } }
+      { }
+  }
 % Option state
 \tl_new:N \l_lpalign_namedsubeq_style_tl
 \tl_new:N \l_lpalign_namedsubeq_punct_tl

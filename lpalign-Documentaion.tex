@@ -2,7 +2,7 @@
 
 % Build from the repository root with:
 % pdflatex lpalign-Documentaion.tex
-\usepackage{lpalign}
+\usepackage{lpalign}\newsavebox{\mydebugbox}
 
 \usepackage{tcolorbox}
 \usepackage{parskip}
@@ -45,16 +45,18 @@ Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and 
 
 
 
-\section{The \texttt{lpalign} Environment}\label{sec:lpalign}
+\section{The \textsf{lpalign} Environment}\label{sec:lpalign}
 
-\textsf{lpalign} is an environment macro built on the \textsf{alignat} environment from the \textsf{amsmath} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary function is to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the \textsf{alignat} body. These terms are aligned with the objective and first constraint respectively.
+\textsf{lpalign} is an environment macro built on the \textsf{equationarray} environment from the \textsf{eqnarray} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary functions are to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the \textsf{alignat} body in addition to aligning the body constraints and qualifiers.
 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|vars|] -- subscript on the `sense' term. Commonly used to state variables and ranges.
   \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed during package load by \verb|lp_vars_style|; see Section \ref{sec:options}.
-  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|lp_st|; see Section \ref{sec:options}.
-  \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective_sep| option; see Section \ref{sec:options}.
+  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|lp_st|.
+  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|.  The default value of \verb|a| can be changed during package load by \verb|lp_flush| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|lp_row_sep| option.
+  \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint as added to \verb|row-sep|. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective_sep| option.
   \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
   \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter_sep| option.
   \item[\Verb|sense-shift|] -- adds a vertical shift to the `sense' term.
@@ -76,51 +78,86 @@ $$\downarrow$$
 \end{tcolorbox}
 
 
-Just like the vanilla \verb|alignat| environment, ampersands \verb|&| control alignment; the constraint rows will be aligned at the ampersand.
+
+\subsection*{Constraint Alignment}
+The environment defaults to \verb|alignat|-style behavior; the constraint rows will be aligned at the ampersand \verb|&|.
 \begin{tcolorbox}
 	\begin{Verbatim}
-		@hl&Ax+s = b+0 \\    Ax+s @gl&= b+0 \\    Ax+s = b+0@hl& \\
-		@hl&x,s \ge 0         x,s @gl&\ge 0        x,s \ge 0@hl& 
+				Ax+s @hl&= b+0 \\   		 		 Ax+@gl&s = b+0 \\
+				 x,s @hl&\ge 0     			 	     @gl&x,s \ge 0
+	\end{Verbatim}
+$$\downarrow$$
+\hfill
+\begin{minipage}{0.4\textwidth}
+	\begin{lpalign*}{max}{c^\top x}
+	  Ax+s &\hl{$=$} b+0 \\
+	  x,s & \hl{$\ge$} 0 
+	\end{lpalign*} 
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\begin{lpalign*}{max}{c^\top x}
+    Ax+&\gl{$s$} = b+0 \\
+       &\gl{$x$},s \ge 0 
+  \end{lpalign*} 
+
+\end{minipage}
+\end{tcolorbox}
+
+The \verb|flush| argument can be used to adjust global alignment. Options are \verb|l|, \verb|c| and \verb|r| in addition to its default behavior \verb|a|.
+
+\begin{tcolorbox}
+	\begin{Verbatim}
+	\begin{lpalign*}		\begin{lpalign*}		\begin{lpalign*}
+	@hl~[flush=l]|					 @gl~[flush=c]|					 @hl~[flush=r]|
+	{max}{c^\top x}		 {max}{c^\top x}		 {max}{c^\top x}
+		Ax+s = b+0 \\			 Ax+s = b+0 \\			 Ax+s = b+0 \\
+			x,s \ge 0					 x,s \ge 0 					 x,s \ge 0 
+	\end{lpalign*} 		 \end{lpalign*} 		 \end{lpalign*} 
+	
 	\end{Verbatim}
 $$\downarrow$$
 \begin{minipage}{0.32\textwidth}
-		\begin{lpalign*}{max}{c^\top x}
-      &\hl{$A$}x+s = b+0 \\
-      &\hl{$x$},s \ge 0 
-    \end{lpalign*} 
+	\begin{lpalign*}[flush=l]{max}{c^\top x}
+    Ax+s = b+0 \\
+       x,s \ge 0 
+  \end{lpalign*} 
 \end{minipage}\hfill
 \begin{minipage}{0.32\textwidth}
-	\begin{lpalign*}{max}{c^\top x}
-	  Ax+s &\gl{$=$} b+0 \\
-	  x,s & \gl{$\ge$} 0 
-	\end{lpalign*} 
+	\begin{lpalign*}[flush=c]{max}{c^\top x}
+    Ax+s = b+0 \\
+       x,s \ge 0 
+  \end{lpalign*} 
 \end{minipage}\hfill
 \begin{minipage}{0.32\textwidth}
-	\begin{lpalign*}{max}{c^\top x}
-	  Ax+s = b+\hl{$0$}& \\
-	  x,s \ge \hl{$0$}& 
-	\end{lpalign*} 
+	\begin{lpalign*}[flush=r]{max}{c^\top x}
+    Ax+s = b+0 \\
+       x,s \ge 0 
+  \end{lpalign*} 
 \end{minipage}
 \end{tcolorbox}
 
 
+
 \subsection*{Qualified Constraints}
-Qualified constraints are also possible. A double-ampersand \verb|&&| will properly space and align a `for-all' ($\forall$) statement.
+Qualified constraints are also possible. Another ampersand \verb|&| will properly space and align a `for-all' ($\forall$) statement.
 \begin{tcolorbox}
  \begin{Verbatim}
   \begin{lpalign*}{Maximize}{\sum_{j=1}^mc_jx_j}
     \mathbf{a}_i^\top\mathbf{x} &\le b_i  
-                      @gl~&& \forall\ i\in [\![n]\!]|     \\
-       x_i &\ge 0     @gl~&& \forall\ i\in \{1,2,...,n\}|
+                      @gl~& \forall\ i\in [\![n]\!]|     \\
+       x_i &\ge 0     @gl~& \forall\ i\in \{1,2,...,n\}|
        
   \end{Verbatim}
 $$\downarrow$$
     \begin{lpalign*}{Maximize}{\sum_{j=1}^mc_jx_j}
       \mathbf{a}_i^\top\mathbf{x} &\le b_i  
-                      && \gl{$\forall\ i\in [\![n]\!]$}     \\
-         x_i &\ge 0   && \gl{$\forall\ i\in \{1,2,...,n\}$}  
+                      & \gl{$\forall\ i\in [\![n]\!]$}     \\
+         x_i &\ge 0   & \gl{$\forall\ i\in \{1,2,...,n\}$}  
     \end{lpalign*}
 \end{tcolorbox}
+The qualifier column still works with a centered/flushed environment body.
+
+
 
 \subsection*{Variable Ranges}
 Subscripts can be placed under the `sense' term via the \verb|vars| option. 
@@ -146,29 +183,36 @@ The \verb|sep| options can be used to modify the whitespace between elements. Th
   \begin{Verbatim}
   \begin{lpalign}
   @gl[
-  @gl~objective-sep=2em,|
-  @gl~qualifier-sep=4em,|
-  @gl~gutter-sep=4em,|
+  @gl~objective-sep=1em,|
+  @gl~qualifier-sep=3em,|
+  @gl~gutter-sep=3em,|
+  @gl~row-sep=1em,|
   @gl]
-  {Maximize}{\mathbf{c}^\top\mathbf{x}}
-    A\mathbf{x} &\le \mathbf{b}  @hl~\\[2em]|
-     \mathbf{x} &\ge \mathbf{0} 
+  {Maximize}{\sum_{j=1}^mc_jx_j}
+  \mathbf{a}_i^\top\mathbf{x} &\le b_i  
+                  & \forall\ i\in [\![n]\!]     \\
+  \mathbf{a}_i^\top\mathbf{x} &\ge d_i  
+                  	& \forall\ i\in [\![n]\!]     \\[3em]
+     x_i &\ge 0   & \forall\ i\in \{1,2,...,n\} 
   \end{lpalign} 
   \end{Verbatim}
 $$\downarrow$$
     \begin{lpalign}
       [
-      objective-sep=2em,
-      qualifier-sep=4em,
-      gutter-sep=4em,
+      objective-sep=1em,
+      qualifier-sep=3em,
+      gutter-sep=3em,
+      row-sep=1em
       ]
       {Maximize}{\sum_{j=1}^mc_jx_j}
       \mathbf{a}_i^\top\mathbf{x} &\le b_i  
-                      && \forall\ i\in [\![n]\!]     \\[2em]
-         x_i &\ge 0   && \forall\ i\in \{1,2,...,n\} 
+                      & \forall\ i\in [\![n]\!]     \\
+      \mathbf{a}_i^\top\mathbf{x} &\ge d_i  
+                    	& \forall\ i\in [\![n]\!]     \\[3em]
+         x_i &\ge 0   & \forall\ i\in \{1,2,...,n\} 
     \end{lpalign}
 \end{tcolorbox}
-Remember that space can be added between individual rows (or lines of text) via an optional argument on \Verb|\\|.
+\Verb|objective-sep| is added to \verb|row-sep| between the objective and first constraint rows. Remember that additional space can be added between individual rows (or lines of text) via an optional argument on \Verb|\\|.
 
 
 \subsection*{Multiline Objectives}
@@ -183,22 +227,22 @@ Very long \gl{objective functions} can be expressed in multiple lines by supplyi
     @hl~\begin{aligned}|
       @hl~a_{i1}&x_1+a_{i2}x_2+a_{i3}x_3 \\|
             @hl~&+a_{i4}x_4+...+a_{im}x_nm |
-    @hl~\end{aligned}| &\le b_i   && \forall\ i\in [\![n]\!]   \\
+    @hl~\end{aligned}| &\le b_i   & \forall\ i\in [\![n]\!]   \\
     \mathbf{x} &\ge \mathbf{0}
   \end{lpalign}
   \end{Verbatim}
 $$\downarrow$$
-    \begin{lpalign}{Maximize}
-      {\begin{aligned}
-        \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
-             &\gl{$+c_5x_5+...+c_mx_m$}
-      \end{aligned}}
-      \begin{aligned}
-        \hl{$a_{i1}$}&\hl{$x_1+a_{i2}x_2+a_{i3}x_3$}\\
-              &\hl{$+a_{i4}x_4+...+a_{im}x_nm$} 
-      \end{aligned}&\le b_i   && \forall\ i\in [\![n]\!]   \\
-       \mathbf{x} &\ge \mathbf{0}
-    \end{lpalign}
+  \begin{lpalign}{Maximize}
+    {\begin{aligned}
+      \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
+           &\gl{$+c_5x_5+...+c_mx_m$}
+    \end{aligned}}
+    \begin{aligned}
+      \hl{$a_{i1}$}&\hl{$x_1+a_{i2}x_2+a_{i3}x_3$}\\
+            &\hl{$+a_{i4}x_4+...+a_{im}x_nm$} 
+    \end{aligned}&\le b_i   & \forall\ i\in [\![n]\!]   \\
+     \mathbf{x} &\ge \mathbf{0}
+  \end{lpalign}
 \end{tcolorbox}
 The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. Other \textsf{amsmath}-compatible wrappers or environments can be nested within the objective. 
 \begin{tcolorbox}
@@ -215,51 +259,45 @@ The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. O
   \end{lpalign}
   \end{Verbatim}
 $$\downarrow$$
-    \begin{lpalign}
-    	[ sense-shift=0.6\baselineskip,
-    		st-shift=0.6\baselineskip,
-    		st=\hl{s.t.}]
-      {\gl{Maximize}}
-      {\fbox{$\begin{aligned}
-        c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
-           &+c_5x_5+...+c_mx_m
-      \end{aligned}$}}
-      \begin{aligned}
-        a_1&x_1+a_2x_2+a_3x_3 \\
-              &+a_4x_4+...+a_mx_m 
-      \end{aligned}&\le b_i   && \forall\ i\in [\![n]\!]   \\
-             \mathbf{x} &\ge \mathbf{0}
-    \end{lpalign}
+	\begin{lpalign}
+	[ sense-shift=0.6\baselineskip,
+		st-shift=0.6\baselineskip,
+		st=\hl{s.t.}]
+	{\gl{Maximize}}
+	{\fbox{$\begin{aligned}
+	  c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
+	     &+c_5x_5+...+c_mx_m
+	\end{aligned}$}}
+	\begin{aligned}
+	  a_1&x_1+a_2x_2+a_3x_3 \\
+	        &+a_4x_4+...+a_mx_m 
+	\end{aligned}&\le b_i   & \forall\ i\in [\![n]\!]   \\
+	       \mathbf{x} &\ge \mathbf{0}
+	\end{lpalign}
 \end{tcolorbox}
 
 \subsection*{\textsf{amsmath} Formatting}
 The \verb|\span| command tells \verb|alignat| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
 \begin{tcolorbox}
 	\begin{Verbatim}
-	\begin{lpalign}{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
-		&\mathbf{a}_i^\top\mathbf{x} \GE b_i 
-														&&\forall\ i\in[\![m]\!] \\
-		& \begin{bmatrix} 
-				a_{11} & a_{12} & \dots  & a_{1n} \\
-				a_{21} & a_{22} & \dots  & a_{2n} \\
-				\vdots & \vdots & \ddots &        \\
-				a_{m1} & a_{m2} &        & a_{mn}
-			\end{bmatrix}
-			\begin{bmatrix}
-				x_1 \\ x_2 \\ \vdots \\ x_n
-			\end{bmatrix}
-		\GE
-			\begin{bmatrix}
-				b_1 \\ b_2 \\ \vdots \\ b_m
-			\end{bmatrix}
-		@hl~\span\span| \\
-		@gl~\span\span\span\omit| $\mathbf{x}\in\mathbb{R}^n$
-	\end{lpalign}
+\begin{lpalign}{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
+	&\sum_{j=1}^na_{ij}x_j \GE b_i   &\forall\ i\in[\![m]\!] \\
+	&\mathbf{a}_i^\top\mathbf{x} \GE b_i  
+	                                 &\forall\ i\in[\![m]\!] \\
+	&\begin{bmatrix} a_{11}&a_{12}&\dots &a_{1n}\\
+	 a_{21}&a_{22}&\dots &a_{2n}\\ \vdots&\vdots&\ddots&     \\
+	 a_{m1}&a_{m2}&      &a_{mn} \end{bmatrix}
+	 \begin{bmatrix} x_1\\x_2\\\vdots\\x_n \end{bmatrix} \GE
+	 \begin{bmatrix} b_1\\b_2\\\vdots\\b_m \end{bmatrix}
+	@hl~\span\span| \\
+	@gl~\hfill| A\mathbf{x}\GE\mathbf{b} @gl~\span\span\hspace{0pt}|
+\end{lpalign}
 	\end{Verbatim}
 	$$\downarrow$$
 	\begin{lpalign}
 	{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
-	&\mathbf{a}_i^\top\mathbf{x} \GE b_i &&\hl{$\forall\ i\in[\![m]\!]$} \\
+	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+	&\mathbf{a}_i^\top\mathbf{x} \GE b_i &\hl{$\forall\ i\in[\![m]\!]$} \\
 	& \begin{bmatrix} 
 		a_{11} & a_{12} & \dots  & a_{1n} \\
 		a_{21} & a_{22} & \dots  & a_{2n} \\
@@ -273,14 +311,82 @@ The \verb|\span| command tells \verb|alignat| (and therefore \verb|lpalign|) to 
 		\begin{bmatrix}
 		b_1 \\ b_2 \\ \vdots \\ b_m
 		\end{bmatrix}
-	\span\span\\
-	\span\span\span\omit \gl{$\mathbf{x}\in\mathbb{R}^n$}
+	\span \\
+	\hfill \gl{$A\mathbf{x} \GE \mathbf{b}$}\span\span\hspace{0pt}
 	\end{lpalign}
 \end{tcolorbox}
-Three \verb|\span|'s and one \verb|\omit| will right-flush the row. \verb|\omit| ignores the column's formatting, so you will need to re-enter math mode. Using it in earlier columns may break reference tagging.
+An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
+
+
+\pagebreak
+\section{The \textsf{lpregion} Environment}\label{sec:lpregion}
+The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} sans objective, sense and s.t. terms for the purpose of describing regions. It takes only a few optional keys:\Vtrg
+  \begin{compactitem}
+  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|.  The default value of \verb|a| can be changed during package load by \verb|reg_flush| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|lp_row_sep| option.
+  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
+  \end{compactitem}
+The \textsf{lpregion*} environment is identical without printing equation reference tags unless explicitly called for by the \verb|\tag| command.
+\begin{tcolorbox}
+	\begin{Verbatim}
+\begin{lpregion*}
+	&\sum_{j=1}^na_{ij}x_j \GE b_i   &\forall\ i\in[\![m]\!] \\
+	&\mathbf{a}_i^\top\mathbf{x} \GE b_i  
+	                                 &\forall\ i\in[\![m]\!] \\
+	&\begin{bmatrix} a_{11}&a_{12}&\dots &a_{1n}\\
+	 a_{21}&a_{22}&\dots &a_{2n}\\ \vdots&\vdots&\ddots&     \\
+	 a_{m1}&a_{m2}&      &a_{mn} \end{bmatrix}
+	 \begin{bmatrix} x_1\\x_2\\\vdots\\x_n \end{bmatrix} \GE
+	 \begin{bmatrix} b_1\\b_2\\\vdots\\b_m \end{bmatrix}
+	\hfill A\mathbf{x}\GE\mathbf{b} \span\span\hspace{0pt}
+\end{lpregion*}
+	\end{Verbatim}
+	$$\downarrow$$
+	\begin{lpregion*}
+	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
+	& \begin{bmatrix} 
+		a_{11} & a_{12} & \dots  & a_{1n} \\
+		a_{21} & a_{22} & \dots  & a_{2n} \\
+		\vdots & \vdots & \ddots &        \\
+		a_{m1} & a_{m2} &        & a_{mn}
+		\end{bmatrix}
+		\begin{bmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+		\end{bmatrix} 
+	\GE
+		\begin{bmatrix}
+		b_1 \\ b_2 \\ \vdots \\ b_m
+		\end{bmatrix}
+	\span \\
+	\hfill A\mathbf{x} \GE \mathbf{b}\span\span\hspace{0pt}
+	\end{lpregion*}
+\end{tcolorbox}
+
+
+    \begin{lpregion*}
+    	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+    	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
+    	& \begin{bmatrix} 
+    		a_{11} & a_{12} & \dots  & a_{1n} \\
+    		a_{21} & a_{22} & \dots  & a_{2n} \\
+    		\vdots & \vdots & \ddots &        \\
+    		a_{m1} & a_{m2} &        & a_{mn}
+    		\end{bmatrix}
+    		\begin{bmatrix}
+    		x_1 \\ x_2 \\ \vdots \\ x_n
+    		\end{bmatrix} 
+    	\GE
+    		\begin{bmatrix}
+    		b_1 \\ b_2 \\ \vdots \\ b_m
+    		\end{bmatrix}
+    	\span \\
+    	\hfill A\mathbf{x} \GE \mathbf{b}\span\span\hspace{0pt}
+    	\end{lpregion*}
 
 
 
+\pagebreak
 \section{Named Paragraphs}\label{sec:paragraphs}
 The \verb|namedpara| command displays a paragraph marker that takes an abbreviation, which is useful for referencing specific problems or conventions.
 \begin{tcolorbox}
@@ -289,8 +395,7 @@ The \verb|namedpara| command displays a paragraph marker that takes an abbreviat
 Paragraph \ref{npara1} is a named paragraph.
   \end{Verbatim}
 $$\downarrow$$
-\namedpara{Named Paragraph}
-          [abv=NPg]\label{npara1}
+\namedpara{Named Paragraph}[abv=NPg]\label{npara1} \\
 Paragraph \ref{npara1} is a named paragraph.
 \end{tcolorbox}
 
@@ -319,8 +424,7 @@ $$\downarrow$$
 \end{tcolorbox}
 
 
-
-
+\pagebreak
 \section{Named Sub-equations}
 The \verb|namedsubeqs| environment uses a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
 
@@ -463,9 +567,8 @@ $$\downarrow$$
 
 
 
-
+\pagebreak
 \section{Sub-References}\label{sec:subrefs}
-
 Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -525,7 +628,7 @@ We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2}, or sub-reference \l
 Supported punctuation currently includes the period (.), colon (:), semicolon (;), comma (,), hyphen (-), forward slash (/), and \verb|\textbar| (\textbar). Other punctuation has not been tested.
 
 
-
+\pagebreak
 \section{Combining Macros}
 Each of these macros may be combined for a nicely named, labeled, formatted and tagged mathematical programming problem.
 \begin{tcolorbox}
@@ -533,8 +636,8 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
 \begin{namedsubeqs}{NLP}
 \begin{lpalign}{Minimize}{f(\mathbf{x})    \label{NLP.0}}
-  g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\
-  h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\
+  g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
+  h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
       \mathbf{x}  &\GE 0                \label{NLP.3}
 \end{lpalign}
 \end{namedsubeqs}
@@ -549,8 +652,8 @@ $$\downarrow$$
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
     \begin{namedsubeqs}{NLP}[style=\itshape\roman]
     \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
-        g_i(\mathbf{x}) &\GE 0 &&\forall\ i\in I \label{NLP.1} \\
-        h_j(\mathbf{x}) &\EQ 0 &&\forall\ j\in J \label{NLP.2} \\
+        g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
+        h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
             \mathbf{x}  &\GE 0                \label{NLP.3}
     \end{lpalign}
     \end{namedsubeqs}
@@ -562,17 +665,9 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \end{tcolorbox}
 
 
-
-
-
-
-
-
-
+\pagebreak
 \section{Spacing Macros}\label{sec:spacing}
-
 \subsection*{Quick Spacing}
-
 Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
     \vtrg\begin{multicols}{2}
     \begin{compactitem}
@@ -728,27 +823,31 @@ $$\downarrow$$
 The spacing defaults to 0.25em and is controlled by the package option \\\verb|evaluator_spacing|; see Section \ref{sec:options}.
 
 
-
+\pagebreak
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
 For package-load style defaults, use style names rather than raw control sequences. Thus \verb|lp_vars_style=scriptstyle| and \verb|namedsubeqs_style=roman| are valid package options.
 For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|lp_st={subject to}| or \verb|lp_st=subject~to| instead.
 	\begin{compactitem}
-	\item[\Verb|lp\_objective\_sep|] -- controls the spacing between objective function and the first constraint. Defaults to \verb|0em|. Section \ref{sec:lpalign}.
-	\item[\Verb|lp\_qualifier\_sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. Section \ref{sec:lpalign}.
-	\item[\Verb|lp\_gutter\_sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. Section \ref{sec:lpalign}.
-	\item[\Verb|lp\_vars\_style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. Section \ref{sec:lpalign}.
-	\item[\Verb|lp\_st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. Section \ref{sec:lpalign}.
+	\item[\Verb|lp\_row\_sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
+	\item[\Verb|lp\_objective\_sep|] -- controls additional spacing between objective function and the first constraint. Defaults to \verb|0em|. 
+	\item[\Verb|lp\_qualifier\_sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. 
+	\item[\Verb|lp\_gutter\_sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. 
+	\item[\Verb|lp\_vars\_style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. 
+	\item[\Verb|lp\_st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. 
+	\item[\Verb|lp\_flush|] -- controls the default alignment behavior of constraints in the \textsf{lpalign} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|.
+	\item[\Verb|reg\_flush|] -- controls the default alignment behavior of constraints in the \textsf{lpregion} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|. Section \ref{sec:lpregion}.
 	\item[\Verb|namedpara\_indent|] -- controls the indent of named paragraph markers. Defaults to \verb|2em|. Section \ref{sec:paragraphs}.
 	\item[\Verb|namedparabefore|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
-	\item[\Verb|namedparaafter|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
-	\item[\Verb|namedparaflush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. Section \ref{sec:paragraphs}.
+	\item[\Verb|namedparaafter|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty.
+	\item[\Verb|namedparaflush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. 
 	\item[\Verb|namedsubeqs\_style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
-	\item[\Verb|namedsubeqs\_punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. Section \ref{sec:subrefs}.
+	\item[\Verb|namedsubeqs\_punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. 
 	\item[\Verb|evaluator\_spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
 	\end{compactitem}
 
 
+\pagebreak
 \section{Known Bugs}
 \begin{compactitem}
 	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines.
@@ -771,15 +870,14 @@ For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX b
 \end{compactitem}
 
 
-
-
+\pagebreak
 \section{Version History}
 	\begin{compactitem}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
 	\item[v1.1] Jan. 30, 2026. Bug fix. Renamed quick spacing macros to maintain compatibility with standard \TeX. Added negative, vertical and negative-vertical versions. Added summation spacing macros. Added clause alignment arguments to the \textsf{lpalign} environment.
 	\item[v1.2] Jun. 25, 2026. Bug fix. Removed unused package dependencies, fixed the internal \verb|\currentlabel| handling in \textsf{namedsubeqs}, added a no-\textsf{hyperref} fallback for \verb|\lpsubref| and \verb|\lpsubeqref|, added \verb|\lpsubref| and \verb|\lpsubeqref| support for the traditional \textsf{subequations} environment from \textsf{amsmath}.
 	\item[v1.3] Jun. 26, 2026. Feature and compatibility update. Added \verb|\namedpara| with key-value options, namespaced the sub-equation reference commands as \verb|\lpsubref| and \verb|\lpsubeqref|, and hardened parent-label handling for both \verb|namedsubeqs| and traditional \textsf{subequations}.
-	\item[v1.4] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&&| placeholders, package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|, and the operator helpers now preserve standard \verb|_|/\verb|^| syntax.
+	\item[v1.4] Jun. 28, 2026. Layout and defaults update. Reworked \textsf{lpalign} so the objective contributes correctly to the environment width, ordinary rows no longer need trailing \verb|&| placeholders, package-load defaults are now available for \verb|objective-sep|, \verb|qualifier-sep| and \verb|gutter-sep|, and the operator helpers now preserve standard \verb|_|/\verb|^| syntax.
 	\item[v1.5] Jul. 6, 2026. Parser version of \verb|lpalign| fixes s.t. alignment.
 	\end{compactitem}
 

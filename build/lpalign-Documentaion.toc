@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Installation}{2}{section.1}%
+\contentsline {section}{\numberline {2}The \textsf {lpalign} Environment}{2}{section.2}%
+\contentsline {section}{\numberline {3}The \textsf {lpregion} Environment}{9}{section.3}%
+\contentsline {section}{\numberline {4}Named Paragraphs}{11}{section.4}%
+\contentsline {section}{\numberline {5}Named Sub-equations}{12}{section.5}%
+\contentsline {section}{\numberline {6}Sub-References}{14}{section.6}%
+\contentsline {section}{\numberline {7}Combining Macros}{16}{section.7}%
+\contentsline {section}{\numberline {8}Spacing Macros}{17}{section.8}%
+\contentsline {section}{\numberline {9}Package Options}{20}{section.9}%
+\contentsline {section}{\numberline {10}Known Bugs}{21}{section.10}%
+\contentsline {section}{\numberline {11}Version History}{22}{section.11}%
