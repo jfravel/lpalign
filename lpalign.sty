@@ -1,6 +1,6 @@
 \ProvidesPackage{lpalign}[Jun 28, 2026: v1.5 of Jamie Fravel's lpalign macro package]
 
-\RequirePackage{eqnarray, amsmath, expl3, l3keys2e, xstring}
+\RequirePackage{IEEEtrantools, amsmath, expl3, l3keys2e}
 \IfFileExists{stackengine.sty}
   {\RequirePackage{stackengine}}
   {\newcommand{\stackunder}[2]{\shortstack[c]{##1\\##2}}}
@@ -112,32 +112,34 @@
 % An environment macro built on the equationarray environment from the eqnarray package which helps to format mathematical programming problems aesthetically both in code and in text.
 
 \ExplSyntaxOn
-%% Package defaults
-%\dim_new:N \g_lpalign_default_objective_sep
-%\dim_new:N \g_lpalign_default_row_sep
-%\dim_new:N \g_lpalign_default_qualifier_sep
-%\dim_new:N \g_lpalign_default_gutter_sep
-%\dim_gset:Nn \g_lpalign_default_objective_sep { 0em }
-%\dim_gset:Nn \g_lpalign_default_row_sep { 0.5em }
-%\dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
-%\dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
-%% Text Inputs
-%\tl_new:N \lpalign_vars_text
-%\tl_new:N \lpalign_vars_style
-%\tl_new:N \lpalign_st_text
-%\tl_new:N \g_lpalign_default_vars_style_tl
-%\tl_new:N \g_lpalign_default_st_tl
-%\tl_new:N \l_lpalign_sense_text_tl
-%\tl_new:N \l_lpalign_objective_text_tl
-
-%% Dimensions
-%\dim_new:N \lpalign_row_sep
-%\dim_new:N \lpalign_sense_shift
-%\dim_new:N \lpalign_st_shift
-%\dim_new:N \lpalign_objective_sep
-%\dim_new:N \lpalign_row_sep
-%\dim_new:N \lpalign_qualifier_sep
-%\dim_new:N \lpalign_gutter_sep
+% Package defaults
+\dim_new:N \g_lpalign_default_objective_sep
+\dim_new:N \g_lpalign_default_row_sep
+\dim_new:N \g_lpalign_default_qualifier_sep
+\dim_new:N \g_lpalign_default_gutter_sep
+\dim_gset:Nn \g_lpalign_default_objective_sep { 0em }
+\dim_gset:Nn \g_lpalign_default_row_sep { 0.5em }
+\dim_gset:Nn \g_lpalign_default_qualifier_sep { 2em }
+\dim_gset:Nn \g_lpalign_default_gutter_sep { 0.75em }
+% Text inputs
+\tl_new:N \lpalign_vars_text
+\tl_new:N \lpalign_vars_style
+\tl_new:N \lpalign_st_text
+\tl_new:N \g_lpalign_default_vars_style_tl
+\tl_new:N \g_lpalign_default_st_tl
+\tl_new:N \g_lpalign_default_flush
+\tl_new:N \lpalign_flush
+\tl_new:N \g_lpregion_default_flush
+\tl_new:N \lpregion_flush
+\tl_new:N \l_lpalign_sense_text_tl
+\tl_new:N \l_lpalign_objective_text_tl
+% Dimensions
+\dim_new:N \lpalign_row_sep
+\dim_new:N \lpalign_sense_shift
+\dim_new:N \lpalign_st_shift
+\dim_new:N \lpalign_objective_sep
+\dim_new:N \lpalign_qualifier_sep
+\dim_new:N \lpalign_gutter_sep
 
 % Package options
 \keys_define:nn { lpalign/package }
@@ -151,9 +153,17 @@
 	lp_gutter_sep .dim_gset:N = \g_lpalign_default_gutter_sep,
 	lp_gutter_sep .initial:n = 0.75em,
 	lp_vars_style .choices:nn =
-	  { \scriptstyle, \scriptscriptstyle, \textstyle, \displaystyle }
-	  { \tl_gset_eq:NN \g_lpalign_default_vars_style_tl \l_keys_choice_tl },
-	lp_vars_style .initial:n = \scriptstyle,
+	  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
+	  {
+	    \str_case:Vn \l_keys_choice_tl
+	     {
+	      {scriptstyle}       { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptstyle } }
+	      {scriptscriptstyle} { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptscriptstyle } }
+	      {textstyle}         { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \textstyle } }
+	      {displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
+	     }
+	  },
+	lp_vars_style .initial:n = scriptstyle,
 	lp_st .tl_gset:N = \g_lpalign_default_st_tl,
 	lp_st .initial:n = s.t.,
 	lp_flush .choices:nn =
@@ -214,159 +224,126 @@
     \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text}
   }
 
+\cs_new_protected:Npn \lpalign_ieee_define_colseps:
+  {
+    \IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
+    \IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
+  }
+
+\cs_new_protected:Npn \lpalign_ieee_patch_cr:
+  {
+    \def\@IEEEeqnarrayXCR[##1]{%
+       \ifnum0=`{\fi}%
+       \@@IEEEeqnarraycr
+       \noalign{\penalty\@eqpen\vskip\jot\vskip ##1\relax}%
+       &&}%
+  }
+
 
 \makeatletter
 \NewDocumentEnvironment{lpalign}{O{}mm}
 	{
 	\lpalign_setup:n { #1 }
-	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
-		\def\@argequationcr[##1]{%
-      \ifnum0=`{\fi}${}%
-      \vspace{\dim_use:N \lpalign_row_sep}
-      \@yargequationcr{##1}%
-      &
-    }%
-		\let\lpalign@orig@xequationcr\@xequationcr
-		\def\@xequationcr{%
-		  \@ifnextchar[{\@argequationcr}
-		  	{%
-		    \ifnum0=`{\fi}${}%
-		    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
-		    &
-		  	}%
-		}%
+	\lpalign_ieee_define_colseps:
+	\let\lpalign@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
 	\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
 	\tl_if_eq:NnT \lpalign_flush {a}
 		{
-		\begin{equationarray}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			r@{}>{{}}l %body
-			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray}{u1rL2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
  		& #3 \span\span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {l}
 		{
-		\begin{equationarray}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			l@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray}{u1l2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {c}
 		{
-		\begin{equationarray}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			c@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray}{u1c2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {r}
 		{
-		\begin{equationarray}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			r@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray}{u1r2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: & 
 		}
 	}
 	{
-	\end{equationarray}
-	\let\@xequationcr\lpalign@orig@xequationcr
-	\let\@argequationcr\lpalign@orig@argequationcr
+	\end{IEEEeqnarray}
+	\let\@IEEEeqnarrayXCR\lpalign@orig@IEEEeqnarrayXCR
 	\ignorespacesafterend
 	}
 
 \NewDocumentEnvironment{lpalign*}{O{}mm}
 	{
 	\lpalign_setup:n { #1 }
-	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
-		\def\@argequationcr[##1]{%
-      \ifnum0=`{\fi}${}%
-      \vspace{\dim_use:N \lpalign_row_sep}
-      \@yargequationcr{##1}%
-      &
-    }%
-		\let\lpalign@orig@xequationcr\@xequationcr
-		\def\@xequationcr{%
-		  \@ifnextchar[{\@argequationcr}
-		  	{%
-		    \ifnum0=`{\fi}${}%
-		    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
-		    &
-		  	}%
-		}%
+	\lpalign_ieee_define_colseps:
+	\let\lpalign@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
 	\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
 	\tl_if_eq:NnT \lpalign_flush {a}
 		{
-		\begin{equationarray*}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			r@{}>{{}}l %body
-			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray*}{u1rL2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
  		& #3 \span\span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: &
 		}
 	\tl_if_eq:NnT \lpalign_flush {l}
 		{
-		\begin{equationarray*}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			l@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray*}{u1l2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: &
 		}
 	\tl_if_eq:NnT \lpalign_flush {c}
 		{
-		\begin{equationarray*}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			c@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray*}{u1c2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: &
 		}
 	\tl_if_eq:NnT \lpalign_flush {r}
 		{
-		\begin{equationarray*}
-			{
-			r@{\hskip\dim_use:N \lpalign_gutter_sep} %gutter
-			r@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray*}{u1r2l}
+		\jot=\lpalign_row_sep\relax
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\@yargequationcr{\dim_use:N \lpalign_objective_sep}
+		\\[\dim_use:N \lpalign_objective_sep]
+		\lpalign_ieee_patch_cr:
 		\lpalign_print_st: &
 		}
 	}
 	{
-	\end{equationarray*}
-	\let\@xequationcr\lpalign@orig@xequationcr
-	\let\@argequationcr\lpalign@orig@argequationcr
+	\end{IEEEeqnarray*}
+	\let\@IEEEeqnarrayXCR\lpalign@orig@IEEEeqnarrayXCR
 	\ignorespacesafterend
 	}
 \makeatother
@@ -400,90 +377,66 @@
 	\tl_set_eq:NN \lpregion_flush \g_lpregion_default_flush
 	\dim_set_eq:NN \lpalign_row_sep \g_lpalign_default_row_sep
 	\dim_set_eq:NN \lpalign_qualifier_sep \g_lpalign_default_qualifier_sep
-	\tl_if_blank:nF {#1} { \keys_set:nn { lpalign/lp } { #1 } }
+	\tl_if_blank:nF {#1} { \keys_set:nn { lpalign/region } { #1 } }
 	}
 
 \makeatletter
 \NewDocumentEnvironment{lpregion}{O{}}
 	{
 	\lpregion_setup:n { #1 }
-	\let\lpalign@orig@xequationcr\@xequationcr
-	\def\@xequationcr{%
-	  \@ifnextchar[{\@argequationcr}
-	  	{%
-	    \ifnum0=`{\fi}${}%
-	    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
-	  	}%
-		}%
+	\lpalign_ieee_define_colseps:
 	\tl_if_eq:NnT \lpregion_flush {a}
 		{
-		\begin{equationarray}
-			{
-			r@{}>{{}}l %body
-			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
+		\begin{IEEEeqnarray}{rL2l}
+		\jot=\lpalign_row_sep\relax
 			}
-		}
 	\tl_if_eq:NnT \lpregion_flush {l}
 		{
-		\begin{equationarray}
-			{ l@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray}{l2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {c}
 		{
-		\begin{equationarray}
-			{ c@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray}{c2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {r}
 		{
-		\begin{equationarray}
-			{ r@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray}{r2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	}
 	{
-	\end{equationarray}
-	\let\@xequationcr\lpalign@orig@xequationcr
-	\let\@argequationcr\lpalign@orig@argequationcr
+	\end{IEEEeqnarray}
 	\ignorespacesafterend
 	}
 \NewDocumentEnvironment{lpregion*}{O{}}
 	{
 	\lpregion_setup:n { #1 }
-	\let\lpalign@orig@xequationcr\@xequationcr
-	\def\@xequationcr{%
-	  \@ifnextchar[{\@argequationcr}
-	  	{%
-	    \ifnum0=`{\fi}${}%
-	    \@yargequationcr{\dim_use:N \lpalign_row_sep}%
-	  	}%
-		}%
+	\lpalign_ieee_define_colseps:
 	\tl_if_eq:NnT \lpregion_flush {a}
 		{
-		\begin{equationarray*}
-			{
-			r@{}>{{}}l %body
-			@{\hskip\dim_use:N \lpalign_qualifier_sep}l %qualifier
-			}
+		\begin{IEEEeqnarray*}{rL2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {l}
 		{
-		\begin{equationarray*}
-			{ l@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray*}{l2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {c}
 		{
-		\begin{equationarray*}
-			{ c@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray*}{c2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {r}
 		{
-		\begin{equationarray*}
-			{ r@{\hskip\dim_use:N \lpalign_qualifier_sep}l }
+		\begin{IEEEeqnarray*}{r2l}
+		\jot=\lpalign_row_sep\relax
 		}
 	}
 	{
-	\end{equationarray*}
-	\let\@xequationcr\lpalign@orig@xequationcr
-	\let\@argequationcr\lpalign@orig@argequationcr
+	\end{IEEEeqnarray*}
 	\ignorespacesafterend
 	}
 \makeatother
