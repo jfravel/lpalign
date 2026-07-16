@@ -121,6 +121,24 @@ Example:
 \end{lpregion}
 ```
 
+## Box Forms
+
+Nestable box variants are also available when you want the same formatting conventions inside another display or environment:
+
+```tex
+\begin{lpalignbox}[<keys>]{<sense>}{<objective>}
+  <constraint rows>
+\end{lpalignbox}
+```
+
+```tex
+\begin{lpregionbox}[<keys>]
+  <constraint rows>
+\end{lpregionbox}
+```
+
+These are built on `IEEEeqnarraybox` rather than `IEEEeqnarray`, so they can be embedded inside larger mathematical displays.
+
 ## Named Paragraphs
 
 `namedpara` displays a paragraph marker and, when labeled, uses the supplied abbreviation as the reference text.
