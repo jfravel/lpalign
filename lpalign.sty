@@ -174,7 +174,10 @@
   vars-style .tl_set:N = \lpalign_vars_style,
   sense-shift .dim_set:N = \lpalign_sense_shift,
   st .tl_set:N = \lpalign_st_text,
-  flush .tl_set:N = \lpalign_flush,
+  flush .choices:nn =
+  	  { a, l, c, r }
+  	  { \tl_gset_eq:NN \g_lpalign_flush \l_keys_choice_tl },
+  flush .initial:n = a,
   st-shift .dim_set:N = \lpalign_st_shift,
   objective-sep .dim_set:N = \lpalign_objective_sep,
   row-sep .dim_set:N = \lpalign_row_sep,
@@ -362,14 +365,16 @@
 	  { \tl_gset_eq:NN \g_lpregion_default_flush \l_keys_choice_tl },
 	reg_flush .initial:n = a,
 	}
-
-
+ 
 \keys_define:nn { lpalign/region }
-  {
-  row-sep .dim_set:N = \lpalign_row_sep,
-  qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
-  flush .tl_set:N = \lpregion_flush,
-  }
+	{
+	row-sep .dim_set:N = \lpalign_row_sep,
+	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
+	flush .choices:nn =
+	  { a, l, c, r }
+	  { \tl_gset_eq:NN \lpregion_flush \l_keys_choice_tl },
+	flush .initial:n = a,
+	}
 
 \cs_new_protected:Npn \lpregion_setup:n #1
 	{
@@ -379,35 +384,56 @@
 	\tl_if_blank:nF {#1} { \keys_set:nn { lpalign/region } { #1 } }
 	}
 
+
+\cs_new_protected:Npn \lpregion_ieee_patch_cr:
+  {
+    \def\lpregion@IEEEeqnarrayYCR{%
+      \@testopt\lpregion@IEEEeqnarrayXCR\z@skip
+    }
+    \def\lpregion@IEEEeqnarrayXCR[##1]{%
+      \ifnum0=`{\fi}%
+      \@@IEEEeqnarraycr
+      \noalign{\penalty\@eqpen\vskip\jot\vskip ##1\vskip \dim_use:N \lpalign_row_sep\relax}%
+      &%
+    }
+    \def\@IEEEeqnarraycr{%
+      \@IEEEeqnarrayglobalizestrutstatus&%
+      {\ifnum0=`}\fi
+      \@ifstar{%
+        \global\@eqpen\@M
+        \lpregion@IEEEeqnarrayYCR
+      }{%
+        \global\@eqpen\interdisplaylinepenalty
+        \lpregion@IEEEeqnarrayYCR
+      }%
+    }
+  }
+
+
+%\cs_new_protected:Npn \lpregion_ieee_patch_cr:
+%  {
+%    \def\@IEEEeqnarrayXCR[##1]{%
+%      \ifnum0=`{\fi}%
+%      \@@IEEEeqnarraycr
+%      \noalign{\penalty\@eqpen\vskip\jot\vskip ##1\vskip \dim_use:N \lpalign_row_sep\relax}%
+%    }
+%  }
+
 \makeatletter
 \NewDocumentEnvironment{lpregion}{O{}}
 	{
 	\lpregion_setup:n { #1 }
-	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
-	\tl_if_eq:NnT \lpregion_flush {a}
-		{
-		\begin{IEEEeqnarray}{rL2l}
-		\jot=\lpalign_row_sep\relax
-			}
-	\tl_if_eq:NnT \lpregion_flush {l}
-		{
-		\begin{IEEEeqnarray}{l2l}
-		\jot=\lpalign_row_sep\relax
-		}
-	\tl_if_eq:NnT \lpregion_flush {c}
-		{
-		\begin{IEEEeqnarray}{c2l}
-		\jot=\lpalign_row_sep\relax
-		}
-	\tl_if_eq:NnT \lpregion_flush {r}
-		{
-		\begin{IEEEeqnarray}{r2l}
-		\jot=\lpalign_row_sep\relax
-		}
+	\let\lpregion@orig@IEEEeqnarraycr\@IEEEeqnarraycr
+	\lpregion_ieee_patch_cr:
+	\tl_if_eq:NnT \lpregion_flush {a} { \begin{IEEEeqnarray}{rL2l} }
+	\tl_if_eq:NnT \lpregion_flush {l} { \begin{IEEEeqnarray}{l2l} }
+	\tl_if_eq:NnT \lpregion_flush {c} { \begin{IEEEeqnarray}{c2l} }
+	\tl_if_eq:NnT \lpregion_flush {r} { \begin{IEEEeqnarray}{r2l} }
 	}
 	{
 	\end{IEEEeqnarray}
+	\let\@IEEEeqnarraycr\lpregion@orig@IEEEeqnarraycr
 	\ignorespacesafterend
 	}
 \NewDocumentEnvironment{lpregion*}{O{}}
@@ -415,29 +441,32 @@
 	\lpregion_setup:n { #1 }
 	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
+	\let\lpregion@orig@IEEEeqnarraycr\@IEEEeqnarraycr
+%	\lpregion_ieee_patch_cr:
 	\tl_if_eq:NnT \lpregion_flush {a}
 		{
 		\begin{IEEEeqnarray*}{rL2l}
-		\jot=\lpalign_row_sep\relax
+%		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {l}
 		{
 		\begin{IEEEeqnarray*}{l2l}
-		\jot=\lpalign_row_sep\relax
+%		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {c}
 		{
 		\begin{IEEEeqnarray*}{c2l}
-		\jot=\lpalign_row_sep\relax
+%		\jot=\lpalign_row_sep\relax
 		}
 	\tl_if_eq:NnT \lpregion_flush {r}
 		{
 		\begin{IEEEeqnarray*}{r2l}
-		\jot=\lpalign_row_sep\relax
+%		\jot=\lpalign_row_sep\relax
 		}
 	}
 	{
 	\end{IEEEeqnarray*}
+	\let\@IEEEeqnarraycr\lpregion@orig@IEEEeqnarraycr
 	\ignorespacesafterend
 	}
 \makeatother

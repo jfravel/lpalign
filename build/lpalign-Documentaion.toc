@@ -1,11 +1,11 @@
 \contentsline {section}{\numberline {1}Installation}{2}{section.1}%
 \contentsline {section}{\numberline {2}The \textsf {lpalign} Environment}{2}{section.2}%
-\contentsline {section}{\numberline {3}The \textsf {lpregion} Environment}{10}{section.3}%
-\contentsline {section}{\numberline {4}Named Paragraphs}{12}{section.4}%
-\contentsline {section}{\numberline {5}Named Sub-equations}{13}{section.5}%
-\contentsline {section}{\numberline {6}Sub-References}{15}{section.6}%
-\contentsline {section}{\numberline {7}Combining Macros}{17}{section.7}%
-\contentsline {section}{\numberline {8}Spacing Macros}{18}{section.8}%
-\contentsline {section}{\numberline {9}Package Options}{21}{section.9}%
-\contentsline {section}{\numberline {10}Known Bugs}{22}{section.10}%
-\contentsline {section}{\numberline {11}Version History}{23}{section.11}%
+\contentsline {section}{\numberline {3}The \textsf {lpregion} Environment}{8}{section.3}%
+\contentsline {section}{\numberline {4}Named Paragraphs}{9}{section.4}%
+\contentsline {section}{\numberline {5}Named Sub-equations}{9}{section.5}%
+\contentsline {section}{\numberline {6}Sub-References}{11}{section.6}%
+\contentsline {section}{\numberline {7}Combining Macros}{12}{section.7}%
+\contentsline {section}{\numberline {8}Spacing Macros}{13}{section.8}%
+\contentsline {section}{\numberline {9}Package Options}{15}{section.9}%
+\contentsline {section}{\numberline {10}Known Bugs}{16}{section.10}%
+\contentsline {section}{\numberline {11}Version History}{17}{section.11}%

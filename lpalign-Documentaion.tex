@@ -4,7 +4,7 @@
 % pdflatex lpalign-Documentaion.tex
 \usepackage{lpalign}\newsavebox{\mydebugbox}
 
-\usepackage{tcolorbox}
+
 \usepackage{parskip}
     \setlength{\parskip}{13pt}
 \usepackage{multicol}
@@ -15,6 +15,18 @@
 %	\setlist[itemize]{noitemsep, topsep=-0.7em}
 \usepackage{paralist}
 
+\usepackage{amsmath}
+	\allowdisplaybreaks
+\usepackage[most]{tcolorbox}
+	\tcbset
+	{
+    breakable,
+    enhanced, % Recommended for correct rendering on breaks
+    skin=bicolor,
+    colback=black!10,
+    colframe=black,
+    colbacklower=black!3,
+	}
 \usepackage{fancyvrb}
 	\fvset{tabsize=2, commandchars=@~|}
 \usepackage[dvipsnames]{xcolor}
@@ -69,8 +81,9 @@ The \textsf{lpalign*} environment is identical without printing equation referen
     A\mathbf{x} &\le \mathbf{b}  \\
      \mathbf{x} &\ge \mathbf{0} 
   \end{lpalign} 
+  
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{lpalign}{Maximize}{\mathbf{c}^\top\mathbf{x}}
       A\mathbf{x} &\le \mathbf{b}  \\
        \mathbf{x} &\ge \mathbf{0} 
@@ -85,8 +98,9 @@ The environment defaults to \verb|alignat|-style behavior; the constraint rows w
 	\begin{Verbatim}
 				Ax+s @hl&= b+0 \\   		 		 Ax+@gl&s = b+0 \\
 				 x,s @hl&\ge 0     			 	     @gl&x,s \ge 0
+				 
 	\end{Verbatim}
-$$\downarrow$$
+\tcblower
 \hfill
 \begin{minipage}{0.4\textwidth}
 	\begin{lpalign*}{max}{c^\top x}
@@ -115,7 +129,7 @@ The \verb|flush| argument can be used to adjust global alignment. Options are \v
 	\end{lpalign*} 		 \end{lpalign*} 		 \end{lpalign*} 
 	
 	\end{Verbatim}
-$$\downarrow$$
+\tcblower
 \begin{minipage}{0.32\textwidth}
 	\begin{lpalign*}[flush=l]{max}{c^\top x}
     Ax+s = b+0 \\
@@ -148,7 +162,7 @@ Qualified constraints are also possible. Another ampersand \verb|&| will properl
        x_i &\ge 0     @gl~& \forall\ i\in \{1,2,...,n\}|
        
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{lpalign*}{Maximize}{\sum_{j=1}^mc_jx_j}
       \mathbf{a}_i^\top\mathbf{x} &\le b_i  
                       & \gl{$\forall\ i\in [\![n]\!]$}     \\
@@ -167,8 +181,9 @@ Subscripts can be placed under the `sense' term via the \verb|vars| option.
     {Maximize}{c_1x_1 + \dots + c_mx_m}
     A\mathbf{x} &\le \mathbf{b}
   \end{lpalign*} 
+  
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{lpalign*}[vars=\hl{$\scriptstyle\mathbf{x}\in\mathbb{R}_+$}]
   {Maximize}{c_1x_1 + \dots + c_mx_m}
     A\mathbf{x} &\le \mathbf{b}
@@ -195,8 +210,9 @@ The \verb|sep| options can be used to modify the whitespace between elements. Th
                   	& \forall\ i\in [\![n]\!]     \\[3em]
      x_i &\ge 0   & \forall\ i\in \{1,2,...,n\} 
   \end{lpalign} 
+  
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{lpalign}
       [
       objective-sep=1em,
@@ -230,8 +246,9 @@ Very long \gl{objective functions} can be expressed in multiple lines by supplyi
     @hl~\end{aligned}| &\le b_i   & \forall\ i\in [\![n]\!]   \\
     \mathbf{x} &\ge \mathbf{0}
   \end{lpalign}
+  
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{lpalign}{Maximize}
     {\begin{aligned}
       \gl{$c_1$}&\gl{$x_1+c_2x_2+c_3x_3+c_4x_4$}\\
@@ -257,14 +274,15 @@ The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. O
 		\end{aligned}$}}
   	...
   \end{lpalign}
+  
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
 	\begin{lpalign}
-%	[ sense-shift=0.6\baselineskip,
-%		st-shift=0.6\baselineskip,
-%		st=\hl{s.t.}]
+	[ sense-shift=0.6\baselineskip,
+		st-shift=0.6\baselineskip,
+		st=\hl{s.t.}]
 	{\gl{Maximize}}
-	{\fbox{$\begin{aligned}[t]
+	{\fbox{$\begin{aligned}
 	  c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
 	     &+c_5x_5+...+c_mx_m
 	\end{aligned}$}}
@@ -275,8 +293,11 @@ $$\downarrow$$
 	       \mathbf{x} &\ge \mathbf{0}
 	\end{lpalign}
 \end{tcolorbox}
+Note that, for some nested environments like \verb|aligned| from \textsf{amsmath}, the optional argument \verb|[t]| will align the sense term with the top row of the environment. Be careful when using this feature in the constraints as it will disrupt alignment with the remaining row.
 
-\subsection*{\textsf{IEEEeqnarray} Formatting}
+
+
+\subsection*{Span Formatting}
 The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
 \begin{tcolorbox}
 	\begin{Verbatim}
@@ -292,8 +313,9 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 	@hl~\span\span| \\
 	@gl~\hfill| A\mathbf{x}\GE\mathbf{b} @gl~\span\span\hspace{0pt}|
 \end{lpalign}
+
 	\end{Verbatim}
-	$$\downarrow$$
+	\tcblower
 	\begin{lpalign}
 	{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}
 	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
@@ -318,9 +340,9 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
 
 
-\pagebreak
+
 \section{The \textsf{lpregion} Environment}\label{sec:lpregion}
-The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} sans objective, sense and s.t. terms for the purpose of describing regions. It takes only a few optional keys:\Vtrg
+The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} without objective, sense or s.t. terms for the purpose of describing regions only. It takes only a few optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|.  The default value of \verb|a| can be changed during package load by \verb|reg_flush| option.
   \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|lp_row_sep| option.
@@ -340,53 +362,53 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 	 \begin{bmatrix} b_1\\b_2\\\vdots\\b_m \end{bmatrix}
 	\hfill A\mathbf{x}\GE\mathbf{b} \span\span\hspace{0pt}
 \end{lpregion*}
+
 	\end{Verbatim}
-	$$\downarrow$$
-	\begin{lpregion*}
-	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
-	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
-	& \begin{bmatrix} 
-		a_{11} & a_{12} & \dots  & a_{1n} \\
-		a_{21} & a_{22} & \dots  & a_{2n} \\
-		\vdots & \vdots & \ddots &        \\
-		a_{m1} & a_{m2} &        & a_{mn}
-		\end{bmatrix}
-		\begin{bmatrix}
-		x_1 \\ x_2 \\ \vdots \\ x_n
-		\end{bmatrix} 
-	\GE
-		\begin{bmatrix}
-		b_1 \\ b_2 \\ \vdots \\ b_m
-		\end{bmatrix}
-	\span \\
-	\hfill A\mathbf{x} \GE \mathbf{b}\span\span\hspace{0pt}
-	\end{lpregion*}
+	\tcblower
+%	\begin{lpregion*}%[row-sep=5em, qualifier-sep=5em, flush=a]
+%	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+%	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
+%	 \begin{bmatrix} 
+%		a_{11} & a_{12} & \dots  & a_{1n} \\
+%		a_{21} & a_{22} & \dots  & a_{2n} \\
+%		\vdots & \vdots & \ddots &        \\
+%		a_{m1} & a_{m2} &        & a_{mn}
+%		\end{bmatrix}
+%		\begin{bmatrix}
+%		x_1 \\ x_2 \\ \vdots \\ x_n
+%		\end{bmatrix} 
+%	\GE
+%		\begin{bmatrix}
+%		b_1 \\ b_2 \\ \vdots \\ b_m
+%		\end{bmatrix}
+%	\span\span \\
+%	\hfill A\mathbf{x} \GE \mathbf{b}\span\span
+%	\end{lpregion*}
+	
+	\begin{lpregion}[row-sep=8em, qualifier-sep=10em, flush=r]
+		\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+		\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
+		 \begin{bmatrix} 
+			a_{11} & a_{12} & \dots  & a_{1n} \\
+			a_{21} & a_{22} & \dots  & a_{2n} \\
+			\vdots & \vdots & \ddots &        \\
+			a_{m1} & a_{m2} &        & a_{mn}
+			\end{bmatrix}
+			\begin{bmatrix}
+			x_1 \\ x_2 \\ \vdots \\ x_n
+			\end{bmatrix} 
+		\GE
+			\begin{bmatrix}
+			b_1 \\ b_2 \\ \vdots \\ b_m
+			\end{bmatrix}
+		\span \\[2em]
+		\hfill A\mathbf{x} \GE \mathbf{b}\span
+		\end{lpregion}
 \end{tcolorbox}
 
 
-    \begin{lpregion*}
-    	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
-    	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
-    	& \begin{bmatrix} 
-    		a_{11} & a_{12} & \dots  & a_{1n} \\
-    		a_{21} & a_{22} & \dots  & a_{2n} \\
-    		\vdots & \vdots & \ddots &        \\
-    		a_{m1} & a_{m2} &        & a_{mn}
-    		\end{bmatrix}
-    		\begin{bmatrix}
-    		x_1 \\ x_2 \\ \vdots \\ x_n
-    		\end{bmatrix} 
-    	\GE
-    		\begin{bmatrix}
-    		b_1 \\ b_2 \\ \vdots \\ b_m
-    		\end{bmatrix}
-    	\span \\
-    	\hfill A\mathbf{x} \GE \mathbf{b}\span\span\hspace{0pt}
-    	\end{lpregion*}
 
 
-
-\pagebreak
 \section{Named Paragraphs}\label{sec:paragraphs}
 The \verb|namedpara| command displays a paragraph marker that takes an abbreviation, which is useful for referencing specific problems or conventions.
 \begin{tcolorbox}
@@ -394,7 +416,7 @@ The \verb|namedpara| command displays a paragraph marker that takes an abbreviat
 \namedpara{Named Paragraph}[NPg]\label{npara1} \\
 Paragraph \ref{npara1} is a named paragraph.
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
 \namedpara{Named Paragraph}[abv=NPg]\label{npara1} \\
 Paragraph \ref{npara1} is a named paragraph.
 \end{tcolorbox}
@@ -417,14 +439,14 @@ Currently supported optional keys include\Vtrg
 
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
 \namedpara{Indented}[abv=IND, indent=6em] \\
 \namedpara{Surrounded}[abv=SUR, flush=center, before=$>>>$ , after=$<<<$ ] \\
 \namedpara{Rightflushed}[abv=RIGHT, flush=right]
 \end{tcolorbox}
 
 
-\pagebreak
+
 \section{Named Sub-equations}
 The \verb|namedsubeqs| environment uses a given name as the first index in any enclosed equation reference tag. A second index is appended as in a traditional \verb|subequations| environment.
 
@@ -440,7 +462,7 @@ The \verb|namedsubeqs| environment uses a given name as the first index in any e
   Equations \ref{eq:1} and \ref{eq:2} are equations.
   
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{namedsubeqs}{EQ}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{eq:1}   \\
@@ -460,7 +482,7 @@ An optional argument allows you to change the style of the sub-tag. The currentl
                   \begin{namedsubeqs}{EQ}[@gl~style=\arabic|]
                   
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\roman]
     \begin{align}
@@ -489,7 +511,7 @@ Fonts can be changed using the appropriate switch commands.
                   \begin{namedsubeqs}{EQ}[@gl~style=\scshape|]
                   
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\roman]
     \begin{align}
@@ -517,7 +539,7 @@ The \verb|punct| argument controls the separator between the main tag and the su
 \begin{namedsubeqs}{EQ}[style=\bfseries\arabic, punct=@gl~$\sim$|]
 
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[style=\scshape\roman, punct=\hl:]
     \begin{align}
@@ -545,7 +567,7 @@ A single optional argument which does not contain an \verb|=| sign is interprete
                 \begin{namedsubeqs}{EQ}[\bfseries\arabic]
                 
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
   \begin{minipage}[T]{0.4\textwidth}
   	\begin{namedsubeqs}{EQ}[\sffamily\Alph]
     \begin{align}
@@ -567,7 +589,7 @@ $$\downarrow$$
 
 
 
-\pagebreak
+
 \section{Sub-References}\label{sec:subrefs}
 Also available are \verb|\lpsubref| and \verb|\lpsubeqref|, which work like \verb|\ref| and \verb|\eqref| but reference only the secondary, sub-index part of a tag inside either \verb|namedsubeqs| or a traditional \verb|subequations| environment from the \textsf{amsmath} package.
 \begin{tcolorbox}
@@ -584,7 +606,7 @@ an equation's sub-tag @hl~\lpsubref{nq:1}| and @gl~\lpsubeqref{nq:2}|.
 The environment itself may also be referenced \ref{nq}.
 
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{namedsubeqs}{SQ}[style=\itshape\roman]\label{nq}
     \begin{align}
       A\mathbf{x} = \mathbf{b}   \label{nq:1}\\
@@ -614,7 +636,7 @@ or sub-reference \lpsubref{sq:1} and \lpsubeqref{sq:2} in a
 \textsf{subequations} environment.
 
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \begin{subequations}\label{sq}
 	  \renewcommand{\theequation}
   	  								{\theparentequation\textbar\arabic{equation}}
@@ -628,7 +650,7 @@ We can also reference \ref{sq}, \ref{sq:1} and \eqref{sq:2}, or sub-reference \l
 Supported punctuation currently includes the period (.), colon (:), semicolon (;), comma (,), hyphen (-), forward slash (/), and \verb|\textbar| (\textbar). Other punctuation has not been tested.
 
 
-\pagebreak
+
 \section{Combining Macros}
 Each of these macros may be combined for a nicely named, labeled, formatted and tagged mathematical programming problem.
 \begin{tcolorbox}
@@ -648,7 +670,7 @@ Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints.
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
     \begin{namedsubeqs}{NLP}[style=\itshape\roman]
     \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
@@ -665,7 +687,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \end{tcolorbox}
 
 
-\pagebreak
+
 \section{Spacing Macros}\label{sec:spacing}
 \subsection*{Quick Spacing}
 Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
@@ -719,7 +741,7 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 	Some negative-vertical space between these \Vtrg
 	lines, so that they overlap.
 	\end{Verbatim}
-	$$\downarrow$$
+	\tcblower
 	Some horizontal spacing between these \HSKP words
 	
 	Some vertical spacing between these \VSKp lines
@@ -757,7 +779,7 @@ These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing 
 	                  X=\PROD_{i=1,300,000}^{1,300,001} x_i
 	                  
 	\end{Verbatim}
-	$$\downarrow$$
+	\tcblower
 	\begin{minipage}{0.5\textwidth}
 		$$
 		X=\sum_{i\in way too much indexing} x_i
@@ -805,8 +827,9 @@ A few binary relations with extra space on either side. I like these for aligned
   \begin{Verbatim}
      Ax+s &\eq b \\              Ax+s &\EQ b \\ 
       x,s &\ge 0                    x,s &\GE 0
+      
   \end{Verbatim}
-$$\downarrow$$
+\tcblower
 \begin{minipage}{0.5\textwidth}
   \begin{lpalign*}{max}{c^\top x}
     Ax+s &\eq b+0 \\
@@ -823,7 +846,7 @@ $$\downarrow$$
 The spacing defaults to 0.25em and is controlled by the package option \\\verb|evaluator_spacing|; see Section \ref{sec:options}.
 
 
-\pagebreak
+
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
 For package-load style defaults, use style names rather than raw control sequences. Thus \verb|lp_vars_style=scriptstyle| and \verb|namedsubeqs_style=roman| are valid package options.
@@ -847,7 +870,7 @@ For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX b
 	\end{compactitem}
 
 
-\pagebreak
+
 \section{Known Bugs}
 \begin{compactitem}
 	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines.
@@ -870,7 +893,7 @@ For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX b
 \end{compactitem}
 
 
-\pagebreak
+
 \section{Version History}
 	\begin{compactitem}
 	\item[v1.0] Dec. 20, 2025. Initial distribution. Includes \textsf{lpalign} and \textsf{namedsubeqs} environments along with macros for named paragraphs and spacing.
