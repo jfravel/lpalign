@@ -63,8 +63,7 @@
 \dim_gset:Nn \evaluator_spacing { 0.25em }
 \keys_define:nn { lpalign/package }
 		{
-		evaluator-spacing .dim_gset:N = \evaluator_spacing,
-		evaluator_spacing .meta:n = { evaluator-spacing = #1 }
+		evaluator-spacing .dim_gset:N = \evaluator_spacing
 		}
 
 \newcommand{\eq}{=}
@@ -166,13 +165,6 @@
 		  { a, l, c, r }
 		  { \tl_gset_eq:NN \g_lpalign_default_flush \l_keys_choice_tl },
 		flush .initial:n = a,
-		lp_objective_sep .meta:n = { objective-sep = #1 },
-		lp_row_sep .meta:n = { row-sep = #1 },
-		lp_qualifier_sep .meta:n = { qualifier-sep = #1 },
-		lp_gutter_sep .meta:n = { gutter-sep = #1 },
-		lp_vars_style .meta:n = { vars-style = #1 },
-		lp_st .meta:n = { st = #1 },
-		lp_flush .meta:n = { flush = #1 },
 		}
 	
 % Environment Options
@@ -373,7 +365,6 @@
 		  { a, l, c, r }
 		  { \tl_gset_eq:NN \g_lpregion_default_flush \l_keys_choice_tl },
 		region-flush .initial:n = a,
-		reg_flush .meta:n = { region-flush = #1 },
 		}
  
 \keys_define:nn { lpalign/region }
@@ -467,10 +458,6 @@
   namedpara-flush .choices:nn = { left, center, right }
    { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
   namedpara-flush .initial:n = left,
-  namedpara_indent .meta:n = { namedpara-indent = #1 },
-  namedparabefore .meta:n = { namedpara-before = #1 },
-  namedparaafter .meta:n = { namedpara-after = #1 },
-  namedparaflush .meta:n = { namedpara-flush = #1 },
  }
 % Local state
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
@@ -613,8 +600,6 @@
   namedsubeqs-style .initial:n = alph,
   namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
   namedsubeqs-punct .initial:n = .,
-  namedsubeqs_style .meta:n = { namedsubeqs-style = #1 },
-  namedsubeqs_punct .meta:n = { namedsubeqs-punct = #1 },
  }
 \ProcessKeysOptions{ lpalign/package }
 \keys_define:nn { lpalign/namedsubeqs }
