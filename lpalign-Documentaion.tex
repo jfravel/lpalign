@@ -501,17 +501,33 @@ x\in\mathbb{R}^n \ \middle\vert\
 \right\rbrace
 \end{equation*}
 \end{tcolorbox}
-
-\begin{equation*}
-\left[
-\begin{lpalignbox}[objective-sep=1em]
-{min}{\mathbf{c}^\top\mathbf{x}}
+Similarly, the \verb|lpalignbox| environment is a nestable version of \verb|lpalign|. Maybe you have a complicated, minimax problem
+\begin{tcolorbox}
+\begin{Verbatim}
+	\begin{lpalign}{min}{y}
+	y \left[
+		@gl~\begin{lpalignbox}[x]|
+		@gl~{max}{\mathbf{c}^\top\mathbf{x}}|
+		@gl~\mathbf{a}_i^\top\mathbf{x} &\ge b_i|
+					@gl~&\forall\ i\in[\![m]\!] \\|
+		@gl~\mathbf{x} &\ge 0|
+		@gl~\end{lpalignbox}|
+	\right] &\le d \\
+	y &\ge 0
+	\end{lpalign}
+\end{Verbatim}
+\tcblower
+\begin{lpalign}{min}{y}
+y \left[
+\begin{lpalignbox}[x]
+{max}{\mathbf{c}^\top\mathbf{x}}
 \mathbf{a}_i^\top\mathbf{x} &\ge b_i          &\forall\ i\in[\![m]\!] \\
-&\mathbf{x} &\ge 0
+\mathbf{x} &\ge 0
 \end{lpalignbox}
-\right]
-\end{equation*}
-
+\right] &\le d \\
+y &\ge 0
+\end{lpalign}
+\end{tcolorbox}
 
 
 \section{Named Paragraphs}\label{sec:paragraphs}
