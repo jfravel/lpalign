@@ -339,56 +339,76 @@
 	}
 	{
 	\end{IEEEeqnarray*}
-	\let\@IEEEeqnarraycr\lpalign@orig@IEEEeqnarraycr
-	\ignorespacesafterend
-	}
+		\let\@IEEEeqnarraycr\lpalign@orig@IEEEeqnarraycr
+		\ignorespacesafterend
+		}
+\cs_new_protected:Npn \lpalign_ieee_box_patch_cr:
+  {
+    \def\lpalign@IEEEeqnarrayboxYCR{%
+      \@testopt\lpalign@IEEEeqnarrayboxXCR\z@skip
+    }
+    \def\lpalign@IEEEeqnarrayboxXCR[##1]{%
+      \ifnum0=`{\fi}%
+      \cr
+      \noalign{\if@IEEEeqnarrayboxnojot\else\vskip\jot\fi\vskip ##1\vskip \dim_use:N \lpalign_row_sep\relax}%
+      &%
+    }
+    \def\@IEEEeqnarrayboxcr{%
+      \@IEEEeqnarrayglobalizestrutstatus%
+      &%
+      \@IEEEeqnarrayinsertstrut%
+      \@IEEEeqnarraystrutreset%
+      {\ifnum0=`}\fi%
+      \@ifstar{\lpalign@IEEEeqnarrayboxYCR}{\lpalign@IEEEeqnarrayboxYCR}%
+    }
+  }
 \NewDocumentEnvironment{lpalignbox}{O{}mm}
-	{
-	\lpalign_setup:n { #1 }
-	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
-	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
-	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
-	\let\lpalign@orig@IEEEeqnarraycr\@IEEEeqnarraycr
-	\lpalign_ieee_patch_cr:
-	\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
-	\tl_if_eq:NnT \lpalign_flush {a}
 		{
-		\begin{IEEEeqnarraybox}[\relax][c]{u1rL2l}
-		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-		& #3 \span\span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]
-		\lpalign_print_st: & 
-		}
+		\lpalign_setup:n { #1 }
+		\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
+		\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
+		\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
+		\let\lpalign@orig@IEEEeqnarrayboxcr\@IEEEeqnarrayboxcr
+		\lpalign_ieee_box_patch_cr:
+		\tl_set:Nn \l_lpalign_sense_text_tl { #2 }
+		\tl_if_eq:NnT \lpalign_flush {a}
+			{
+			\begin{IEEEeqnarraybox}[\relax][c]{u1rL2l}
+			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+			& #3 \span\span\hfill
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]
+			\lpalign_print_st: & 
+			}
 	\tl_if_eq:NnT \lpalign_flush {l}
-		{
-		\begin{IEEEeqnarraybox}[\relax][c]{u1l2l}
-		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]
-		\lpalign_print_st: & 
-		}
+			{
+			\begin{IEEEeqnarraybox}[\relax][c]{u1l2l}
+			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+			& #3 \span\hfill
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]
+			\lpalign_print_st: & 
+			}
 	\tl_if_eq:NnT \lpalign_flush {c}
-		{
-		\begin{IEEEeqnarraybox}[\relax][c]{u1c2l}
-		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]
-		\lpalign_print_st: & 
-		}
+			{
+			\begin{IEEEeqnarraybox}[\relax][c]{u1c2l}
+			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+			& #3 \span\hfill
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]
+			\lpalign_print_st: & 
+			}
 	\tl_if_eq:NnT \lpalign_flush {r}
-		{
-		\begin{IEEEeqnarraybox}[\relax][c]{u1r2l}
-		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
-		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]
-		\lpalign_print_st: & 
+			{
+			\begin{IEEEeqnarraybox}[\relax][c]{u1r2l}
+			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
+			& #3 \span\hfill
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]
+			\lpalign_print_st: & 
+			}
 		}
-	}
-	{
-	\end{IEEEeqnarraybox}
-	\let\@IEEEeqnarraycr\lpalign@orig@IEEEeqnarraycr
-	\ignorespacesafterend
-	}
+		{
+		\end{IEEEeqnarraybox}
+		\let\@IEEEeqnarrayboxcr\lpalign@orig@IEEEeqnarrayboxcr
+		\ignorespacesafterend
+		}
 \makeatother
 \ExplSyntaxOff
 
@@ -442,6 +462,14 @@
       \noalign{\penalty\@eqpen\vskip\jot\vskip ##1\vskip \dim_use:N \lpalign_row_sep\relax}%
     }
   }
+\cs_new_protected:Npn \lpregion_ieee_box_patch_cr:
+  {
+    \def\@IEEEeqnarrayboxXCR[##1]{%
+      \ifnum0=`{\fi}%
+      \cr
+      \noalign{\if@IEEEeqnarrayboxnojot\else\vskip\jot\fi\vskip ##1\vskip \dim_use:N \lpalign_row_sep\relax}%
+    }
+  }
 
 \makeatletter
 \NewDocumentEnvironment{lpregion}{O{}}
@@ -478,21 +506,21 @@
 	\ignorespacesafterend
 	}
 \NewDocumentEnvironment{lpregionbox}{O{}}
-	{
-	\lpregion_setup:n { #1 }
-	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
-	\let\lpregion@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
-	\lpregion_ieee_patch_cr:
-	\tl_if_eq:NnT \lpregion_flush {a} { \begin{IEEEeqnarraybox}[\relax][c]{rL2l} }
-	\tl_if_eq:NnT \lpregion_flush {l} { \begin{IEEEeqnarraybox}[\relax][c]{l2l} }
-	\tl_if_eq:NnT \lpregion_flush {c} { \begin{IEEEeqnarraybox}[\relax][c]{c2l} }
-	\tl_if_eq:NnT \lpregion_flush {r} { \begin{IEEEeqnarraybox}[\relax][c]{r2l} }
-	}
-	{
-	\end{IEEEeqnarraybox}
-	\let\@IEEEeqnarrayXCR\lpregion@orig@IEEEeqnarrayXCR
-	\ignorespacesafterend
-	}
+		{
+		\lpregion_setup:n { #1 }
+		\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
+		\let\lpregion@orig@IEEEeqnarrayboxXCR\@IEEEeqnarrayboxXCR
+		\lpregion_ieee_box_patch_cr:
+		\tl_if_eq:NnT \lpregion_flush {a} { \begin{IEEEeqnarraybox}[\relax][c]{rL2l} }
+		\tl_if_eq:NnT \lpregion_flush {l} { \begin{IEEEeqnarraybox}[\relax][c]{l2l} }
+		\tl_if_eq:NnT \lpregion_flush {c} { \begin{IEEEeqnarraybox}[\relax][c]{c2l} }
+		\tl_if_eq:NnT \lpregion_flush {r} { \begin{IEEEeqnarraybox}[\relax][c]{r2l} }
+		}
+		{
+		\end{IEEEeqnarraybox}
+		\let\@IEEEeqnarrayboxXCR\lpregion@orig@IEEEeqnarrayboxXCR
+		\ignorespacesafterend
+		}
 \makeatother
 \ExplSyntaxOff
 
