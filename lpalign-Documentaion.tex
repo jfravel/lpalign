@@ -47,7 +47,7 @@ Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and 
 
 \section{The \textsf{lpalign} Environment}\label{sec:lpalign}
 
-\textsf{lpalign} is an environment macro built on the \textsf{equationarray} environment from the \textsf{eqnarray} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary functions are to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the \textsf{alignat} body in addition to aligning the body constraints and qualifiers.
+\textsf{lpalign} is an environment macro built on the \textsf{equationarray} environment from the \textsf{IEEEeqnarray} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary functions are to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the body in addition to aligning constraints and qualifiers.
 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
@@ -244,7 +244,7 @@ $$\downarrow$$
      \mathbf{x} &\ge \mathbf{0}
   \end{lpalign}
 \end{tcolorbox}
-The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. Other \textsf{amsmath}-compatible wrappers or environments can be nested within the objective. 
+The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. Other \textsf{amsmath}-compatible wrappers or environments can be nested within the objective but math mode may need to be manually re-engaged
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{lpalign}
@@ -260,11 +260,11 @@ The \gl{`sense'} and \hl{`subject to'} terms can be freely shifted up or down. O
   \end{Verbatim}
 $$\downarrow$$
 	\begin{lpalign}
-	[ sense-shift=0.6\baselineskip,
-		st-shift=0.6\baselineskip,
-		st=\hl{s.t.}]
+%	[ sense-shift=0.6\baselineskip,
+%		st-shift=0.6\baselineskip,
+%		st=\hl{s.t.}]
 	{\gl{Maximize}}
-	{\fbox{$\begin{aligned}
+	{\fbox{$\begin{aligned}[t]
 	  c_1&x_1+c_2x_2+c_3x_3+c_4x_4\\
 	     &+c_5x_5+...+c_mx_m
 	\end{aligned}$}}
@@ -276,8 +276,8 @@ $$\downarrow$$
 	\end{lpalign}
 \end{tcolorbox}
 
-\subsection*{\textsf{amsmath} Formatting}
-The \verb|\span| command tells \verb|alignat| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
+\subsection*{\textsf{IEEEeqnarray} Formatting}
+The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
 \begin{tcolorbox}
 	\begin{Verbatim}
 \begin{lpalign}{minimize}{c_1x_2+c_2x_2+\dots+c_nx_n}

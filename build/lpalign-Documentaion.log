@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.7.4)  13 JUL 2026 22:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.5) (preloaded format=pdflatex 2026.7.4)  16 JUL 2026 14:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -26,107 +26,48 @@ File: size10.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
 (lpalign.sty
 Package: lpalign Jun 28, 2026: v1.5 of Jamie Fravel's lpalign macro package
 
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/eqnarray\eqnarray.sty
-equationarray 1.3 <December 1, 2010>
-Package: eqnarray 
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
-Package: array 2026/02/24 v2.7b Tabular extension package (FMi)
-\col@sep=\dimen151
-\ar@mcellbox=\box53
-\extrarowheight=\dimen152
-\NC@list=\toks17
-\extratabsurround=\skip51
-\backup@length=\skip52
-\ar@cellbox=\box54
-)
-\@eqargcnt=\count284
-)
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
-Package: amsmath 2026/05/19 v2.18d AMS math features
-\@mathmargin=\skip53
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/ieeetrantools\IEEEtrant
+ools.sty
+Package: IEEEtrantools 2015/08/26 V1.5 by Michael Shell
 
-For additional information on amsmath, use the `?' option.
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
-Package: amstext 2024/11/17 v2.01 AMS text
-
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
-File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks18
-\ex@=\dimen153
-))
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
-Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen154
-)
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
-Package: amsopn 2022/04/08 v2.04 operator names
-)
-\inf@bad=\count285
-LaTeX Info: Redefining \frac on input line 233.
-\uproot@=\count286
-\leftroot@=\count287
-LaTeX Info: Redefining \overline on input line 398.
-LaTeX Info: Redefining \colon on input line 409.
-\classnum@=\count288
-\DOTSCASE@=\count289
-LaTeX Info: Redefining \ldots on input line 495.
-LaTeX Info: Redefining \dots on input line 498.
-LaTeX Info: Redefining \cdots on input line 619.
-\Mathstrutbox@=\box55
-\strutbox@=\box56
-LaTeX Info: Redefining \big on input line 721.
-LaTeX Info: Redefining \Big on input line 722.
-LaTeX Info: Redefining \bigg on input line 723.
-LaTeX Info: Redefining \Bigg on input line 724.
-\big@size=\dimen155
-LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
-\macc@depth=\count290
-LaTeX Info: Redefining \bmod on input line 904.
-LaTeX Info: Redefining \pmod on input line 909.
-LaTeX Info: Redefining \smash on input line 939.
-LaTeX Info: Redefining \relbar on input line 969.
-LaTeX Info: Redefining \Relbar on input line 970.
-\c@MaxMatrixCols=\count291
-\dotsspace@=\muskip17
-\c@parentequation=\count292
-\dspbrk@lvl=\count293
-\tag@help=\toks19
-\row@=\count294
-\column@=\count295
-\maxfields@=\count296
-\andhelp@=\toks20
-\eqnshift@=\dimen156
-\alignsep@=\dimen157
-\tagshift@=\dimen158
-\tagwidth@=\dimen159
-\totwidth@=\dimen160
-\lineht@=\dimen161
-\@envbody=\toks21
-\multlinegap=\skip54
-\multlinetaggap=\skip55
-\mathdisplay@stack=\toks22
-LaTeX Info: Redefining \[ on input line 2965.
-LaTeX Info: Redefining \] on input line 2966.
-)
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+-- See the "IEEEtrantools_doc.txt" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/tools/
+\@IEEEtrantmpdimenA=\dimen151
+\@IEEEtrantmpdimenB=\dimen152
+\@IEEEtrantmpdimenC=\dimen153
+\@IEEEtrantmpcountA=\count284
+\@IEEEtrantmpcountB=\count285
+\@IEEEtrantmpcountC=\count286
+\@IEEEtrantmptoksA=\toks17
+\IEEEnormaljot=\dimen154
+\IEEEquantizedlength=\dimen155
+\IEEEquantizedlengthdiff=\dimen156
+\IEEEquantizedtextheightdiff=\dimen157
+\IEEEilabelindentA=\dimen158
+\IEEEilabelindentB=\dimen159
+\IEEEilabelindent=\dimen160
+\IEEEelabelindent=\dimen161
+\IEEEdlabelindent=\dimen162
+\IEEElabelindent=\dimen163
+\IEEEiednormlabelsep=\dimen164
+\IEEEiedmathlabelsep=\dimen165
+\IEEEiedtopsep=\skip51
+\c@IEEEsubequation=\count287
+\@IEEEeqnnumcols=\count288
+\@IEEEeqncolcnt=\count289
+\@IEEEsubeqnnumrollback=\count290
+\IEEEPARstartletwidth=\dimen166
+) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
 Package: expl3 2026-06-18 L3 programming layer (loader) 
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
 File: l3backend-pdftex.def 2026-02-18 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count297
+\l__color_backend_stack_int=\count291
 ))
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/l3keys2e\l3k
 eys2e.sty
 Package: l3keys2e 2025-10-09 LaTeX2e option processing using LaTeX3 keys
-)
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/xstring\xstring.sty
-(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/xstring\xstring.tex
-\xs_counta=\count298
-\xs_countb=\count299
-)
-Package: xstring 2023/08/22 v1.86 String manipulations (CT)
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/stackengine\stackengine
 .sty
@@ -135,81 +76,149 @@ ways
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
 Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count300
+\etb@tempcnta=\count292
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/listofitems\listofitems
 .sty
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/listofitems\listofite
 ms.tex
-\loi_cnt_foreach_nest=\count301
-\loi_nestcnt=\count302
+\loi_cnt_foreach_nest=\count293
+\loi_nestcnt=\count294
 )
 Package: listofitems 2024/03/09 v1.65 Grab items in lists using user-specified 
 sep char (CT)
 ) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
 Package: calc 2025/03/01 v4.3b Infix arithmetic (KKT,FJ)
-\calc@Acount=\count303
-\calc@Bcount=\count304
-\calc@Adimen=\dimen162
-\calc@Bdimen=\dimen163
-\calc@Askip=\skip56
-\calc@Bskip=\skip57
+\calc@Acount=\count295
+\calc@Bcount=\count296
+\calc@Adimen=\dimen167
+\calc@Bdimen=\dimen168
+\calc@Askip=\skip52
+\calc@Bskip=\skip53
 LaTeX Info: Redefining \setlength on input line 86.
 LaTeX Info: Redefining \addtolength on input line 87.
-\calc@Ccount=\count305
-\calc@Cskip=\skip58
+\calc@Ccount=\count297
+\calc@Cskip=\skip54
 )
-\c@@stackindex=\count306
-\@boxshift=\skip59
-\stack@tmplength=\skip60
-\temp@stkl=\skip61
-\@stackedboxwidth=\skip62
-\@addedbox=\box57
-\@anchorbox=\box58
-\@insetbox=\box59
-\se@backgroundbox=\box60
-\stackedbox=\box61
-\@centerbox=\box62
-\c@ROWcellindex@=\count307
+\c@@stackindex=\count298
+\@boxshift=\skip55
+\stack@tmplength=\skip56
+\temp@stkl=\skip57
+\@stackedboxwidth=\skip58
+\@addedbox=\box53
+\@anchorbox=\box54
+\@insetbox=\box55
+\se@backgroundbox=\box56
+\stackedbox=\box57
+\@centerbox=\box58
+\c@ROWcellindex@=\count299
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mathtools.sty
 Package: mathtools 2024/10/04 v1.31 mathematical typesetting tools
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2026-05-17 v1.15 key=value parser (DPC)
-\KV@toks@=\toks23
+\KV@toks@=\toks18
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/mathtools\mhsetup.sty
 Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
 )
-\g_MT_multlinerow_int=\count308
-\l_MT_multwidth_dim=\dimen164
-\origjot=\skip63
-\l_MT_shortvdotswithinadjustabove_dim=\dimen165
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen166
-\l_MT_above_intertext_sep=\dimen167
-\l_MT_below_intertext_sep=\dimen168
-\l_MT_above_shortintertext_sep=\dimen169
-\l_MT_below_shortintertext_sep=\dimen170
-\xmathstrut@box=\box63
-\xmathstrut@dim=\dimen171
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2026/05/19 v2.18d AMS math features
+\@mathmargin=\skip59
+
+For additional information on amsmath, use the `?' option.
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks19
+\ex@=\dimen169
+))
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen170
 )
-\evaluator_spacing=\dimen172
-\g_lpalign_default_objective_sep=\dimen173
-\g_lpalign_default_row_sep=\dimen174
-\g_lpalign_default_qualifier_sep=\dimen175
-\g_lpalign_default_gutter_sep=\dimen176
-\lpalign_sense_shift=\dimen177
-\lpalign_st_shift=\dimen178
-\lpalign_objective_sep=\dimen179
-\lpalign_row_sep=\dimen180
-\lpalign_qualifier_sep=\dimen181
-\lpalign_gutter_sep=\dimen182
-\c@Para=\count309
-\c@NamedPara=\count310
-\c@NamedEq=\count311
-\c@lpalignNamedEqSavedEquation=\count312
+(C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
 )
-\mydebugbox=\box64
+\inf@bad=\count300
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count301
+\leftroot@=\count302
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count303
+\DOTSCASE@=\count304
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box59
+\strutbox@=\box60
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen171
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count305
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count306
+\dotsspace@=\muskip17
+\c@parentequation=\count307
+\dspbrk@lvl=\count308
+\tag@help=\toks20
+\row@=\count309
+\column@=\count310
+\maxfields@=\count311
+\andhelp@=\toks21
+\eqnshift@=\dimen172
+\alignsep@=\dimen173
+\tagshift@=\dimen174
+\tagwidth@=\dimen175
+\totwidth@=\dimen176
+\lineht@=\dimen177
+\@envbody=\toks22
+\multlinegap=\skip60
+\multlinetaggap=\skip61
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2965.
+LaTeX Info: Redefining \] on input line 2966.
+)
+\g_MT_multlinerow_int=\count312
+\l_MT_multwidth_dim=\dimen178
+\origjot=\skip62
+\l_MT_shortvdotswithinadjustabove_dim=\dimen179
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen180
+\l_MT_above_intertext_sep=\dimen181
+\l_MT_below_intertext_sep=\dimen182
+\l_MT_above_shortintertext_sep=\dimen183
+\l_MT_below_shortintertext_sep=\dimen184
+\xmathstrut@box=\box61
+\xmathstrut@dim=\dimen185
+)
+\evaluator_spacing=\dimen186
+\g_lpalign_default_objective_sep=\dimen187
+\g_lpalign_default_row_sep=\dimen188
+\g_lpalign_default_qualifier_sep=\dimen189
+\g_lpalign_default_gutter_sep=\dimen190
+\lpalign_row_sep=\dimen191
+\lpalign_sense_shift=\dimen192
+\lpalign_st_shift=\dimen193
+\lpalign_objective_sep=\dimen194
+\lpalign_qualifier_sep=\dimen195
+\lpalign_gutter_sep=\dimen196
+\c@Para=\count313
+\c@NamedPara=\count314
+\c@NamedEq=\count315
+\c@lpalignNamedEqSavedEquation=\count316
+)
+\mydebugbox=\box62
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
 Package: tcolorbox 2026/05/28 version 6.10.0 text color boxes
@@ -222,12 +231,12 @@ y
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
 -common.tex
 \pgfutil@everybye=\toks24
-\pgfutil@tempdima=\dimen183
-\pgfutil@tempdimb=\dimen184
+\pgfutil@tempdima=\dimen197
+\pgfutil@tempdimb=\dimen198
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil
 -latex.def
-\pgfutil@abb=\box65
+\pgfutil@abb=\box63
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.
 code.tex
@@ -256,8 +265,8 @@ Package graphics Info: Driver file: pdftex.def on input line 106.
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
 File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
 ))
-\Gin@req@height=\dimen185
-\Gin@req@width=\dimen186
+\Gin@req@height=\dimen199
+\Gin@req@width=\dimen256
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.
 sty
@@ -274,26 +283,26 @@ Package: pgfsys 2025-08-29 v3.1.11a (3.1.11a)
 libraryfiltered.code.tex
 \pgfkeys@tmptoks=\toks27
 ))
-\pgf@x=\dimen187
-\pgf@y=\dimen188
-\pgf@xa=\dimen189
-\pgf@ya=\dimen190
-\pgf@xb=\dimen191
-\pgf@yb=\dimen192
-\pgf@xc=\dimen193
-\pgf@yc=\dimen194
-\pgf@xd=\dimen195
-\pgf@yd=\dimen196
+\pgf@x=\dimen257
+\pgf@y=\dimen258
+\pgf@xa=\dimen259
+\pgf@ya=\dimen260
+\pgf@xb=\dimen261
+\pgf@yb=\dimen262
+\pgf@xc=\dimen263
+\pgf@yc=\dimen264
+\pgf@xd=\dimen265
+\pgf@yd=\dimen266
 \w@pgf@writea=\write3
 \r@pgf@reada=\read2
-\c@pgf@counta=\count313
-\c@pgf@countb=\count314
-\c@pgf@countc=\count315
-\c@pgf@countd=\count316
+\c@pgf@counta=\count317
+\c@pgf@countb=\count318
+\c@pgf@countc=\count319
+\c@pgf@countd=\count320
 \t@pgf@toka=\toks28
 \t@pgf@tokb=\toks29
 \t@pgf@tokc=\toks30
-\pgf@sys@id@count=\count317
+\pgf@sys@id@count=\count321
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.c
 fg
@@ -312,8 +321,8 @@ File: pgfsys-common-pdf.def 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
 ssoftpath.code.tex
 File: pgfsyssoftpath.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfsyssoftpath@smallbuffer@items=\count318
-\pgfsyssoftpath@bigbuffer@items=\count319
+\pgfsyssoftpath@smallbuffer@items=\count322
+\pgfsyssoftpath@bigbuffer@items=\count323
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsy
 sprotocol.code.tex
@@ -347,9 +356,9 @@ Package: pgfcore 2025-08-29 v3.1.11a (3.1.11a)
 code.tex)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparse
 r.code.tex
-\pgfmath@dimen=\dimen197
-\pgfmath@count=\count320
-\pgfmath@box=\box66
+\pgfmath@dimen=\dimen267
+\pgfmath@count=\count324
+\pgfmath@box=\box64
 \pgfmath@toks=\toks31
 \pgfmath@stack@operand=\toks32
 \pgfmath@stack@operation=\toks33
@@ -376,59 +385,59 @@ ions.integerarithmetics.code.tex)
 code.tex)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat
 .code.tex
-\c@pgfmathroundto@lastzeros=\count321
+\c@pgfmathroundto@lastzeros=\count325
 ))
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.
 tex)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 epoints.code.tex
 File: pgfcorepoints.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@picminx=\dimen198
-\pgf@picmaxx=\dimen199
-\pgf@picminy=\dimen256
-\pgf@picmaxy=\dimen257
-\pgf@pathminx=\dimen258
-\pgf@pathmaxx=\dimen259
-\pgf@pathminy=\dimen260
-\pgf@pathmaxy=\dimen261
-\pgf@xx=\dimen262
-\pgf@xy=\dimen263
-\pgf@yx=\dimen264
-\pgf@yy=\dimen265
-\pgf@zx=\dimen266
-\pgf@zy=\dimen267
+\pgf@picminx=\dimen268
+\pgf@picmaxx=\dimen269
+\pgf@picminy=\dimen270
+\pgf@picmaxy=\dimen271
+\pgf@pathminx=\dimen272
+\pgf@pathmaxx=\dimen273
+\pgf@pathminy=\dimen274
+\pgf@pathmaxy=\dimen275
+\pgf@xx=\dimen276
+\pgf@xy=\dimen277
+\pgf@yx=\dimen278
+\pgf@yy=\dimen279
+\pgf@zx=\dimen280
+\pgf@zy=\dimen281
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 epathconstruct.code.tex
 File: pgfcorepathconstruct.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@path@lastx=\dimen268
-\pgf@path@lasty=\dimen269
+\pgf@path@lastx=\dimen282
+\pgf@path@lasty=\dimen283
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 epathusage.code.tex
 File: pgfcorepathusage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@shorten@end@additional=\dimen270
-\pgf@shorten@start@additional=\dimen271
+\pgf@shorten@end@additional=\dimen284
+\pgf@shorten@start@additional=\dimen285
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 escopes.code.tex
 File: pgfcorescopes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfpic=\box67
-\pgf@hbox=\box68
-\pgf@layerbox@main=\box69
-\pgf@picture@serial@count=\count322
+\pgfpic=\box65
+\pgf@hbox=\box66
+\pgf@layerbox@main=\box67
+\pgf@picture@serial@count=\count326
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 egraphicstate.code.tex
 File: pgfcoregraphicstate.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgflinewidth=\dimen272
+\pgflinewidth=\dimen286
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 etransformations.code.tex
 File: pgfcoretransformations.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@pt@x=\dimen273
-\pgf@pt@y=\dimen274
-\pgf@pt@temp=\dimen275
+\pgf@pt@x=\dimen287
+\pgf@pt@y=\dimen288
+\pgf@pt@temp=\dimen289
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 equick.code.tex
@@ -445,14 +454,14 @@ File: pgfcorepathprocessing.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 earrows.code.tex
 File: pgfcorearrows.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfarrowsep=\dimen276
+\pgfarrowsep=\dimen290
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 eshade.code.tex
 File: pgfcoreshade.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@max=\dimen277
-\pgf@sys@shading@range@num=\count323
-\pgf@shadingcount=\count324
+\pgf@max=\dimen291
+\pgf@sys@shading@range@num=\count327
+\pgf@shadingcount=\count328
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 eimage.code.tex
@@ -461,7 +470,7 @@ File: pgfcoreimage.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 eexternal.code.tex
 File: pgfcoreexternal.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfexternal@startupbox=\box70
+\pgfexternal@startupbox=\box68
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcor
 elayers.code.tex
@@ -482,7 +491,7 @@ File: pgfcorerdf.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 shapes.code.tex
 File: pgfmoduleshapes.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfnodeparttextbox=\box71
+\pgfnodeparttextbox=\box69
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 plot.code.tex
@@ -491,8 +500,8 @@ File: pgfmoduleplot.code.tex 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
 mp-version-0-65.sty
 Package: pgfcomp-version-0-65 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@nodesepstart=\dimen278
-\pgf@nodesepend=\dimen279
+\pgf@nodesepstart=\dimen292
+\pgf@nodesepend=\dimen293
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfco
 mp-version-1-18.sty
@@ -510,8 +519,8 @@ ty
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.
 code.tex
 Package: pgffor 2025-08-29 v3.1.11a (3.1.11a)
-\pgffor@iter=\dimen280
-\pgffor@skip=\dimen281
+\pgffor@iter=\dimen294
+\pgffor@skip=\dimen295
 \pgffor@stack=\toks34
 \pgffor@toks=\toks35
 ))
@@ -522,34 +531,34 @@ Package: tikz 2025-08-29 v3.1.11a (3.1.11a)
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibr
 aryplothandlers.code.tex
 File: pgflibraryplothandlers.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgf@plot@mark@count=\count325
-\pgfplotmarksize=\dimen282
+\pgf@plot@mark@count=\count329
+\pgfplotmarksize=\dimen296
 )
-\tikz@lastx=\dimen283
-\tikz@lasty=\dimen284
-\tikz@lastxsaved=\dimen285
-\tikz@lastysaved=\dimen286
-\tikz@lastmovetox=\dimen287
-\tikz@lastmovetoy=\dimen288
-\tikzleveldistance=\dimen289
-\tikzsiblingdistance=\dimen290
-\tikz@figbox=\box72
-\tikz@figbox@bg=\box73
-\tikz@tempbox=\box74
-\tikz@tempbox@bg=\box75
-\tikztreelevel=\count326
-\tikznumberofchildren=\count327
-\tikznumberofcurrentchild=\count328
-\tikz@fig@count=\count329
+\tikz@lastx=\dimen297
+\tikz@lasty=\dimen298
+\tikz@lastxsaved=\dimen299
+\tikz@lastysaved=\dimen300
+\tikz@lastmovetox=\dimen301
+\tikz@lastmovetoy=\dimen302
+\tikzleveldistance=\dimen303
+\tikzsiblingdistance=\dimen304
+\tikz@figbox=\box70
+\tikz@figbox@bg=\box71
+\tikz@tempbox=\box72
+\tikz@tempbox@bg=\box73
+\tikztreelevel=\count330
+\tikznumberofchildren=\count331
+\tikznumberofcurrentchild=\count332
+\tikz@fig@count=\count333
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodule
 matrix.code.tex
 File: pgfmodulematrix.code.tex 2025-08-29 v3.1.11a (3.1.11a)
-\pgfmatrixcurrentrow=\count330
-\pgfmatrixcurrentcolumn=\count331
-\pgf@matrix@numberofcolumns=\count332
+\pgfmatrixcurrentrow=\count334
+\pgfmatrixcurrentcolumn=\count335
+\pgf@matrix@numberofcolumns=\count336
 )
-\tikz@expandcount=\count333
+\tikz@expandcount=\count337
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tik
 z/libraries\tikzlibrarytopaths.code.tex
@@ -568,19 +577,19 @@ Package: environ 2014/05/04 v0.3 A new way to define environments
 ty
 Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
-\tcb@titlebox=\box76
-\tcb@upperbox=\box77
-\tcb@lowerbox=\box78
-\tcb@phantombox=\box79
-\c@tcbbreakpart=\count334
-\c@tcblayer=\count335
-\c@tcolorbox@number=\count336
-\l__tcobox_tmpa_box=\box80
-\l__tcobox_tmpa_dim=\dimen291
+\tcb@titlebox=\box74
+\tcb@upperbox=\box75
+\tcb@lowerbox=\box76
+\tcb@phantombox=\box77
+\c@tcbbreakpart=\count338
+\c@tcblayer=\count339
+\c@tcolorbox@number=\count340
+\l__tcobox_tmpa_box=\box78
+\l__tcobox_tmpa_dim=\dimen305
+\tcb@temp=\box79
+\tcb@temp=\box80
 \tcb@temp=\box81
 \tcb@temp=\box82
-\tcb@temp=\box83
-\tcb@temp=\box84
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/parskip\parskip.sty
 Package: parskip 2021-03-14 v2.0h non-zero parskip adjustments
@@ -594,28 +603,30 @@ Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
 ))) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/tools\multicol.sty
 Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
-\c@tracingmulticols=\count337
-\mult@box=\box85
-\multicol@leftmargin=\dimen292
-\c@unbalance=\count338
-\c@collectmore=\count339
-\doublecol@number=\count340
-\multicoltolerance=\count341
-\multicolpretolerance=\count342
-\full@width=\dimen293
-\page@free=\dimen294
-\premulticols=\dimen295
-\postmulticols=\dimen296
-\multicolsep=\skip64
-\multicolbaselineskip=\skip65
-\partial@page=\box86
-\last@line=\box87
-\mc@boxedresult=\box88
-\maxbalancingoverflow=\dimen297
-\mult@rightbox=\box89
-\mult@grightbox=\box90
-\mult@firstbox=\box91
-\mult@gfirstbox=\box92
+\c@tracingmulticols=\count341
+\mult@box=\box83
+\multicol@leftmargin=\dimen306
+\c@unbalance=\count342
+\c@collectmore=\count343
+\doublecol@number=\count344
+\multicoltolerance=\count345
+\multicolpretolerance=\count346
+\full@width=\dimen307
+\page@free=\dimen308
+\premulticols=\dimen309
+\postmulticols=\dimen310
+\multicolsep=\skip63
+\multicolbaselineskip=\skip64
+\partial@page=\box84
+\last@line=\box85
+\mc@boxedresult=\box86
+\maxbalancingoverflow=\dimen311
+\mult@rightbox=\box87
+\mult@grightbox=\box88
+\mult@firstbox=\box89
+\mult@gfirstbox=\box90
+\@tempa=\box91
+\@tempa=\box92
 \@tempa=\box93
 \@tempa=\box94
 \@tempa=\box95
@@ -650,18 +661,16 @@ Package: multicol 2025/10/21 v2.0b multicolumn formatting (FMi)
 \@tempa=\box124
 \@tempa=\box125
 \@tempa=\box126
-\@tempa=\box127
-\@tempa=\box128
-\c@minrows=\count343
-\c@columnbadness=\count344
-\c@finalcolumnbadness=\count345
-\last@try=\dimen298
-\multicolovershoot=\dimen299
-\multicolundershoot=\dimen300
-\mult@nat@firstbox=\box129
-\colbreak@box=\box130
-\mc@col@check@num=\count346
-\g__mc_curr_col_int=\count347
+\c@minrows=\count347
+\c@columnbadness=\count348
+\c@finalcolumnbadness=\count349
+\last@try=\dimen312
+\multicolovershoot=\dimen313
+\multicolundershoot=\dimen314
+\mult@nat@firstbox=\box127
+\colbreak@box=\box128
+\mc@col@check@num=\count350
+\g__mc_curr_col_int=\count351
 ) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
 Package: hyperref 2026-06-17 v7.01r Hypertext links for LaTeX
 
@@ -702,16 +711,16 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 lestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count348
+\c@section@level=\count352
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
 ty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
 )
 )
-\@linkdim=\dimen301
-\Hy@linkcounter=\count349
-\Hy@pagecounter=\count350
+\@linkdim=\dimen315
+\Hy@linkcounter=\count353
+\Hy@pagecounter=\count354
  (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
 File: pd1enc.def 2026-06-17 v7.01r Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
@@ -719,7 +728,7 @@ Now handling font encoding PD1 ...
 ) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
-\Hy@SavedSpaceFactor=\count351
+\Hy@SavedSpaceFactor=\count355
  (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
 File: puenc.def 2026-06-17 v7.01r Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
@@ -733,14 +742,14 @@ Package hyperref Info: Plain pages OFF on input line 4214.
 Package hyperref Info: Backreferencing OFF on input line 4219.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks OFF on input line 4472.
-\c@Hy@tempcnt=\count352
+\c@Hy@tempcnt=\count356
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
 \Urlmuskip=\muskip18
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 4805.
-\XeTeXLinkMargin=\dimen302
+\XeTeXLinkMargin=\dimen316
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -750,9 +759,9 @@ Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
 Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
 )
 ))
-\Fld@menulength=\count353
-\Field@Width=\dimen303
-\Fld@charsize=\dimen304
+\Fld@menulength=\count357
+\Field@Width=\dimen317
+\Fld@charsize=\dimen318
 Package hyperref Info: Hyper figures OFF on input line 6091.
 Package hyperref Info: Link nesting OFF on input line 6096.
 Package hyperref Info: Hyper index ON on input line 6099.
@@ -760,16 +769,16 @@ Package hyperref Info: backreferencing OFF on input line 6106.
 Package hyperref Info: Link coloring OFF on input line 6111.
 Package hyperref Info: Link coloring with OCG OFF on input line 6116.
 Package hyperref Info: PDF/A mode OFF on input line 6121.
-\Hy@abspage=\count354
-\c@Item=\count355
-\c@Hfootnote=\count356
+\Hy@abspage=\count358
+\c@Item=\count359
+\c@Hfootnote=\count360
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hpdftex.def
 File: hpdftex.def 2026-06-17 v7.01r Hyperref driver for pdfTeX
-\Fld@listcount=\count357
-\c@bookmark@seq@number=\count358
+\Fld@listcount=\count361
+\c@bookmark@seq@number=\count362
 
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
 echeck.sty
@@ -782,7 +791,7 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 84.
 )
-\Hy@SectionHShift=\skip66
+\Hy@SectionHShift=\skip65
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 12.
 
@@ -799,18 +808,18 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 )) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/paralist\paralist.st
 y
 Package: paralist 2017/01/22 v2.7 Extended list environments
-\pltopsep=\skip67
-\plpartopsep=\skip68
-\plitemsep=\skip69
-\plparsep=\skip70
+\pltopsep=\skip66
+\plpartopsep=\skip67
+\plitemsep=\skip68
+\plparsep=\skip69
 \pl@lab=\toks38
 ) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/fancyvrb\fancyvrb.sty
 Package: fancyvrb 2026/04/16 4.6a verbatim text (tvz,hv)
-\FV@CodeLineNo=\count359
+\FV@CodeLineNo=\count363
 \FV@InFile=\read4
-\FV@TabBox=\box131
-\c@FancyVerbLine=\count360
-\FV@StepNumber=\count361
+\FV@TabBox=\box129
+\c@FancyVerbLine=\count364
+\FV@StepNumber=\count365
 \FV@OutFile=\write4
 ) (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/graphics\dvipsnam.def
 File: dvipsnam.def 2026-05-17 v3.0m Driver-dependent file (DPC,SPQR)
@@ -839,16 +848,16 @@ LaTeX Font Info:    ... okay on input line 30.
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count362
-\scratchdimen=\dimen305
-\scratchbox=\box132
-\nofMPsegments=\count363
-\nofMParguments=\count364
+\scratchcounter=\count366
+\scratchdimen=\dimen319
+\scratchbox=\box130
+\nofMPsegments=\count367
+\nofMParguments=\count368
 \everyMPshowfont=\toks39
-\MPscratchCnt=\count365
-\MPscratchDim=\dimen306
-\MPnumerator=\count366
-\makeMPintoPDFobject=\count367
+\MPscratchCnt=\count369
+\MPscratchDim=\dimen320
+\MPnumerator=\count370
+\makeMPintoPDFobject=\count371
 \everyMPtoPDFconversion=\toks40
 )
 (C:\Users\jamie\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
@@ -880,21 +889,21 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [1
 
 {C:/Users/jamie/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-Overfull \hbox (15.69621pt too wide) in alignment at lines 120--123
- [] [] [] [] 
+Overfull \hbox (10.69621pt too wide) in alignment at lines 120--123
+ [] [] [] [][]
  []
 
 
-Overfull \hbox (15.69621pt too wide) in alignment at lines 126--129
- [] [] [] [] 
+Overfull \hbox (10.69621pt too wide) in alignment at lines 126--129
+ [] [] [] [][]
  []
 
 
-Overfull \hbox (15.69621pt too wide) in alignment at lines 132--135
- [] [] [] [] 
+Overfull \hbox (10.69621pt too wide) in alignment at lines 132--135
+ [] [] [] [][]
  []
 
-[3] [4] [5] [6] [7] [8] [9] [10]
+[3] [4] [5] [6] [7] [8] [9] [10] [11]
 Underfull \hbox (badness 10000) in paragraph at lines 421--422
 
  []
@@ -904,7 +913,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 422--423
 
  []
 
-[11] [12] [13]
+[12] [13] [14]
 Overfull \hbox (8.27637pt too wide) in paragraph at lines 599--600
 [][][]\OT1/cmtt/m/n/10 \lpsubref []\OT1/cmr/m/n/10 and [][]\OT1/cmtt/m/n/10 \lp
 subeqref []\OT1/cmr/m/n/10 work with or-di-nary [][]\OT1/cmtt/m/n/10 \label []\
@@ -919,12 +928,12 @@ File: omscmr.fd 2024/11/19 v2.5n Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 624.
 
-[14] [15] [16] [17]
+[15] [16] [17] [18]
 Overfull \hbox (2.22221pt too wide) in paragraph at lines 809--822
 [] [] 
  []
 
-[18] [19]
+[19] [20]
 Overfull \hbox (6.43385pt too wide) in paragraph at lines 828--832
 \OT1/cmr/m/n/10 Use the fol-low-ing keys in [][]\OT1/cmtt/m/n/10 \usepackage[<k
 ey>=<value>]{lpalign}[]\OT1/cmr/m/n/10 . For package-
@@ -936,33 +945,33 @@ Overfull \hbox (1.61237pt too wide) in paragraph at lines 844--845
 tt/m/n/10 namedsubeqs[]\OT1/cmr/m/n/10 .
  []
 
-[20]
+[21]
 Overfull \hbox (5.85194pt too wide) in paragraph at lines 867--868
 \OT1/cmr/m/n/10 such as \OT1/cmss/m/n/10 sub-cap-tion\OT1/cmr/m/n/10 . Fixed by
  re-nam-ing the pack-age com-mands to [][]\OT1/cmtt/m/n/10 \lpsubref
  []
 
-[21]
+[22]
 Overfull \hbox (14.69289pt too wide) in paragraph at lines 878--879
 \OT1/cmr/m/n/10 fall-back for [][]\OT1/cmtt/m/n/10 \lpsubref []\OT1/cmr/m/n/10 
 and [][]\OT1/cmtt/m/n/10 \lpsubeqref[]\OT1/cmr/m/n/10 , added [][]\OT1/cmtt/m/n
 /10 \lpsubref []\OT1/cmr/m/n/10 and [][]\OT1/cmtt/m/n/10 \lpsubeqref
  []
 
-[22] (C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.aux)
+[23] (C:\Users\jamie\GitHub\lpalign\build\lpalign-Documentaion.aux)
  ***********
 LaTeX2e <2026-06-01>
 L3 programming layer <2026-06-18>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 24943 strings out of 467510
- 481507 string characters out of 5408795
- 890371 words of memory out of 5000000
- 53688 multiletter control sequences out of 15000+600000
+ 24995 strings out of 467510
+ 484534 string characters out of 5408795
+ 883345 words of memory out of 5000000
+ 53725 multiletter control sequences out of 15000+600000
  640066 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 116i,17n,121p,545b,697s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,17n,121p,545b,745s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\jamie\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1000.pk><C:/Users/jamie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
 ts/cm/cmbx10.pfb><C:/Users/jamie/AppData/Local/Programs/MiKTeX/fonts/type1/publ
@@ -995,9 +1004,9 @@ cal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/jamie/A
 ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb><C:
 /Users/jamie/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/
 msbm7.pfb>
-Output written on lpalign-Documentaion.pdf (22 pages, 387699 bytes).
+Output written on lpalign-Documentaion.pdf (23 pages, 391735 bytes).
 PDF statistics:
- 371 PDF objects out of 1000 (max. 8388607)
- 94 named destinations out of 1000 (max. 500000)
+ 402 PDF objects out of 1000 (max. 8388607)
+ 117 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 
