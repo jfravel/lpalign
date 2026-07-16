@@ -905,9 +905,18 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 		\end{compactitem}
 
 
+\section{Feature Wishlist}
+\begin{compactitem}
+\item[$\boxdot$] first optional arg without title is vars.
+\item[$\boxdot$] One-line optimization problems?
+\item[$\boxdot$] Correct the slign off center of IEEEeqnarray from tagging column.
+\item[$\boxdot$] Free-form namedsubeqs-style at package load.
+\end{compactitem}
 
 \section{Known Bugs}
 \begin{compactitem}
+	\item[$\boxdot$] \verb|\tag| doesn't work in IEEEeqnarray.
+	
 	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
 	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
