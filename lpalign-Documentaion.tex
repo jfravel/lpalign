@@ -64,13 +64,13 @@ Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|vars|] -- subscript on the `sense' term. Commonly used to state variables and ranges.
-  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed during package load by \verb|lp_vars_style|; see Section \ref{sec:options}.
-  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|lp_st|.
-  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|.  The default value of \verb|a| can be changed during package load by \verb|lp_flush| option.
-  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|lp_row_sep| option.
-  \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint as added to \verb|row-sep|. The default value of \verb|0em| can be changed during package load by the \verb|lp_objective_sep| option.
-  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
-  \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|lp_gutter_sep| option.
+  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed during package load by \verb|vars-style|; see Section \ref{sec:options}.
+  \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|st|.
+  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|. The default value of \verb|a| can be changed during package load by the \verb|flush| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|row-sep| option.
+  \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint as added to \verb|row-sep|. The default value of \verb|0em| can be changed during package load by the \verb|objective-sep| option.
+  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|qualifier-sep| option.
+  \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|gutter-sep| option.
   \item[\Verb|sense-shift|] -- adds a vertical shift to the `sense' term.
   \item[\Verb|st-shift|] -- adds a vertical shift to the `subject to' term.
   \end{compactitem}
@@ -381,9 +381,9 @@ If, in an emergency situation (like a two column journal), tags can be moved dow
 \section{The \textsf{lpregion} Environment}\label{sec:lpregion}
 The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} without objective, sense or s.t. terms for the purpose of describing regions only. It takes only a few optional keys:\Vtrg
   \begin{compactitem}
-  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|.  The default value of \verb|a| can be changed during package load by \verb|reg_flush| option.
-  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|lp_row_sep| option.
-  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|lp_qualifier_sep| option.
+  \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|. The default value of \verb|a| can be changed during package load by the \verb|region-flush| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|row-sep| option.
+  \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|qualifier-sep| option.
   \end{compactitem}
 The \textsf{lpregion*} environment is identical without printing equation reference tags unless explicitly called for by the \verb|\tag| command.
 \begin{tcolorbox}
@@ -459,7 +459,7 @@ Paragraph \ref{npara1} is a named paragraph.
 Currently supported optional keys include\Vtrg
 	\begin{compactitem}
 	\item[\Verb|abv|] -- abbreviation used when referencing. A single argument with no \Verb|=| sign is also interpreted as this abbreviation.
-	\item[\Verb|indent|] -- indent distance. The default value of \verb|2em| can be changed during package load by the \verb|namedpara_indent| option; see Section \ref{sec:options}.
+	\item[\Verb|indent|] -- indent distance. The default value of \verb|2em| can be changed during package load by the \verb|namedpara-indent| option; see Section \ref{sec:options}.
 	\item[\Verb|before|] -- arbitrary code placed between the indent and the title.
 	\item[\Verb|after|] -- arbitrary code placed after the abbreviation.
 	\item[\Verb|flush|] -- centers or right-flushes the paragraph title via \verb|center| or \verb|right|.
@@ -594,7 +594,7 @@ The \verb|punct| argument controls the separator between the main tag and the su
   \end{minipage}
 \end{tcolorbox}
 
-A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed during package load with \verb|namedsubeqs_style| and \verb|namedsubeqs_punct|; see Section \ref{sec:options}.
+A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed during package load with \verb|namedsubeqs-style| and \verb|namedsubeqs-punct|; see Section \ref{sec:options}.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{namedsubeqs}{EQ}[\sffamily\Alph]
@@ -878,31 +878,31 @@ A few binary relations with extra space on either side. I like these for aligned
   \end{lpalign*}
 \end{minipage}
 \end{tcolorbox}
-The spacing defaults to 0.25em and is controlled by the package option \\\verb|evaluator_spacing|; see Section \ref{sec:options}.
+The spacing defaults to 0.25em and is controlled by the package option \\\verb|evaluator-spacing|; see Section \ref{sec:options}.
 
 
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
-For package-load style defaults, use style names rather than raw control sequences. Thus \verb|lp_vars_style=scriptstyle| and \verb|namedsubeqs_style=roman| are valid package options.
-For \verb|lp_st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|lp_st={subject to}| or \verb|lp_st=subject~to| instead.
-	\begin{compactitem}
-	\item[\Verb|lp\_row\_sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
-	\item[\Verb|lp\_objective\_sep|] -- controls additional spacing between objective function and the first constraint. Defaults to \verb|0em|. 
-	\item[\Verb|lp\_qualifier\_sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. 
-	\item[\Verb|lp\_gutter\_sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. 
-	\item[\Verb|lp\_vars\_style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. 
-	\item[\Verb|lp\_st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. 
-	\item[\Verb|lp\_flush|] -- controls the default alignment behavior of constraints in the \textsf{lpalign} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|.
-	\item[\Verb|reg\_flush|] -- controls the default alignment behavior of constraints in the \textsf{lpregion} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|. Section \ref{sec:lpregion}.
-	\item[\Verb|namedpara\_indent|] -- controls the indent of named paragraph markers. Defaults to \verb|2em|. Section \ref{sec:paragraphs}.
-	\item[\Verb|namedparabefore|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
-	\item[\Verb|namedparaafter|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty.
-	\item[\Verb|namedparaflush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. 
-	\item[\Verb|namedsubeqs\_style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
-	\item[\Verb|namedsubeqs\_punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. 
-	\item[\Verb|evaluator\_spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
-	\end{compactitem}
+For package-load style defaults, use style names rather than raw control sequences. Thus \verb|vars-style=scriptstyle| and \verb|namedsubeqs-style=roman| are valid package options.
+For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject~to| instead.
+		\begin{compactitem}
+		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
+		\item[\Verb|objective-sep|] -- controls additional spacing between objective function and the first constraint. Defaults to \verb|0em|. 
+		\item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. 
+		\item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. 
+		\item[\Verb|vars-style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. 
+		\item[\Verb|st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. 
+		\item[\Verb|flush|] -- controls the default alignment behavior of constraints in the \textsf{lpalign} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|.
+		\item[\Verb|region-flush|] -- controls the default alignment behavior of constraints in the \textsf{lpregion} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|. Section \ref{sec:lpregion}.
+		\item[\Verb|namedpara-indent|] -- controls the indent of named paragraph markers. Defaults to \verb|2em|. Section \ref{sec:paragraphs}.
+		\item[\Verb|namedpara-before|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
+		\item[\Verb|namedpara-after|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty.
+		\item[\Verb|namedpara-flush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. 
+		\item[\Verb|namedsubeqs-style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
+		\item[\Verb|namedsubeqs-punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. 
+		\item[\Verb|evaluator-spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
+		\end{compactitem}
 
 
 

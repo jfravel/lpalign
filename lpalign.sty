@@ -62,9 +62,10 @@
 \dim_new:N \evaluator_spacing
 \dim_gset:Nn \evaluator_spacing { 0.25em }
 \keys_define:nn { lpalign/package }
-	{
-	evaluator_spacing .dim_gset:N = \evaluator_spacing
-	}
+		{
+		evaluator-spacing .dim_gset:N = \evaluator_spacing,
+		evaluator_spacing .meta:n = { evaluator-spacing = #1 }
+		}
 
 \newcommand{\eq}{=}
 
@@ -138,34 +139,41 @@
 
 % Package options
 \keys_define:nn { lpalign/package }
-	{
-	lp_objective_sep .dim_gset:N = \g_lpalign_default_objective_sep,
-	lp_objective_sep .initial:n = 0em,
-	lp_row_sep .dim_gset:N = \g_lpalign_default_row_sep,
-	lp_row_sep .initial:n = 0.5em,
-	lp_qualifier_sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
-	lp_qualifier_sep .initial:n = 2em,
-	lp_gutter_sep .dim_gset:N = \g_lpalign_default_gutter_sep,
-	lp_gutter_sep .initial:n = 0.75em,
-	lp_vars_style .choices:nn =
-	  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
-	  {
-	    \str_case:Vn \l_keys_choice_tl
+		{
+		objective-sep .dim_gset:N = \g_lpalign_default_objective_sep,
+		objective-sep .initial:n = 0em,
+		row-sep .dim_gset:N = \g_lpalign_default_row_sep,
+		row-sep .initial:n = 0.5em,
+		qualifier-sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
+		qualifier-sep .initial:n = 2em,
+		gutter-sep .dim_gset:N = \g_lpalign_default_gutter_sep,
+		gutter-sep .initial:n = 0.75em,
+		vars-style .choices:nn =
+		  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
+		  {
+		    \str_case:Vn \l_keys_choice_tl
 	     {
 	      {scriptstyle}       { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptstyle } }
 	      {scriptscriptstyle} { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptscriptstyle } }
 	      {textstyle}         { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \textstyle } }
-	      {displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
-	     }
-	  },
-	lp_vars_style .initial:n = scriptstyle,
-	lp_st .tl_gset:N = \g_lpalign_default_st_tl,
-	lp_st .initial:n = s.t.,
-	lp_flush .choices:nn =
-	  { a, l, c, r }
-	  { \tl_gset_eq:NN \g_lpalign_default_flush \l_keys_choice_tl },
-	lp_flush .initial:n = a,
-	}
+		      {displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
+		     }
+		  },
+		vars-style .initial:n = scriptstyle,
+		st .tl_gset:N = \g_lpalign_default_st_tl,
+		st .initial:n = s.t.,
+		flush .choices:nn =
+		  { a, l, c, r }
+		  { \tl_gset_eq:NN \g_lpalign_default_flush \l_keys_choice_tl },
+		flush .initial:n = a,
+		lp_objective_sep .meta:n = { objective-sep = #1 },
+		lp_row_sep .meta:n = { row-sep = #1 },
+		lp_qualifier_sep .meta:n = { qualifier-sep = #1 },
+		lp_gutter_sep .meta:n = { gutter-sep = #1 },
+		lp_vars_style .meta:n = { vars-style = #1 },
+		lp_st .meta:n = { st = #1 },
+		lp_flush .meta:n = { flush = #1 },
+		}
 	
 % Environment Options
 \keys_define:nn { lpalign/lp }
@@ -176,7 +184,7 @@
   st .tl_set:N = \lpalign_st_text,
   flush .choices:nn =
   	  { a, l, c, r }
-  	  { \tl_gset_eq:NN \lpalign_flush \l_keys_choice_tl },
+  	  { \tl_set_eq:NN \lpalign_flush \l_keys_choice_tl },
   flush .initial:n = a,
   st-shift .dim_set:N = \lpalign_st_shift,
   objective-sep .dim_set:N = \lpalign_objective_sep,
@@ -360,12 +368,13 @@
 
 % Package options
 \keys_define:nn { lpalign/package }
-	{
-	reg_flush .choices:nn =
-	  { a, l, c, r }
-	  { \tl_gset_eq:NN \g_lpregion_default_flush \l_keys_choice_tl },
-	reg_flush .initial:n = a,
-	}
+		{
+		region-flush .choices:nn =
+		  { a, l, c, r }
+		  { \tl_gset_eq:NN \g_lpregion_default_flush \l_keys_choice_tl },
+		region-flush .initial:n = a,
+		reg_flush .meta:n = { region-flush = #1 },
+		}
  
 \keys_define:nn { lpalign/region }
 	{
@@ -373,7 +382,7 @@
 	qualifier-sep .dim_set:N = \lpalign_qualifier_sep,
 	flush .choices:nn =
 	  { a, l, c, r }
-	  { \tl_gset_eq:NN \lpregion_flush \l_keys_choice_tl },
+	  { \tl_set_eq:NN \lpregion_flush \l_keys_choice_tl },
 	flush .initial:n = a,
 	}
 
@@ -449,15 +458,19 @@
 \tl_new:N \g_lpalign_namedpara_default_after_tl
 \keys_define:nn { lpalign/package }
  {
-  namedpara_indent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
-  namedpara_indent .initial:n = 2em,
-  namedparabefore .tl_gset:N = \g_lpalign_namedpara_default_before_tl,
-  namedparabefore .initial:n = ,
-  namedparaafter .tl_gset:N = \g_lpalign_namedpara_default_after_tl,
-  namedparaafter .initial:n = ,
-  namedparaflush .choices:nn = { left, center, right }
+  namedpara-indent .tl_gset:N = \g_lpalign_namedpara_default_indent_tl,
+  namedpara-indent .initial:n = 2em,
+  namedpara-before .tl_gset:N = \g_lpalign_namedpara_default_before_tl,
+  namedpara-before .initial:n = ,
+  namedpara-after .tl_gset:N = \g_lpalign_namedpara_default_after_tl,
+  namedpara-after .initial:n = ,
+  namedpara-flush .choices:nn = { left, center, right }
    { \tl_gset_eq:NN \g_lpalign_namedpara_default_flush_tl \l_keys_choice_tl },
-  namedparaflush .initial:n = left,
+  namedpara-flush .initial:n = left,
+  namedpara_indent .meta:n = { namedpara-indent = #1 },
+  namedparabefore .meta:n = { namedpara-before = #1 },
+  namedparaafter .meta:n = { namedpara-after = #1 },
+  namedparaflush .meta:n = { namedpara-flush = #1 },
  }
 % Local state
 \tl_new:N \l_lpalign_namedpara_abbreviation_tl
@@ -586,7 +599,7 @@
 \tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
 \keys_define:nn { lpalign/package }
  {
-  namedsubeqs_style .choices:nn = { alph, Alph, arabic, roman, Roman }
+  namedsubeqs-style .choices:nn = { alph, Alph, arabic, roman, Roman }
    {
     \str_case:Vn \l_keys_choice_tl
      {
@@ -597,9 +610,11 @@
       {Roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Roman } }
      }
    },
-  namedsubeqs_style .initial:n = alph,
-  namedsubeqs_punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
-  namedsubeqs_punct .initial:n = .,
+  namedsubeqs-style .initial:n = alph,
+  namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
+  namedsubeqs-punct .initial:n = .,
+  namedsubeqs_style .meta:n = { namedsubeqs-style = #1 },
+  namedsubeqs_punct .meta:n = { namedsubeqs-punct = #1 },
  }
 \ProcessKeysOptions{ lpalign/package }
 \keys_define:nn { lpalign/namedsubeqs }

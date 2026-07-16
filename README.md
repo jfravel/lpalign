@@ -66,13 +66,13 @@ Supported keys include:
 - `st-shift`
 
 Package-load defaults are available for:
-- `lp_objective_sep`
-- `lp_row_sep`
-- `lp_qualifier_sep`
-- `lp_gutter_sep`
-- `lp_vars_style`
-- `lp_st`
-- `lp_flush`
+- `objective-sep`
+- `row-sep`
+- `qualifier-sep`
+- `gutter-sep`
+- `vars-style`
+- `st`
+- `flush`
 
 Example:
 
@@ -110,7 +110,7 @@ Supported keys include:
 - `qualifier-sep`
 
 Package-load defaults are available for:
-- `reg_flush`
+- `region-flush`
 
 Example:
 
@@ -161,36 +161,36 @@ Equation \ref{eq:1} has sub-reference \lpsubref{eq:1}.
 ```
 
 Package-load defaults are available for:
-- `namedsubeqs_style`
-- `namedsubeqs_punct`
+- `namedsubeqs-style`
+- `namedsubeqs-punct`
 
 ## Package-Load Options
 
 The package supports the following load-time defaults:
 
-- `lp_objective_sep`
-- `lp_row_sep`
-- `lp_qualifier_sep`
-- `lp_gutter_sep`
-- `lp_vars_style`
-- `lp_st`
-- `lp_flush`
-- `reg_flush`
-- `namedpara_indent`
-- `namedparabefore`
-- `namedparaafter`
-- `namedparaflush`
-- `namedsubeqs_style`
-- `namedsubeqs_punct`
-- `evaluator_spacing`
+- `objective-sep`
+- `row-sep`
+- `qualifier-sep`
+- `gutter-sep`
+- `vars-style`
+- `st`
+- `flush`
+- `region-flush`
+- `namedpara-indent`
+- `namedpara-before`
+- `namedpara-after`
+- `namedpara-flush`
+- `namedsubeqs-style`
+- `namedsubeqs-punct`
+- `evaluator-spacing`
 
 For package-load style defaults, use the style names rather than raw control sequences:
-- `lp_vars_style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
-- `namedsubeqs_style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
+- `vars-style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
+- `namedsubeqs-style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
 
-For `lp_st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the package sees the option value. Use either:
-- `lp_st={subject to}`
-- `lp_st=subject~to`
+For `st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the package sees the option value. Use either:
+- `st={subject to}`
+- `st=subject~to`
 
 ## Documentation
 
