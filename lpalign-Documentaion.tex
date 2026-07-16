@@ -443,6 +443,76 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 \end{tcolorbox}
 
 
+\subsection*{Nesting \textsf{lp} Environments}
+You may want to use these formatting conventions nested within another environment.  The \verb|lpregionbox| and \verb|lpalignbox| commands can be nested. Maybe you want to define a polyhedron.
+\begin{tcolorbox}
+\begin{Verbatim}
+	\begin{equation*}
+	P =
+	\left\lbrace
+	x\in\mathbb{R}^n \ \middle\vert\ 
+		\begin{lpregionbox}[flush=l] 
+		\sum_{j=1}^na_{ij}x_j \GE b_i
+									&\forall\ i\in[\![m]\!] \\
+		\mathbf{a}_i^\top\mathbf{x} \GE b_i 
+									&\forall\ i\in[\![m]\!]
+		\end{lpregionbox}
+	\right\rbrace
+	\end{equation*}
+\end{Verbatim}
+\tcblower
+\begin{equation*}
+P =
+\left\lbrace
+x\in\mathbb{R}^n \ \middle\vert\ 
+	\begin{lpregionbox}[flush=l] 
+	\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+	\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!]
+	\end{lpregionbox}
+\right\rbrace
+\end{equation*}
+\end{tcolorbox}
+
+If wrapped delimiters appear short or vertical centering is... off, then try setting \verb|\delimitershortfall=0pt| or adding a phantom, vertical character like \verb|\vphantom{\int}| to the problem row.
+\begin{tcolorbox}
+\begin{Verbatim}
+	\begin{equation*}
+	P =
+	\left\lbrace
+	x\in\mathbb{R}^n \ \middle\vert\ 
+		\begin{lpregionbox}[flush=l] 
+		\sum_{j=1}^na_{ij}x_j \GE b_i
+									&\forall\ i\in[\![m]\!] \\
+		\mathbf{a}_i^\top\mathbf{x} \GE b_i 
+									&\forall\ i\in[\![m]\!] @hl~\vphantom{\int}|
+		\end{lpregionbox}
+	\right\rbrace
+	\end{equation*}
+\end{Verbatim}
+\tcblower
+\begin{equation*}
+P =
+\left\lbrace
+x\in\mathbb{R}^n \ \middle\vert\ 
+	\begin{lpregionbox}[flush=l] 
+	\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+	\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \vphantom{\int}
+	\end{lpregionbox}
+\right\rbrace
+\end{equation*}
+\end{tcolorbox}
+
+\begin{equation*}
+\left[
+\begin{lpalignbox}[objective-sep=1em]
+{min}{\mathbf{c}^\top\mathbf{x}}
+\mathbf{a}_i^\top\mathbf{x} &\ge b_i          &\forall\ i\in[\![m]\!] \\
+&\mathbf{x} &\ge 0
+\end{lpalignbox}
+\right]
+\end{equation*}
+
+
 
 \section{Named Paragraphs}\label{sec:paragraphs}
 The \verb|namedpara| command displays a paragraph marker that takes an abbreviation, which is useful for referencing specific problems or conventions.
