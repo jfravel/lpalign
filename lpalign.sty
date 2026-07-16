@@ -222,6 +222,7 @@
   { \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text} }
 
 
+\makeatletter
 \cs_new_protected:Npn \lpalign_ieee_patch_cr:
   {
     \def\lpalign@IEEEeqnarrayYCR{%
@@ -385,6 +386,7 @@
 	}
 
 
+\makeatletter
 \cs_new_protected:Npn \lpregion_ieee_patch_cr:
   {
     \def\@IEEEeqnarrayXCR[##1]{%
