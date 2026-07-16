@@ -197,4 +197,4 @@ For `st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the pac
 The full package documentation is in [`lpalign-Documentaion.pdf`](/repos/lpalign/lpalign-Documentaion.pdf).
 
 ## Contributions
-This package was, from versions 1.2-1.5, developed with assistance of OpenAI Codex.
+This package was, from versions 1.2-1.6, developed with assistance of OpenAI Codex.
