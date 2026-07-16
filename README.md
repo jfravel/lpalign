@@ -7,7 +7,8 @@ Current release:
 - published July 6, 2026
 
 The package currently provides:
-- `lpalign` and `lpalign*` environments for writing mathematical programs within `alignat`,
+- `lpalign` and `lpalign*` environments for writing mathematical programs with an `IEEEeqnarray` backend,
+- `lpregion` and `lpregion*` environments for aligned or centered constraint regions without an objective row,
 - `\namedpara` for named paragraphs with referencable abbreviations,
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref` for referencing subequations in a named environment,
 - quick horizontal and vertical spacing helpers and
@@ -22,11 +23,15 @@ Place [`lpalign.sty`](/repos/lpalign/lpalign.sty) alongside your main `.tex` fil
 ```
 
 The package loads:
-- `amsmath`
+- `IEEEtrantools`
 - `expl3`
 - `l3keys2e`
+
+If available, it also loads:
 - `mathtools`
 - `stackengine`
+
+Built-in fallbacks are provided for the small pieces currently needed from `mathtools` and `stackengine`.
 
 Loading `hyperref` is optional but recommended if you want clickable references.
 
@@ -52,7 +57,9 @@ Supported keys include:
 - `vars`
 - `vars-style`
 - `st`
+- `flush`
 - `objective-sep`
+- `row-sep`
 - `qualifier-sep`
 - `gutter-sep`
 - `sense-shift`
@@ -60,10 +67,12 @@ Supported keys include:
 
 Package-load defaults are available for:
 - `lp_objective_sep`
+- `lp_row_sep`
 - `lp_qualifier_sep`
 - `lp_gutter_sep`
 - `lp_vars_style`
 - `lp_st`
+- `lp_flush`
 
 Example:
 
@@ -74,13 +83,42 @@ Example:
 \end{lpalign}
 ```
 
-Qualified constraints still use `&&`:
+Qualified constraints use a second `&`-separated column:
 
 ```tex
 \begin{lpalign}{Maximize}{\sum_{j=1}^m c_j x_j}
-  \mathbf{a}_i^\top \mathbf{x} &\le b_i && \forall i \in [n] \\
-  x_i                          &\ge 0   && \forall i \in [n]
+  \mathbf{a}_i^\top \mathbf{x} &\le b_i & \forall i \in [n] \\
+  x_i                          &\ge 0   & \forall i \in [n]
 \end{lpalign}
+```
+
+## `lpregion`
+
+The constraints-only companion environment is:
+
+```tex
+\begin{lpregion}[<keys>]
+  <constraint rows>
+\end{lpregion}
+```
+
+The starred form suppresses automatic tags unless you add them explicitly.
+
+Supported keys include:
+- `flush`
+- `row-sep`
+- `qualifier-sep`
+
+Package-load defaults are available for:
+- `reg_flush`
+
+Example:
+
+```tex
+\begin{lpregion}[flush=c, qualifier-sep=3em]
+  \mathbf{a}_i^\top \mathbf{x} \le b_i & \forall i \in [n] \\
+  x_i \ge 0                            & \forall i \in [n]
+\end{lpregion}
 ```
 
 ## Named Paragraphs
@@ -131,10 +169,13 @@ Package-load defaults are available for:
 The package supports the following load-time defaults:
 
 - `lp_objective_sep`
+- `lp_row_sep`
 - `lp_qualifier_sep`
 - `lp_gutter_sep`
 - `lp_vars_style`
 - `lp_st`
+- `lp_flush`
+- `reg_flush`
 - `namedpara_indent`
 - `namedparabefore`
 - `namedparaafter`

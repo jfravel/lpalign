@@ -23,7 +23,7 @@
 	\setlength{\fboxsep}{0.5pt}
 
 \title{The \textsf{lpalign} Package}
-\date{Published as \textsf{lpalign} v$1.4$ final on June $28^\textrm{th}$ 2026}
+\date{Published as \textsf{lpalign} v$1.5$ on July $6^\textrm{th}$ 2026}
 \author{Jamie Fravel}
 
 
@@ -40,14 +40,14 @@
 
 \section{Installation}
 
-Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and add the command \verb|\usepackage{lpalign}| to your preamble. The \textsf{amsmath} and \textsf{expl3} packages are required but will also be added by the above command. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
+Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and add the command \verb|\usepackage{lpalign}| to your preamble. The package loads \textsf{IEEEtrantools}, \textsf{expl3} and \textsf{l3keys2e}. If available, it also loads \textsf{mathtools} and \textsf{stackengine}, with small internal fallbacks for the features used here. I recommend using these macros in conjunction with the \textsf{hyperref} package so that custom tags/references are clickable.
 
 
 
 
 \section{The \textsf{lpalign} Environment}\label{sec:lpalign}
 
-\textsf{lpalign} is an environment macro built on the \textsf{equationarray} environment from the \textsf{IEEEeqnarray} package. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary functions are to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the body in addition to aligning constraints and qualifiers.
+\textsf{lpalign} is an environment macro built on the \textsf{IEEEeqnarray} environment from \textsf{IEEEtrantools}. It formats mathematical programs so that they are legible in code as well as in the final pdf. Its primary functions are to automatically format and position the `sense' (maximize or minimize) and `subject to' terms within a gutter to the left of the body in addition to aligning constraints and qualifiers.
 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
