@@ -340,6 +340,43 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
 
 
+\subsection*{Taging Long Expressions}
+If, in an emergency situation (like a two column journal), tags can be moved down a row with the macro \verb|\downtag| which is really just a combination of \verb|\span|, \verb|\notag| and \verb|\\|. Labeling/referencing should continue to work as expected. An additional \verb|\span| will be required in the objective function of aligned environments. This is not the most robust solution, so don't rely on it too far.
+\begin{tcolorbox}
+\begin{Verbatim}
+	\begin{lpalign}[row-sep=-0.2em]
+	{maximize}{c_1x_1+c_2x_2+c_3x_3+c_4x_4+c_5x_5
+							+c_6x_6+c_7x_7+c_8x_8+c_9x_9 @gl~\span\downtag|}
+	a_1x_1+a_2x_2+a_3x_3+a_4x_4+a_5x_5+a_6x_6
+								+a_7x_7+a_8x_8 &\ge \mathbf{b} @gl~\downtag| \\
+	x &\ge 0 @gl~\downtag|
+	\end{lpalign}
+	\begin{lpalign}[@hl~flush=l|, row-sep=-0.2em]
+	{maximize}{c_1x_1+c_2x_2+c_3x_3+c_4x_4+c_5x_5
+										+c_6x_6+c_7x_7+c_8x_8+c_9x_9 @hl~\downtag|}
+	a_1x_1+a_2x_2+a_3x_3+a_4x_4+a_5x_5+a_6x_6
+								+a_7x_7+a_8x_8 \ge \mathbf{b} @hl~\downtag| \\
+	x \ge 0 &\forall\ x
+	\end{lpalign}
+\end{Verbatim}
+\tcblower
+	\begin{lpalign}[row-sep=-0.2em]
+	{maximize}{c_1x_1+c_2x_2+c_3x_3+c_4x_4+c_5x_5
+							+c_6x_6+c_7x_7+c_8x_8+c_9x_9 \span\downtag}
+	a_1x_1+a_2x_2+a_3x_3+a_4x_4+a_5x_5+a_6x_6
+								+a_7x_7+a_8x_8 &\ge \mathbf{b} \downtag \\
+	x &\ge 0 \downtag
+	\end{lpalign}
+	\begin{lpalign}[flush=l, row-sep=-0.2em]
+	{maximize}{c_1x_1+c_2x_2+c_3x_3+c_4x_4+c_5x_5
+										+c_6x_6+c_7x_7+c_8x_8+c_9x_9 \downtag}
+	a_1x_1+a_2x_2+a_3x_3+a_4x_4+a_5x_5+a_6x_6
+								+a_7x_7+a_8x_8 \ge \mathbf{b} \downtag \\
+	x \ge 0 &\forall\ x
+	\end{lpalign}
+\end{tcolorbox}
+
+
 
 \section{The \textsf{lpregion} Environment}\label{sec:lpregion}
 The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} without objective, sense or s.t. terms for the purpose of describing regions only. It takes only a few optional keys:\Vtrg
@@ -365,7 +402,7 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 
 	\end{Verbatim}
 	\tcblower
-	\begin{lpregion*}%[row-sep=5em, qualifier-sep=5em, flush=a]
+	\begin{lpregion*}
 	&\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
 	&\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
 	 \begin{bmatrix} 
@@ -384,8 +421,26 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 	\span\span \\
 	\hfill A\mathbf{x} \GE \mathbf{b}\span\span
 	\end{lpregion*}
+	\begin{lpregion*}[flush=l]
+	\sum_{j=1}^na_{ij}x_j \GE b_i                &\forall\ i\in[\![m]\!] \\
+	\mathbf{a}_i^\top\mathbf{x} \GE b_i          &\forall\ i\in[\![m]\!] \\
+ \begin{bmatrix} 
+		a_{11} & a_{12} & \dots  & a_{1n} \\
+		a_{21} & a_{22} & \dots  & a_{2n} \\
+		\vdots & \vdots & \ddots &        \\
+		a_{m1} & a_{m2} &        & a_{mn}
+		\end{bmatrix}
+		\begin{bmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+		\end{bmatrix} 
+	\GE
+		\begin{bmatrix}
+		b_1 \\ b_2 \\ \vdots \\ b_m
+		\end{bmatrix}
+	\span \\
+	\hfill A\mathbf{x} \GE \mathbf{b}\span
+	\end{lpregion*}
 \end{tcolorbox}
-
 
 
 
@@ -653,7 +708,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \tcblower
     \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
     \begin{namedsubeqs}{NLP}[style=\itshape\roman]
-    \begin{lpalign}{Minimize}{f(\mathbf{x})      \label{NLP.0}}
+    \begin{lpalign}{Minimize}{f(\mathbf{x})   \label{NLP.0}}
         g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
         h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
             \mathbf{x}  &\GE 0                \label{NLP.3}

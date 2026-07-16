@@ -176,7 +176,7 @@
   st .tl_set:N = \lpalign_st_text,
   flush .choices:nn =
   	  { a, l, c, r }
-  	  { \tl_gset_eq:NN \g_lpalign_flush \l_keys_choice_tl },
+  	  { \tl_gset_eq:NN \lpalign_flush \l_keys_choice_tl },
   flush .initial:n = a,
   st-shift .dim_set:N = \lpalign_st_shift,
   objective-sep .dim_set:N = \lpalign_objective_sep,
@@ -345,6 +345,7 @@
 \makeatother
 \ExplSyntaxOff
 
+\newcommand{\downtag}{\span\notag\\}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  lpregion  %%%%%%%%%%%%%%%%%%%
@@ -352,7 +353,6 @@
 % A truncated version of lpalign environment for formatting only the feasible region.
 
 \ExplSyntaxOn
-
 % Package defaults
 \tl_new:N \g_lpregion_default_flush
 % Text inputs
