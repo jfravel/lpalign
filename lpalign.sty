@@ -420,22 +420,10 @@
 		\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
 		\let\lpregion@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
 		\lpregion_ieee_patch_cr:
-		\tl_if_eq:NnT \lpregion_flush {a}
-			{
-			\begin{IEEEeqnarray*}{rL2l}
-			}
-		\tl_if_eq:NnT \lpregion_flush {l}
-			{
-			\begin{IEEEeqnarray*}{l2l}
-			}
-		\tl_if_eq:NnT \lpregion_flush {c}
-			{
-			\begin{IEEEeqnarray*}{c2l}
-			}
-		\tl_if_eq:NnT \lpregion_flush {r}
-			{
-			\begin{IEEEeqnarray*}{r2l}
-			}
+		\tl_if_eq:NnT \lpregion_flush {a} { \begin{IEEEeqnarray*}{rL2l} }
+		\tl_if_eq:NnT \lpregion_flush {l} { \begin{IEEEeqnarray*}{l2l} }
+		\tl_if_eq:NnT \lpregion_flush {c} { \begin{IEEEeqnarray*}{c2l} }
+		\tl_if_eq:NnT \lpregion_flush {r} { \begin{IEEEeqnarray*}{r2l} }
 		}
 		{
 		\end{IEEEeqnarray*}
