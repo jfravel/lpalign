@@ -7,7 +7,7 @@ Current release:
 - published July 16, 2026
 
 The package currently provides:
-- `lpalign`, `lpalign*` and `lpalignbox' environments for writing mathematical programs with an `IEEEeqnarray` backend,
+- `lpalign`, `lpalign*` and `lpalignbox` environments for writing mathematical programs with an `IEEEeqnarray` backend,
 - `lpregion`, `lpregion*` and `lpregionbox` environments for expressing constraint regions without an objective row,
 - `\namedpara` for named paragraphs with referencable abbreviations,
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref` for referencing subequations in a named environment,
