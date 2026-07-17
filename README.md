@@ -203,8 +203,9 @@ The package supports the following load-time defaults:
 - `evaluator-spacing`
 
 For package-load style defaults:
-- `vars-style` still uses style names: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
-- `namedsubeqs-style` may use either simple counter-formatting commands like `\\roman` or freer style/format combinations like `\\itshape\\roman`
+- `vars-style` uses style names: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
+- `namedsubeqs-style` uses style names: `alph`, `Alph`, `arabic`, `roman`, `Roman`
+- for freer global namedsubequation styles, use `\\setlpalignnamedsubeqstyle{...}` after loading the package
 
 For `st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the package sees the option value. Use either:
 - `st={subject to}`

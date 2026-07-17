@@ -2,7 +2,8 @@
 
 % Build from the repository root with:
 % pdflatex lpalign-Documentaion.tex
-\usepackage[namedsubeqs-style={\itshape\roman}]{lpalign}
+\usepackage{lpalign}
+\setlpalignnamedsubeqstyle{\itshape\roman}
 \newsavebox{\mydebugbox}
 
 
@@ -691,7 +692,7 @@ The \verb|punct| argument controls the separator between the main tag and the su
   \end{minipage}
 \end{tcolorbox}
 
-A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed during package load with \verb|namedsubeqs-style| and \verb|namedsubeqs-punct|; see Section \ref{sec:options}.
+A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed globally with \verb|namedsubeqs-style|, \verb|namedsubeqs-punct| and the post-load command \verb|\setlpalignnamedsubeqstyle|; see Section \ref{sec:options}.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{namedsubeqs}{EQ}[\sffamily\Alph]
@@ -1027,7 +1028,7 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
-For package-load style defaults, \verb|vars-style| still uses style names such as \verb|scriptstyle|. By contrast, \verb|namedsubeqs-style| may use freer control-sequence combinations such as \verb|\roman| or \verb|\itshape\roman|.
+For package-load style defaults, both \verb|vars-style| and \verb|namedsubeqs-style| use style names rather than raw control sequences. Thus \verb|vars-style=scriptstyle| and \verb|namedsubeqs-style=roman| are valid package options. For freer global combinations such as \verb|\itshape\roman|, use the post-load command \verb|\setlpalignnamedsubeqstyle{...}|.
 For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject~to| instead.
 		\begin{compactitem}
 		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
@@ -1042,7 +1043,7 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 		\item[\Verb|namedpara-before|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
 		\item[\Verb|namedpara-after|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty.
 		\item[\Verb|namedpara-flush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. 
-		\item[\Verb|namedsubeqs-style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
+		\item[\Verb|namedsubeqs-style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph| and accepts \verb|alph|, \verb|Alph|, \verb|arabic|, \verb|roman| and \verb|Roman|. For freer global style combinations, use \verb|\setlpalignnamedsubeqstyle{...}|. Section \ref{sec:subrefs}.
 		\item[\Verb|namedsubeqs-punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. 
 		\item[\Verb|evaluator-spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
 		\end{compactitem}
@@ -1053,7 +1054,7 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 \item[$\boxdot$] first optional arg without title is vars.
 \item[$\boxdot$] One-line optimization problems?
 \item[$\boxdot$] Correct the slign off center of IEEEeqnarray from tagging column.
-\item[$\boxdot$] Free-form namedsubeqs-style at package load.
+\item[$\boxdot$] Global free-form namedsubeq style setter via \verb|\setlpalignnamedsubeqstyle|.
 \end{compactitem}
 
 \section{Known Bugs}

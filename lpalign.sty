@@ -985,12 +985,18 @@
 \tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
 \keys_define:nn { lpalign/package }
  {
-  namedsubeqs-style .code:n =
+  namedsubeqs-style .choices:nn = { alph, Alph, arabic, roman, Roman }
    {
-    \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl {#1}
-    \lpalign_unbrace_tl:N \g_lpalign_namedsubeq_default_style_tl
+    \str_case:Vn \l_keys_choice_tl
+     {
+      {alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \alph } }
+      {Alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Alph } }
+      {arabic} { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \arabic } }
+      {roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \roman } }
+      {Roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Roman } }
+     }
    },
-  namedsubeqs-style .initial:n = {\alph},
+  namedsubeqs-style .initial:n = alph,
   namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
   namedsubeqs-punct .initial:n = .,
  }
@@ -1019,6 +1025,11 @@
 \cs_new:Npn \lpalign@namedsubeqpunct
  {
   \tl_use:N \l_lpalign_namedsubeq_punct_tl
+ }
+\NewDocumentCommand{\setlpalignnamedsubeqstyle}{m}
+ {
+  \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl {#1}
+  \lpalign_unbrace_tl:N \g_lpalign_namedsubeq_default_style_tl
  }
 \ExplSyntaxOff
 % Helpers for storing the sub-index text used by \lpsubref/\lpsubeqref.
