@@ -403,7 +403,7 @@
 }
 \newcommand{\lpsubtag}[1]{%
   \ifx\lpalign@subtagkind\lpalign@subtagdefault
-    \PackageWarning{lpalign}{\string\lpsubtag\space overrides \string\defaultsubtag\space in the current row}%
+    \PackageWarning{lpalign}{\string\lpsubtag\space overrides \string\defaultsubtag\space in\space the\space current\space row}%
   \fi
   \gdef\lpalign@manualsubtag{#1}%
   \global\let\lpalign@subtagkind\lpalign@subtagcustom
@@ -412,10 +412,10 @@
 }
 \newcommand{\defaultsubtag}{%
   \ifx\lpalign@subtagkind\lpalign@subtagcustom
-    \PackageWarning{lpalign}{\string\defaultsubtag\space overrides \string\lpsubtag\space in the current row}%
+    \PackageWarning{lpalign}{\string\defaultsubtag\space overrides\space \string\lpsubtag\space in\space the\space current\space row}%
   \fi
   \ifx\lpalign@subeqcontext\@empty
-    \PackageWarning{lpalign}{\string\defaultsubtag\space used outside a subequation-style environment}%
+    \PackageWarning{lpalign}{\string\defaultsubtag\space used\space outside\space of\space a\space subequation-style\space environment}%
     \global\let\lpalign@manualsubtag\@empty
   \else
     \ifx\lpalign@subeqcontext\lpalign@standardcontext
