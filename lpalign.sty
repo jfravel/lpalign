@@ -713,6 +713,7 @@
 \def\lpalign@subtagcustom{custom}
 \def\lpalign@subtagdefault{default}
 \let\lpalign@subtagkind\@empty
+\let\lpalign@activerowlabel\@empty
 \newcommand{\lpalign@warnsubtagoverride}[2]{%
   \PackageWarning{lpalign}{#1\space overrides\space #2\space in\space the\space current\space row}%
 }
@@ -830,6 +831,7 @@
       \gdef\@currentlabel{\lpalign@manualtag}%
     \fi
   \fi
+  \lpalign@retagactiverowlabel
 }
 \newcommand{\lpalign@clearmanualtag}{%
   \global\let\lpalign@manualtag\@empty
@@ -837,6 +839,16 @@
   \global\let\lpalign@manualsubtag\@empty
   \global\let\lpalign@subtagkind\@empty
   \global\lpalign@rollbackmanualadvancetrue
+}
+\newcommand{\lpalign@clearactiverowlabel}{%
+  \global\let\lpalign@activerowlabel\@empty
+}
+\newcommand{\lpalign@retagactiverowlabel}{%
+  \ifx\lpalign@activerowlabel\@empty
+  \else
+    \lpalign@capturedlabel{\lpalign@activerowlabel}%
+    \lpalign@storeactivesubreftext{\lpalign@activerowlabel}%
+  \fi
 }
 \newcommand{\lpalign@rollbackmanualtag}{%
   \ifx\lpalign@manualtag\@empty
@@ -860,6 +872,7 @@
 \newcommand{\lpalign@finalizemanualtag}{%
   \lpalign@rollbackmanualtag
   \lpalign@clearmanualtag
+  \lpalign@clearactiverowlabel
 }
 \renewcommand{\theequationdis}{%
   \ifx\lpalign@manualtag\@empty
@@ -925,20 +938,24 @@
   \fi
 }
 \newcommand{\lpalign@beginlabelcapture}{%
+  \lpalign@clearactiverowlabel
   \let\lpalign@capturedlabel\label
   \let\lpalign@capturedltxlabel\ltx@label
   \def\label##1{%
     \lpalign@capturedlabel{##1}%
     \lpalign@storeactivesubreftext{##1}%
+    \gdef\lpalign@activerowlabel{##1}%
   }%
   \def\ltx@label##1{%
     \lpalign@capturedltxlabel{##1}%
     \lpalign@storeactivesubreftext{##1}%
+    \gdef\lpalign@activerowlabel{##1}%
   }%
 }
 \newcommand{\lpalign@endlabelcapture}{%
   \let\label\lpalign@capturedlabel
   \let\ltx@label\lpalign@capturedltxlabel
+  \lpalign@clearactiverowlabel
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1125,7 +1142,7 @@
 \ExplSyntaxOn
 \cs_new:Npn \lpalignsubreftext #1
  {
-  \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname }
+  \tl_set:No \l_tmpa_tl { \csname subeqref@#1\endcsname }
   \regex_replace_once:nnN { ^[\.\-:;,/\s]+ } {} \l_tmpa_tl
   \l_tmpa_tl
  }
