@@ -12,7 +12,7 @@ The package currently provides:
 - `\namedpara` for named paragraphs with referencable abbreviations,
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref` for referencing subequations in a named environment,
 - quick horizontal and vertical spacing helpers and
-- display-style operator helpers which mimic `\smashoperator` from `mathtools` while prexerving ordinary `_`/`^` syntax.
+- display-style operator helpers which mimic `\smashoperator` from `mathtools` while preserving ordinary `_`/`^` syntax.
 
 ## Installation
 
@@ -204,8 +204,8 @@ For `st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the pac
 
 Post-load commands are available for freer global style defaults:
 
-- `\\setvarsstyle{...}`
-- `\\setnamedsubeqstyle{...}`
+- `\setvarsstyle{...}`
+- `\setnamedsubeqstyle{...}`
 
 ## Documentation
 
