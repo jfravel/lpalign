@@ -78,7 +78,7 @@ The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|
   \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed globally after package load by \verb|\setvarsstyle|; see Section \ref{sec:options}.
   \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|st|.
   \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|. The default value of \verb|a| can be changed during package load by the \verb|flush| option.
-  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|row-sep| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.2em| can be changed during package load by the \verb|row-sep| option.
   \item[\Verb|objective-sep|] -- controls the spacing between objective function and the first constraint as added to \verb|row-sep|. The default value of \verb|0em| can be changed during package load by the \verb|objective-sep| option.
   \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|qualifier-sep| option.
   \item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body. The default value of \verb|0.75em| can be changed during package load by the \verb|gutter-sep| option.
@@ -394,7 +394,7 @@ If, in an emergency situation (like a two column journal), tags can be moved dow
 The \textsf{lpregion} environment mirrors the formatting features of \textsf{lpalign} without objective, sense or s.t. terms for the purpose of describing regions only. It takes only a few optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|. The default value of \verb|a| can be changed during package load by the \verb|region-flush| option.
-  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|row-sep| option.
+  \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.2em| can be changed during package load by the \verb|row-sep| option.
   \item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. The default value of \verb|2em| can be changed during package load by the \verb|qualifier-sep| option.
   \end{compactitem}
 The \textsf{lpregion*} environment is identical without printing equation reference tags unless explicitly called for by the \verb|\tag| command.
@@ -456,7 +456,7 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 
 
 \subsection*{Nesting \textsf{lp} Environments}\addcontentsline{toc}{subsection}{Nesting \textsf{lp} Environments}
-You may want to use these formatting conventions nested within another environment.  The \verb|lpregionbox| and \verb|lpalignbox| commands can be nested. Maybe you want to define a polyhedron.
+You may want to use these formatting conventions nested within another environment. The \verb|lpregionbox| and \verb|lpalignbox| environments can be nested. Maybe you want to define a polyhedron.
 \begin{tcolorbox}
 \begin{Verbatim}
 	\begin{equation*}
@@ -1051,37 +1051,6 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 		\item[\texttt{\char`\\}\Verb|setvarsstyle|] -- controls the global default value of \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. Good options include \verb|\displaystyle| for larger variables and \verb|\scriptscriptstyle| for smaller ones.
 		\item[\texttt{\char`\\}\Verb|setnamedsubeqstyle|] -- controls the global default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
 		\end{compactitem}
-
-
-%\section{Feature Wishlist}
-%\begin{compactitem}
-%\item[$\boxdot$] 
-%\end{compactitem}
-
-
-\section{Known Bugs}
-\begin{compactitem}	
-	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines. \verb|\downtag| helps move tags out of the way, but isn't very robust.
-	
-	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
-	
-	\item[$\boxtimes$] The package depended on \textsf{makecell} and \textsf{vcell} without using them. Fixed by removing those unused dependencies; v1.2.
-	
-	\item[$\boxtimes$] The \verb|namedsubeqs| environment assigned \verb|\currentlabel| without switching to \verb|\makeatletter| scope. Fixed internally; v1.2.
-	
-	\item[$\boxtimes$] The \verb|\lpsubref| and \verb|\lpsubeqref| macros failed outright when \textsf{hyperref} was not loaded. Fixed by falling back to plain text references when \textsf{hyperref} is absent; v1.2.
-		
-	\item[$\boxtimes$] When \textsf{hyperref} was loaded, \verb|\sublabel| could produce duplicate equation destinations or occasionally link to the wrong tag. Fixed by assigning dedicated hyperref-facing equation identifiers and by removing a redundant equation-counter decrement at the end of \textsf{namedsubeqs}; test branch after v1.2.
-	
-	\item[$\boxtimes$] Ordinary \verb|\label| now works for \verb|\lpsubref| and \verb|\lpsubeqref| inside both \verb|namedsubeqs| and traditional \textsf{subequations}. Fixed on the test branch after v1.2.
-
-	\item[$\boxtimes$] The public commands \verb|\subref| and \verb|\subeqref| conflicted with packages such as \textsf{subcaption}. Fixed by renaming the package commands to \verb|\lpsubref| and \verb|\lpsubeqref|; v1.3.
-	
-	\item[$\boxtimes$] The objective function did not contribute correctly to the width of the environment. Fixed in v1.4 final.
-	
-	\item[$\boxtimes$] \verb|\tag| doesn't work in IEEEeqnarray. Fixed by adding \verb|\lptag| and \verb|\lpsubtag|; v1.7.
-\end{compactitem}
-
 
 
 \section{Version History}
