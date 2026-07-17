@@ -3,7 +3,7 @@
 % Build from the repository root with:
 % pdflatex lpalign-Documentaion.tex
 \usepackage{lpalign}
-\setlpalignnamedsubeqstyle{\itshape\roman}
+\setnamedsubeqstyle{\itshape\roman}
 \newsavebox{\mydebugbox}
 
 
@@ -75,7 +75,7 @@ Copy \verb|lpalign.sty| to the same directory as your main \verb|.tex| file and 
 The \textsf{lpalign} environment takes two arguments---\verb|<sense>| and \verb|<objective>|---along with several optional keys:\Vtrg
   \begin{compactitem}
   \item[\Verb|vars|] -- subscript on the `sense' term. Commonly used to state variables and ranges.
-  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed during package load by \verb|vars-style|; see Section \ref{sec:options}.
+  \item[\Verb|vars-style|] -- font style for the \verb|vars| value. Defaults to \verb|\scriptstyle| and may be changed globally after package load by \verb|\setvarsstyle|; see Section \ref{sec:options}.
   \item[\Verb|st|] -- text used for the `subject to' term. Defaults to \verb|s.t.| and may be changed during package load by \verb|st|.
   \item[\Verb|flush|] -- controls the alignment behavior of the main constraint column. Takes options \verb|l|, \verb|c|, \verb|r| and \verb|a|. The default value of \verb|a| can be changed during package load by the \verb|flush| option.
   \item[\Verb|row-sep|] -- controls the spacing between constraints. The default value of \verb|0.5em| can be changed during package load by the \verb|row-sep| option.
@@ -692,7 +692,7 @@ The \verb|punct| argument controls the separator between the main tag and the su
   \end{minipage}
 \end{tcolorbox}
 
-A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed globally with \verb|namedsubeqs-style|, \verb|namedsubeqs-punct| and the post-load command \verb|\setlpalignnamedsubeqstyle|; see Section \ref{sec:options}.
+A single optional argument which does not contain an \verb|=| sign is interpreted as the \verb|style| argument. The default \verb|style| and \verb|punct| values may also be changed globally with \verb|namedsubeqs-punct| and the post-load command \verb|\setnamedsubeqstyle|; see Section \ref{sec:options}.
 \begin{tcolorbox}
   \begin{Verbatim}
   \begin{namedsubeqs}{EQ}[\sffamily\Alph]
@@ -1028,14 +1028,12 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
-For package-load style defaults, both \verb|vars-style| and \verb|namedsubeqs-style| use style names rather than raw control sequences. Thus \verb|vars-style=scriptstyle| and \verb|namedsubeqs-style=roman| are valid package options. For freer global combinations such as \verb|\itshape\roman|, use the post-load command \verb|\setlpalignnamedsubeqstyle{...}|.
 For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject~to| instead.
 		\begin{compactitem}
 		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
 		\item[\Verb|objective-sep|] -- controls additional spacing between objective function and the first constraint. Defaults to \verb|0em|. 
 		\item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. 
 		\item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. 
-		\item[\Verb|vars-style|] -- controls the default \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. 
 		\item[\Verb|st|] -- controls the default text in the `subject to' gutter cell for \verb|lpalign|. Defaults to \verb|s.t.|. 
 		\item[\Verb|flush|] -- controls the default alignment behavior of constraints in the \textsf{lpalign} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|.
 		\item[\Verb|region-flush|] -- controls the default alignment behavior of constraints in the \textsf{lpregion} environment. Defaults to \verb|a| but also accepts \verb|l|, \verb|c| and \verb|r|. Section \ref{sec:lpregion}.
@@ -1043,9 +1041,14 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 		\item[\Verb|namedpara-before|] -- controls the default material printed before a named paragraph abbreviation. Defaults to empty. Section \ref{sec:paragraphs}.
 		\item[\Verb|namedpara-after|] -- controls the default material printed after a named paragraph abbreviation. Defaults to empty.
 		\item[\Verb|namedpara-flush|] -- controls the default alignment of named paragraph markers. Defaults to \verb|left|. 
-		\item[\Verb|namedsubeqs-style|] -- controls the default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph| and accepts \verb|alph|, \verb|Alph|, \verb|arabic|, \verb|roman| and \verb|Roman|. For freer global style combinations, use \verb|\setlpalignnamedsubeqstyle{...}|. Section \ref{sec:subrefs}.
 		\item[\Verb|namedsubeqs-punct|] -- controls the default punctuation between the named parent tag and the sub-index in \verb|namedsubeqs|. Defaults to \verb|.|. 
 		\item[\Verb|evaluator-spacing|] -- controls the padding on either side of the spaced evaluators. Defaults to \verb|0.25em|. Section \ref{sec:spacing}.
+		\end{compactitem}
+
+\noindent Post-load commands are available for freer global style defaults:
+		\begin{compactitem}
+		\item[\Verb|\setvarsstyle{...}|] -- controls the global default value of \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|.
+		\item[\Verb|\setnamedsubeqstyle{...}|] -- controls the global default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
 		\end{compactitem}
 
 
@@ -1054,7 +1057,7 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 \item[$\boxdot$] first optional arg without title is vars.
 \item[$\boxdot$] One-line optimization problems?
 \item[$\boxdot$] Correct the slign off center of IEEEeqnarray from tagging column.
-\item[$\boxdot$] Global free-form namedsubeq style setter via \verb|\setlpalignnamedsubeqstyle|.
+\item[$\boxdot$] Global free-form namedsubeq style setter via \verb|\setnamedsubeqstyle|.
 \end{compactitem}
 
 \section{Known Bugs}
