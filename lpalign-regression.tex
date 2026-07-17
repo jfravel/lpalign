@@ -1,0 +1,132 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!70!black]{hyperref}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{lpalign}
+
+% Global style setters exercised here on purpose.
+\setvarsstyle{\scriptscriptstyle}
+\setnamedsubeqstyle{\itshape\roman}
+
+\begin{document}
+
+\section*{lpalign Regression}
+
+This file is a compact smoke test for the most fragile \textsf{lpalign} paths:
+manual tags, subtags, default subtags, objective-row labels, box forms,
+\verb|\downtag|, and a nested matrix/aligned case.
+
+\subsection*{Manual Tags In Ordinary Rows}
+
+\begin{lpregion}
+  x &\ge 0 \lptag{R1}\label{reg:R1} \\
+  y &\ge 0 \label{reg:R2}
+\end{lpregion}
+
+Row \ref{reg:R1} is manually tagged; the next row should remain \ref{reg:R2}
+with no skipped counter.
+
+\subsection*{Objective-Row Subtag}
+
+\begin{namedsubeqs}{NLP}[style=\itshape\roman]
+  \begin{lpalign}{Minimize}
+    {f(\mathbf{x}) \lpsubtag{\textsc{obj}}\label{nlp:obj}}
+    g_i(\mathbf{x}) &\ge 0 & \forall i \in I \label{nlp:1} \\
+    h_j(\mathbf{x}) &= 0   & \forall j \in J \label{nlp:2} \\
+    \mathbf{x}      &\ge 0                    \label{nlp:3}
+  \end{lpalign}
+\end{namedsubeqs}
+
+Objective row: \eqref{nlp:obj}. Constraint range:
+(\ref{nlp:1}--\lpsubref{nlp:3}). Nonnegativity:
+\lpsubeqref{nlp:3}. Objective subref: \lpsubeqref{nlp:obj}.
+
+\subsection*{Default Subtags}
+
+\begin{namedsubeqs}{DEF}
+\begin{lpregion}
+  a &= b \defaultsubtag \label{def:a} \\
+  c &= d \defaultsubtag \label{def:b}
+\end{lpregion}
+\end{namedsubeqs}
+
+These should advance normally: \eqref{def:a}, \eqref{def:b},
+with subrefs \lpsubref{def:a} and \lpsubref{def:b}.
+
+\subsection*{Mixed Tag Overrides}
+
+\begin{namedsubeqs}{MIX}
+\begin{lpregion}
+  p &= q \lptag{M}\lpsubtag{1}\label{mix:1} \\
+  r &= s \lptag{S}\defaultsubtag\label{mix:2}
+\end{lpregion}
+\end{namedsubeqs}
+
+Mixed rows should read \eqref{mix:1} and \eqref{mix:2}, with subrefs
+\lpsubref{mix:1} and \lpsubref{mix:2}.
+
+\subsection*{Traditional subequations}
+
+\begin{subequations}\label{subeq:block}
+\begin{lpregion}
+  u &= v \lpsubtag{\texttt{a}}\label{subeq:a} \\
+  w &= z \defaultsubtag\label{subeq:b}
+\end{lpregion}
+\end{subequations}
+
+Traditional subequations should still work: \eqref{subeq:a},
+\eqref{subeq:b}, and subrefs \lpsubref{subeq:a}, \lpsubref{subeq:b}.
+
+\subsection*{Box Forms}
+
+\[
+\begin{lpregionbox}[flush=l]
+  \mathcal{P} = \left\{
+  \begin{lpregionbox}[flush=l]
+    A\mathbf{x} &\le \mathbf{b} \\
+    \mathbf{x}  &\ge 0
+  \end{lpregionbox}
+  \right.
+\end{lpregionbox}
+\]
+
+This section only checks that nested box forms typeset cleanly.
+
+\subsection*{Nested Matrix / Aligned}
+
+\begin{namedsubeqs}{MAT}
+\begin{lpalign}[flush=a]{Minimize}
+  {\begin{aligned}
+      c^\top x &+ d^\top y \\
+               &+ e^\top z
+    \end{aligned}
+    \defaultsubtag\label{mat:obj}}
+  \begin{bmatrix}
+    1 & 0 \\
+    0 & 1
+  \end{bmatrix}
+  \mathbf{x}
+  &=
+  \mathbf{b}
+  \label{mat:1}
+\end{lpalign}
+\end{namedsubeqs}
+
+Nested structures should not disturb numbering: \eqref{mat:obj}, \eqref{mat:1}.
+
+\subsection*{Long Row With \texttt{\textbackslash downtag}}
+
+\begin{lpalign}[row-sep=-0.2em]{Maximize}
+  {c_1x_1+c_2x_2+c_3x_3+c_4x_4+c_5x_5+c_6x_6+c_7x_7+c_8x_8+c_9x_9+c_{10}
+   \span\downtag}
+  a_1x_1+a_2x_2+a_3x_3+a_4x_4+a_5x_5+a_6x_6+a_7x_7+a_8x_8
+  &\ge \mathbf{b} \downtag \\
+  x &\ge 0 \label{down:1}
+\end{lpalign}
+
+This is only an escape-hatch test. The numbered short row should remain
+referenceable as \eqref{down:1}.
+
+\end{document}

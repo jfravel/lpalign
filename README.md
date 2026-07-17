@@ -12,7 +12,7 @@ The package currently provides:
 - `\namedpara` for named paragraphs with referencable abbreviations,
 - `namedsubeqs` plus `\lpsubref` and `\lpsubeqref` for referencing subequations in a named environment,
 - quick horizontal and vertical spacing helpers and
-- display-style operator helpers which mimic `\smashoperator` from `mathtools` while prexerving ordinary `_`/`^` syntax.
+- display-style operator helpers which mimic `\smashoperator` from `mathtools` while preserving ordinary `_`/`^` syntax.
 
 ## Installation
 
@@ -70,7 +70,6 @@ Package-load defaults are available for:
 - `row-sep`
 - `qualifier-sep`
 - `gutter-sep`
-- `vars-style`
 - `st`
 - `flush`
 
@@ -179,7 +178,6 @@ Equation \ref{eq:1} has sub-reference \lpsubref{eq:1}.
 ```
 
 Package-load defaults are available for:
-- `namedsubeqs-style`
 - `namedsubeqs-punct`
 
 ## Package-Load Options
@@ -190,7 +188,6 @@ The package supports the following load-time defaults:
 - `row-sep`
 - `qualifier-sep`
 - `gutter-sep`
-- `vars-style`
 - `st`
 - `flush`
 - `region-flush`
@@ -198,17 +195,17 @@ The package supports the following load-time defaults:
 - `namedpara-before`
 - `namedpara-after`
 - `namedpara-flush`
-- `namedsubeqs-style`
 - `namedsubeqs-punct`
 - `evaluator-spacing`
-
-For package-load style defaults, use the style names rather than raw control sequences:
-- `vars-style`: `scriptstyle`, `scriptscriptstyle`, `textstyle`, `displaystyle`
-- `namedsubeqs-style`: `alph`, `Alph`, `arabic`, `roman`, `Roman`
 
 For `st`, bare spaces in `\usepackage[...]` are stripped by LaTeX before the package sees the option value. Use either:
 - `st={subject to}`
 - `st=subject~to`
+
+Post-load commands are available for freer global style defaults:
+
+- `\setvarsstyle{...}`
+- `\setnamedsubeqstyle{...}`
 
 ## Documentation
 

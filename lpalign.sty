@@ -119,8 +119,9 @@
 \dim_new:N \g_lpalign_default_qualifier_sep
 \dim_new:N \g_lpalign_default_gutter_sep
 \tl_new:N \g_lpalign_default_flush
-\tl_new:N \g_lpalign_default_vars_style_tl
 \tl_new:N \g_lpalign_default_st_tl
+\tl_new:N \g_lpalign_default_vars_style_tl
+\tl_set:Nn \g_lpalign_default_vars_style_tl {\scriptstyle}
 % Text inputs
 \tl_new:N \lpalign_vars_text
 \tl_new:N \lpalign_vars_style
@@ -142,23 +143,11 @@
 		objective-sep .dim_gset:N = \g_lpalign_default_objective_sep,
 		objective-sep .initial:n = 0em,
 		row-sep .dim_gset:N = \g_lpalign_default_row_sep,
-		row-sep .initial:n = 0.5em,
+		row-sep .initial:n = 0.2em,
 		qualifier-sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
 		qualifier-sep .initial:n = 2em,
 		gutter-sep .dim_gset:N = \g_lpalign_default_gutter_sep,
 		gutter-sep .initial:n = 0.75em,
-		vars-style .choices:nn =
-		  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
-		  {
-		    \str_case:Vn \l_keys_choice_tl
-	     {
-	      {scriptstyle}       { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptstyle } }
-	      {scriptscriptstyle} { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptscriptstyle } }
-	      {textstyle}         { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \textstyle } }
-		      {displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
-		     }
-		  },
-		vars-style .initial:n = scriptstyle,
 		st .tl_gset:N = \g_lpalign_default_st_tl,
 		st .initial:n = s.t.,
 		flush .choices:nn =
@@ -206,6 +195,11 @@
 	\tl_replace_all:Nnn \lpalign_st_text { ~ } { \c_space_tl }
   }
 
+\NewDocumentCommand{\setvarsstyle}{m}
+ {
+  \tl_gset:Nn \g_lpalign_default_vars_style_tl {#1}
+ }
+
 \cs_new:Npn \lpalign_print_sense:n #1
   {
     \raisebox{\dim_use:N \lpalign_sense_shift}
@@ -221,57 +215,7 @@
 \cs_new:Npn \lpalign_print_st:
   { \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text} }
 
-
 \makeatletter
-\newcounter{lpalignManualTagHref}
-\let\lpalign@orig@theequationdis\theequationdis
-\let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
-\let\lpalign@manualtag\@empty
-\newcommand{\lpalign@tagform}[1]{%
-  \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
-}
-\newcommand{\lpalign@clearmanualtag}{%
-  \global\let\lpalign@manualtag\@empty
-}
-\newcommand{\lpalign@rollbackmanualtag}{%
-  \ifx\lpalign@manualtag\@empty
-  \else
-    \stepcounter{lpalignManualTagHref}%
-    \ifnum\c@IEEEsubequation>0\relax
-      \global\advance\c@IEEEsubequation\m@ne\relax
-      \gdef\@currentlabel{\p@IEEEsubequation\theIEEEsubequation}\relax
-      \@ifundefined{@IEEEtheHrefsubequation}{}%
-        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
-    \else
-      \global\advance\c@equation\m@ne\relax
-      \gdef\@currentlabel{\p@equation\theequation}\relax
-      \@ifundefined{@IEEEtheHrefequation}{}%
-        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
-    \fi
-  \fi
-}
-\newcommand{\lpalign@finalizemanualtag}{%
-  \lpalign@rollbackmanualtag
-  \lpalign@clearmanualtag
-}
-\renewcommand{\theequationdis}{%
-  \ifx\lpalign@manualtag\@empty
-    \lpalign@orig@theequationdis
-  \else
-    \lpalign@tagform{\lpalign@manualtag}%
-  \fi
-}
-\renewcommand{\theIEEEsubequationdis}{%
-  \ifx\lpalign@manualtag\@empty
-    \lpalign@orig@theIEEEsubequationdis
-  \else
-    \lpalign@tagform{\lpalign@manualtag}%
-  \fi
-}
-\newcommand{\lptag}[1]{%
-  \gdef\lpalign@manualtag{#1}%
-  \gdef\@currentlabel{#1}%
-}
 \cs_new_protected:Npn \lpalign_ieee_patch_cr:
   {
     \def\lpalign@IEEEeqnarrayYCR{%
@@ -306,6 +250,7 @@
 	{
 	\lpalign_setup:n { #1 }
 	\lpalign@clearmanualtag
+	\lpalign@beginlabelcapture
 	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
 	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
@@ -348,6 +293,7 @@
 	{
 	\end{IEEEeqnarray}
 	\lpalign@clearmanualtag
+	\lpalign@endlabelcapture
 	\let\@IEEEeqnarraycr\lpalign@orig@IEEEeqnarraycr
 	\ignorespacesafterend
 	}
@@ -356,6 +302,7 @@
 	{
 	\lpalign_setup:n { #1 }
 	\lpalign@clearmanualtag
+	\lpalign@beginlabelcapture
 	\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
 	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
@@ -398,6 +345,7 @@
 	{
 	\end{IEEEeqnarray*}
 		\lpalign@clearmanualtag
+		\lpalign@endlabelcapture
 		\let\@IEEEeqnarraycr\lpalign@orig@IEEEeqnarraycr
 		\ignorespacesafterend
 		}
@@ -430,6 +378,7 @@
 		{
 		\lpalign_setup:n { #1 }
 		\lpalign@clearmanualtag
+		\lpalign@beginlabelcapture
 		\dim_add:Nn \lpalign_objective_sep {\dim_use:N \lpalign_row_sep}
 		\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 		\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
@@ -472,6 +421,7 @@
 		{
 		\end{IEEEeqnarraybox}
 		\lpalign@clearmanualtag
+		\lpalign@endlabelcapture
 		\let\@IEEEeqnarrayboxcr\lpalign@orig@IEEEeqnarrayboxcr
 		\ignorespacesafterend
 		}
@@ -553,6 +503,7 @@
 	{
 	\lpregion_setup:n { #1 }
 	\lpalign@clearmanualtag
+	\lpalign@beginlabelcapture
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
 	\let\lpregion@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
 	\lpregion_ieee_patch_cr:
@@ -564,6 +515,7 @@
 	{
 	\end{IEEEeqnarray}
 	\lpalign@clearmanualtag
+	\lpalign@endlabelcapture
 	\let\@IEEEeqnarrayXCR\lpregion@orig@IEEEeqnarrayXCR
 	\ignorespacesafterend
 	}
@@ -571,6 +523,7 @@
 	{
 	\lpregion_setup:n { #1 }
 	\lpalign@clearmanualtag
+	\lpalign@beginlabelcapture
 	\IEEEeqnarraydefcolsep{1}{\dim_use:N \lpalign_gutter_sep}
 	\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
 	\let\lpregion@orig@IEEEeqnarrayXCR\@IEEEeqnarrayXCR
@@ -583,6 +536,7 @@
 	{
 	\end{IEEEeqnarray*}
 	\lpalign@clearmanualtag
+	\lpalign@endlabelcapture
 	\let\@IEEEeqnarrayXCR\lpregion@orig@IEEEeqnarrayXCR
 	\ignorespacesafterend
 	}
@@ -590,6 +544,7 @@
 		{
 		\lpregion_setup:n { #1 }
 		\lpalign@clearmanualtag
+		\lpalign@beginlabelcapture
 		\IEEEeqnarraydefcolsep{2}{\dim_use:N \lpalign_qualifier_sep}
 		\let\lpregion@orig@IEEEeqnarrayboxXCR\@IEEEeqnarrayboxXCR
 		\lpregion_ieee_box_patch_cr:
@@ -601,6 +556,7 @@
 		{
 		\end{IEEEeqnarraybox}
 		\lpalign@clearmanualtag
+		\lpalign@endlabelcapture
 		\let\@IEEEeqnarrayboxXCR\lpregion@orig@IEEEeqnarrayboxXCR
 		\ignorespacesafterend
 		}
@@ -732,6 +688,269 @@
 \ExplSyntaxOff
 \makeatother
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Tag Overrides / Subrefs  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcounter{lpalignManualTagHref}
+\let\lpalign@orig@theequationdis\theequationdis
+\let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
+\let\lpalign@manualtag\@empty
+\let\lpalign@manualmaintag\@empty
+\let\lpalign@manualsubtag\@empty
+\let\lpalign@subeqcontext\@empty
+\let\lpalign@namedsubeqparent\@empty
+\newif\iflpalign@rollbackmanualadvance
+\lpalign@rollbackmanualadvancetrue
+\def\lpalign@standardcontext{standard}
+\def\lpalign@namedcontext{named}
+\def\lpalign@subtagcustom{custom}
+\def\lpalign@subtagdefault{default}
+\let\lpalign@subtagkind\@empty
+\let\lpalign@activerowlabel\@empty
+\newcommand{\lpalign@warnsubtagoverride}[2]{%
+  \PackageWarning{lpalign}{#1\space overrides\space #2\space in\space the\space current\space row}%
+}
+\newcommand{\lpalign@warnsubtagoutside}[1]{%
+  \PackageWarning{lpalign}{#1\space used\space outside\space of\space a\space subequation-style\space environment}%
+}
+\newcommand{\lpalign@tagform}[1]{%
+  \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
+}
+\newcommand{\lpalign@storesubreftext}[2]{%
+  \expandafter\protected@xdef\csname subeqref@#1\endcsname{#2}%
+}
+\newcommand{\lpalign@getstandardsubcurrent}[1]{%
+  \begingroup
+  \protected@edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \let\lpalign@tmp\@empty
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \def\noexpand\lpalign@tmp{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \ifx\lpalign@tmp\@empty
+  \else
+    \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
+      \ifx##1\textbar
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\vert
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\mid
+        \def\lpalign@tmp{##2}%
+      \fi\fi\fi
+    }%
+    \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
+  \fi
+  \xdef#1{\lpalign@tmp}%
+  \endgroup
+}
+\newcommand{\lpalign@getstandardsubeqpunct}[1]{%
+  \begingroup
+  \protected@edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \lpalign@getstandardsubcurrent{\lpalign@autosub}%
+  \let\lpalign@rest\@empty
+  \let\lpalign@punct\@empty
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \def\noexpand\lpalign@rest{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \ifx\lpalign@rest\@empty
+  \else
+    \edef\lpalign@tmpdef{%
+      \def\noexpand\lpalign@stripsub####1\lpalign@autosub\noexpand\@nil{%
+        \def\noexpand\lpalign@punct{####1}%
+      }%
+    }%
+    \lpalign@tmpdef
+    \expandafter\lpalign@stripsub\lpalign@rest\@nil
+  \fi
+  \xdef#1{\lpalign@punct}%
+  \endgroup
+}
+\newcommand{\lpalign@getcurrentsubeqparent}[1]{%
+  \ifx\lpalign@subeqcontext\@empty
+    \xdef#1{}%
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \xdef#1{\theparentequation}%
+    \else
+      \xdef#1{\lpalign@namedsubeqparent}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@getcurrentsubeqpunct}[1]{%
+  \ifx\lpalign@subeqcontext\@empty
+    \xdef#1{}%
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \expandafter\lpalign@getstandardsubeqpunct\expandafter{\expandafter#1\expandafter}%
+    \else
+      \xdef#1{\lpalign@namedsubeqpunct}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@synctagstate}{%
+  \ifx\lpalign@manualsubtag\@empty
+    \ifx\lpalign@manualmaintag\@empty
+      \global\let\lpalign@manualtag\@empty
+    \else
+      \protected@xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \fi
+  \else
+    \ifx\lpalign@subeqcontext\@empty
+      \lpalign@warnsubtagoutside{\string\lpsubtag}%
+      \ifx\lpalign@manualmaintag\@empty
+        \protected@xdef\lpalign@manualtag{\lpalign@manualsubtag}%
+      \else
+        \protected@xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+      \fi
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \else
+      \ifx\lpalign@manualmaintag\@empty
+        \lpalign@getcurrentsubeqparent{\lpalign@tmpparent}%
+      \else
+        \protected@xdef\lpalign@tmpparent{\lpalign@manualmaintag}%
+      \fi
+      \lpalign@getcurrentsubeqpunct{\lpalign@tmppunct}%
+      \protected@xdef\lpalign@manualtag{\lpalign@tmpparent\lpalign@tmppunct\lpalign@manualsubtag}%
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \fi
+  \fi
+  \lpalign@retagactiverowlabel
+}
+\newcommand{\lpalign@clearmanualtag}{%
+  \global\let\lpalign@manualtag\@empty
+  \global\let\lpalign@manualmaintag\@empty
+  \global\let\lpalign@manualsubtag\@empty
+  \global\let\lpalign@subtagkind\@empty
+  \global\lpalign@rollbackmanualadvancetrue
+}
+\newcommand{\lpalign@clearactiverowlabel}{%
+  \global\let\lpalign@activerowlabel\@empty
+}
+\newcommand{\lpalign@retagactiverowlabel}{%
+  \ifx\lpalign@activerowlabel\@empty
+  \else
+    \lpalign@capturedlabel{\lpalign@activerowlabel}%
+    \lpalign@storeactivesubreftext{\lpalign@activerowlabel}%
+  \fi
+}
+\newcommand{\lpalign@rollbackmanualtag}{%
+  \ifx\lpalign@manualtag\@empty
+  \else
+    \iflpalign@rollbackmanualadvance
+    \stepcounter{lpalignManualTagHref}%
+    \ifnum\c@IEEEsubequation>0\relax
+      \global\advance\c@IEEEsubequation\m@ne\relax
+      \gdef\@currentlabel{\p@IEEEsubequation\theIEEEsubequation}\relax
+      \@ifundefined{@IEEEtheHrefsubequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \else
+      \global\advance\c@equation\m@ne\relax
+      \gdef\@currentlabel{\p@equation\theequation}\relax
+      \@ifundefined{@IEEEtheHrefequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \fi
+    \fi
+  \fi
+}
+\newcommand{\lpalign@finalizemanualtag}{%
+  \lpalign@rollbackmanualtag
+  \lpalign@clearmanualtag
+  \lpalign@clearactiverowlabel
+}
+\renewcommand{\theequationdis}{%
+  \ifx\lpalign@manualtag\@empty
+    \lpalign@orig@theequationdis
+  \else
+    \lpalign@tagform{\lpalign@manualtag}%
+  \fi
+}
+\renewcommand{\theIEEEsubequationdis}{%
+  \ifx\lpalign@manualtag\@empty
+    \lpalign@orig@theIEEEsubequationdis
+  \else
+    \lpalign@tagform{\lpalign@manualtag}%
+  \fi
+}
+\newcommand{\lptag}[1]{%
+  \gdef\lpalign@manualmaintag{#1}%
+  \global\lpalign@rollbackmanualadvancetrue
+  \lpalign@synctagstate
+}
+\newcommand{\lpalign@setsubtagstate}[3]{%
+  \gdef\lpalign@manualsubtag{#1}%
+  \global\let\lpalign@subtagkind#2%
+  #3%
+  \lpalign@synctagstate
+}
+\newcommand{\lpsubtag}[1]{%
+  \ifx\lpalign@subtagkind\lpalign@subtagdefault
+    \lpalign@warnsubtagoverride{\string\lpsubtag}{\string\defaultsubtag}%
+  \fi
+  \lpalign@setsubtagstate{#1}\lpalign@subtagcustom{\global\lpalign@rollbackmanualadvancetrue}%
+}
+\newcommand{\defaultsubtag}{%
+  \ifx\lpalign@subtagkind\lpalign@subtagcustom
+    \lpalign@warnsubtagoverride{\string\defaultsubtag}{\string\lpsubtag}%
+  \fi
+  \ifx\lpalign@subeqcontext\@empty
+    \lpalign@warnsubtagoutside{\string\defaultsubtag}%
+    \global\let\lpalign@manualsubtag\@empty
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \lpalign@getstandardsubcurrent{\lpalign@tmp}%
+    \else
+      \protected@xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
+    \fi
+    \lpalign@setsubtagstate{\lpalign@tmp}\lpalign@subtagdefault{\global\lpalign@rollbackmanualadvancefalse}%
+  \fi
+  \ifx\lpalign@subeqcontext\@empty
+    \lpalign@synctagstate
+  \fi
+}
+\newcommand{\lpalign@storeactivesubreftext}[1]{%
+  \ifx\lpalign@manualsubtag\@empty
+    \ifx\lpalign@manualmaintag\@empty
+      \@ifundefined{lpalign@subeqstoresubcurrent}{%
+        \expandafter\protected@xdef\csname subeqref@#1\endcsname{\@currentlabel}%
+      }{}%
+    \else
+      \lpalign@storesubreftext{#1}{\lpalign@manualmaintag}%
+    \fi
+  \else
+    \lpalign@storesubreftext{#1}{\lpalign@manualsubtag}%
+  \fi
+}
+\newcommand{\lpalign@beginlabelcapture}{%
+  \lpalign@clearactiverowlabel
+  \let\lpalign@capturedlabel\label
+  \let\lpalign@capturedltxlabel\ltx@label
+  \def\label##1{%
+    \lpalign@capturedlabel{##1}%
+    \lpalign@storeactivesubreftext{##1}%
+    \gdef\lpalign@activerowlabel{##1}%
+  }%
+  \def\ltx@label##1{%
+    \lpalign@capturedltxlabel{##1}%
+    \lpalign@storeactivesubreftext{##1}%
+    \gdef\lpalign@activerowlabel{##1}%
+  }%
+}
+\newcommand{\lpalign@endlabelcapture}{%
+  \let\label\lpalign@capturedlabel
+  \let\ltx@label\lpalign@capturedltxlabel
+  \lpalign@clearactiverowlabel
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named SubEquations  %%%%%%%%%
@@ -760,18 +979,6 @@
 \tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
 \keys_define:nn { lpalign/package }
  {
-  namedsubeqs-style .choices:nn = { alph, Alph, arabic, roman, Roman }
-   {
-    \str_case:Vn \l_keys_choice_tl
-     {
-      {alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \alph } }
-      {Alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Alph } }
-      {arabic} { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \arabic } }
-      {roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \roman } }
-      {Roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Roman } }
-     }
-   },
-  namedsubeqs-style .initial:n = alph,
   namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
   namedsubeqs-punct .initial:n = .,
  }
@@ -795,17 +1002,19 @@
  }
 \cs_new:Npn \lpalign@namedsubeqstyle #1
  {
-  \exp_args:NV \use:n \l_lpalign_namedsubeq_style_tl {#1}
+  { \exp_args:NV \use:n \l_lpalign_namedsubeq_style_tl {#1} }
  }
 \cs_new:Npn \lpalign@namedsubeqpunct
  {
   \tl_use:N \l_lpalign_namedsubeq_punct_tl
  }
+\NewDocumentCommand{\setnamedsubeqstyle}{m}
+ {
+  \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl {#1}
+  \lpalign_unbrace_tl:N \g_lpalign_namedsubeq_default_style_tl
+ }
 \ExplSyntaxOff
 % Helpers for storing the sub-index text used by \lpsubref/\lpsubeqref.
-\newcommand{\lpalign@storesubreftext}[2]{%
-  \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
-}
 \newcommand{\lpalign@sanitizesubeqcurrentlabel}{%
   \ifx\lpalign@manualtag\@empty
     \ifnum\value{equation}>0\relax
@@ -845,6 +1054,10 @@
 \let\lpalign@endorigsubequations\endsubequations
 \renewenvironment{subequations}%
   {\lpalign@origsubequations
+   \let\lpalign@savedsubeqcontext\lpalign@subeqcontext
+   \let\lpalign@savednamedsubeqparent\lpalign@namedsubeqparent
+   \let\lpalign@subeqcontext\lpalign@standardcontext
+   \let\lpalign@namedsubeqparent\@empty
    \let\lpalign@subeqoriglabel\label
    \let\lpalign@subeqorigltxlabel\ltx@label
    \def\lpalign@subeqstoresubcurrent##1{%
@@ -862,7 +1075,9 @@
      \lpalign@subeqorigltxlabel{##1}%
      \lpalign@subeqstoresubcurrent{##1}%
    }}%
-  {\lpalign@endorigsubequations}
+  {\lpalign@endorigsubequations
+   \let\lpalign@subeqcontext\lpalign@savedsubeqcontext
+   \let\lpalign@namedsubeqparent\lpalign@savednamedsubeqparent}
 
 \NewDocumentEnvironment{namedsubeqs}{mO{}}
   {\begingroup
@@ -872,6 +1087,8 @@
    \@ifundefined{theHequation}{}%
      {\renewcommand{\theHequation}{lpalign.namedparent.\arabic{NamedEq}.\arabic{equation}}}%
    \begin{subequations}
+     \let\lpalign@subeqcontext\lpalign@namedcontext
+     \xdef\lpalign@namedsubeqparent{#1}%
      \def\@currentlabel{#1}
      \renewcommand{\theequation}{#1\lpalign@namedsubeqpunct{\lpalign@namedsubeqstyle{equation}}}
      \def\lpalign@subeqstoresubcurrent##1{%
@@ -912,7 +1129,7 @@
 \ExplSyntaxOn
 \cs_new:Npn \lpalignsubreftext #1
  {
-  \tl_set:Nx \l_tmpa_tl { \csname subeqref@#1\endcsname }
+  \tl_set:No \l_tmpa_tl { \csname subeqref@#1\endcsname }
   \regex_replace_once:nnN { ^[\.\-:;,/\s]+ } {} \l_tmpa_tl
   \l_tmpa_tl
  }
