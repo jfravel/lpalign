@@ -40,6 +40,7 @@
 
 
 \begin{document}
+\pagenumbering{roman}
 \maketitle
 \begin{center}
 \texttt{jamiefravel@me.com}
@@ -49,7 +50,9 @@
 \end{abstract}
 
 \tableofcontents
-\pagebreak
+\newpage
+\pagenumbering{arabic} % Switches to 1, 2, 3
+\setcounter{page}{1}
 
 \section{Installation}
 
@@ -93,7 +96,7 @@ The \textsf{lpalign*} environment is identical without printing equation referen
 
 
 
-\subsection{Constraint Alignment}
+\subsection*{Constraint Alignment}\addcontentsline{toc}{subsection}{Constraint Alignment}
 The environment defaults to \verb|alignat|-style behavior; the constraint rows will be aligned at the ampersand \verb|&|.
 \begin{tcolorbox}
 	\begin{Verbatim}
@@ -153,7 +156,7 @@ The \verb|flush| argument can be used to adjust global alignment. Options are \v
 
 
 
-\subsection{Qualified Constraints}
+\subsection*{Qualified Constraints}\addcontentsline{toc}{subsection}{Qualified Constraints}
 Qualified constraints are also possible. Another ampersand \verb|&| will properly space and align a `for-all' ($\forall$) statement.
 \begin{tcolorbox}
  \begin{Verbatim}
@@ -174,7 +177,7 @@ The qualifier column still works with a centered/flushed environment body.
 
 
 
-\subsection{Variable Ranges}
+\subsection*{Variable Ranges}\addcontentsline{toc}{subsection}{Variable Ranges}
 Subscripts can be placed under the `sense' term via the \verb|vars| option. 
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -193,7 +196,7 @@ Subscripts can be placed under the `sense' term via the \verb|vars| option.
 
 
 
-\subsection{Whitespace}
+\subsection*{Whitespace}\addcontentsline{toc}{subsection}{Whitespace}
 The \verb|sep| options can be used to modify the whitespace between elements. Their default values are mutable at package load.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -232,7 +235,7 @@ The \verb|sep| options can be used to modify the whitespace between elements. Th
 \Verb|objective-sep| is added to \verb|row-sep| between the objective and first constraint rows. Remember that additional space can be added between individual rows (or lines of text) via an optional argument on \Verb|\\|.
 
 
-\subsection{Multiline Objectives}
+\subsection*{Multiline Objectives}\addcontentsline{toc}{subsection}{Multiline Objectives}
 Very long \gl{objective functions} can be expressed in multiple lines by supplying an explicit \textsf{aligned} environment from \textsf{amsmath}. This avoids overflow and keeps the objective aligned with the guttered `sense' term. The same can be done within the \hl{constraints}. Tags and qualifiers will be placed correctly.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -298,7 +301,7 @@ Note that, for some nested environments like \verb|aligned| from \textsf{amsmath
 
 
 
-\subsection{Spanning Columns}
+\subsection*{Spanning Columns}\addcontentsline{toc}{subsection}{Spanning Columns}
 The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
 \begin{tcolorbox}
 	\begin{Verbatim}
@@ -341,7 +344,7 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
 
 
-\subsection{Taging Long Expressions}
+\subsection*{Taging Long Expressions}\addcontentsline{toc}{subsection}{Taging Long Expressions}
 If, in an emergency situation (like a two column journal), tags can be moved down a row with the macro \verb|\downtag| which is really just a combination of \verb|\span|, \verb|\notag| and \verb|\\|. Labeling/referencing should continue to work as expected. An additional \verb|\span| will be required in the objective function of aligned environments. This is not the most robust solution, so don't rely on it too far.
 \begin{tcolorbox}
 \begin{Verbatim}
@@ -444,7 +447,7 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 \end{tcolorbox}
 
 
-\subsection{Nesting \textsf{lp} Environments}
+\subsection*{Nesting \textsf{lp} Environments}\addcontentsline{toc}{subsection}{Nesting \textsf{lp} Environments}
 You may want to use these formatting conventions nested within another environment.  The \verb|lpregionbox| and \verb|lpalignbox| commands can be nested. Maybe you want to define a polyhedron.
 \begin{tcolorbox}
 \begin{Verbatim}
@@ -595,6 +598,7 @@ The \verb|namedsubeqs| environment uses a given name as the first index in any e
 \end{tcolorbox}
 
 
+\subsection*{Subtag Formatting}\addcontentsline{toc}{subsection}{Subtag Formatting}
 An optional argument allows you to change the style of the sub-tag. The currently supported keys are \verb|style| for the second-index formatter (default \verb|\alph|) and \verb|punct| for the separator between the main tag and the sub-tag (default \verb|.|).
 
 \begin{tcolorbox}
@@ -700,7 +704,7 @@ A single optional argument which does not contain an \verb|=| sign is interprete
   \end{minipage}
   \HSKP
   \begin{minipage}[T]{0.4\textwidth}
-	  \begin{namedsubeqs}{EQ}[\ttfamily\Alph]
+	  \begin{namedsubeqs}{EQ}[\bfseries\arabic]
 	  \begin{align}
 	    A\mathbf{x} = \mathbf{b}   \\
 	    C\mathbf{y} = \mathbf{d}
@@ -709,40 +713,54 @@ A single optional argument which does not contain an \verb|=| sign is interprete
   \end{minipage}
 \end{tcolorbox}
 
-\begin{equation}
-testing tag number
-\end{equation}
-\begin{tcolorbox}
-\tcblower
-\begin{namedsubeqs}{EM}[punct=., style=\arabic]
-\begin{lpregion}
-A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\defaultsubtag\label{EM:1} \\
-\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:2}\\
-\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:3}
-\end{lpregion}
-\end{namedsubeqs}
-referencing \eqref{EM:1} vs \eqref{EM:2} vs \lpsubeqref{EM:3}.  Just in case... \lpsubeqref{EM:1}
-\end{tcolorbox}
-\begin{tcolorbox}
-\tcblower
-\begin{subequations}
-\begin{lpregion}
-A\mathbf{x} &\GE \mathbf{b} \lptag{test}\defaultsubtag\label{EN:1} \\
-\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:2}\\
-\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:3}
-\end{lpregion}
-\end{subequations}
-referencing \eqref{EN:1} vs \eqref{EN:2} vs \lpsubeqref{EN:3}. Just in case... \lpsubeqref{EN:1}
-\end{tcolorbox}
-\begin{tcolorbox}
-\tcblower
-\begin{lpregion}
-A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\defaultsubtag\label{EO:1} \\
-\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:2}\\
-\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:3}
-\end{lpregion}
-referencing \eqref{EO:1} vs \eqref{EO:2} vs \lpsubeqref{EO:3}.  Just in case... \lpsubeqref{EO:1}
-\end{tcolorbox}
+
+\subsection*{Tag/Subtag Overrides}\addcontentsline{toc}{subsection}{Tag/Subtag Overrides}
+The \textsf{amsmath} command \verb|\tag| does not work in our \textsf{IEEE}-based \verb|lp| environments. Instead, we have a few tag override commands: \verb|\lptag| adjusts overrides the tag, \verb|\lpsubtag| adjusts the subtag in a \verb|namedsubeqs| environment and \verb|\defaultsubtag| adds the default subtag format to a custom \verb|\lptag|.
+	\begin{tcolorbox}
+	\tcblower
+	\begin{namedsubeqs}{EM}[\itshape\Alph]
+	\begin{lpregion}[qualifier-sep=0.2em]
+	A\mathbf{x} &\GE \mathbf{b} \lptag{m}\lpsubtag{1} \label{EM:1} \\
+	\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:2}\\
+	\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \lptag{s}\defaultsubtag\label{EM:3} \\
+	\begin{bmatrix} 
+		a_{11} & a_{12} & \dots  & a_{1n} \\
+		a_{21} & a_{22} & \dots  & a_{2n} \\
+		\vdots & \vdots & \ddots &        \\
+		a_{m1} & a_{m2} &        & a_{mn}
+		\end{bmatrix}
+		\begin{bmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+		\end{bmatrix} 
+		&\GE
+		\begin{bmatrix}
+		b_1 \\ b_2 \\ \vdots \\ b_m
+		\end{bmatrix}
+		\label{EM:4}
+	\end{lpregion}
+	\end{namedsubeqs}
+	Referencing \eqref{EM:1} vs \eqref{EM:2} vs \eqref{EM:3} vs \eqref{EM:4}.  
+	\end{tcolorbox}
+%\begin{tcolorbox}
+%\tcblower
+%\begin{subequations}
+%\begin{lpregion}
+%A\mathbf{x} &\GE \mathbf{b} \lptag{test}\defaultsubtag\label{EN:1} \\
+%\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:2}\\
+%\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:3}
+%\end{lpregion}
+%\end{subequations}
+%referencing \eqref{EN:1} vs \eqref{EN:2} vs \lpsubeqref{EN:3}. Just in case... \lpsubeqref{EN:1}
+%\end{tcolorbox}
+%\begin{tcolorbox}
+%\tcblower
+%\begin{lpregion}
+%A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\defaultsubtag\label{EO:1} \\
+%\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:2}\\
+%\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:3}
+%\end{lpregion}
+%referencing \eqref{EO:1} vs \eqref{EO:2} vs \lpsubeqref{EO:3}.  Just in case... \lpsubeqref{EO:1}
+%\end{tcolorbox}
 
 
 \section{Sub-References}\label{sec:subrefs}
@@ -773,7 +791,7 @@ Just like \ref{nq:1} and \eqref{nq:2}, we can reference
 an equation's sub-tag \hl{\lpsubref{nq:1}} and \gl{\lpsubeqref{nq:2}}.
 The environment itself may also be referenced \ref{nq}.
 \end{tcolorbox}
-\verb|\lpsubref| and \verb|\lpsubeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported.
+\verb|\lpsubref| and \verb|\lpsubeqref| work with ordinary \verb|\label| inside both \verb|namedsubeqs| and traditional \verb|subequations| environments. Other environments are not officially supported. If used on a label without a sub-tag, the main tag \emph{should} be printed as normal.
 
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -811,7 +829,7 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 \begin{tcolorbox}
   \begin{Verbatim}
 \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
-\begin{namedsubeqs}{NLP}
+\begin{namedsubeqs}{NLP}[style=\itshape\roman]
 \begin{lpalign}{Minimize}{f(\mathbf{x})    \label{NLP.0}}
   g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
   h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
@@ -844,7 +862,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
 
 \section{Spacing Macros}\label{sec:spacing}
-\subsection{Quick Spacing}
+\subsection*{Quick Spacing}\addcontentsline{toc}{subsection}{Quick Spacing}
 Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
     \vtrg\begin{multicols}{2}
     \begin{compactitem}
@@ -908,9 +926,8 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 \end{tcolorbox}
 
 
-           
-\subsection{Delimiter Spacing}
 
+\subsection*{Delimiter Spacing}\addcontentsline{toc}{subsection}{Delimiter Spacing}
 Some macros for tightening display-style operator spacing when the indexing is over-long. These preserve the usual subscript and superscript syntax while placing long limits in \verb|\mathclap| boxes. They are meant for display math and are not generally useful inline.
 	\vtrg\begin{multicols}{3}
 	\begin{compactitem}
@@ -954,8 +971,7 @@ These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing 
 \end{tcolorbox}
 
 
-\subsection{Evaluator Spacing}
-
+\subsection*{Evaluator Spacing}\addcontentsline{toc}{subsection}{Evaluator Spacing}
 A few binary relations with extra space on either side. I like these for aligned equations or inequality constraints.
     \vtrg\begin{multicols}{4}
     \begin{compactitem}
