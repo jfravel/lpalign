@@ -3,8 +3,8 @@
 % Build from the repository root with:
 % pdflatex lpalign-Documentaion.tex
 \usepackage{lpalign}
-\setnamedsubeqstyle{\itshape\roman}
-\newsavebox{\mydebugbox}
+%	\setnamedsubeqstyle{\itshape\roman}
+%	\setvarsstyle{\scriptscriptstyle}
 
 
 \usepackage{parskip}
@@ -52,7 +52,7 @@
 \texttt{jamiefravel@me.com}
 \end{center}
 \begin{abstract}
-    This is a collection of macros that I developed while writing my dissertation. They are mostly focused on displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and sub-equation macros are useful in any document which defines and references multiple problems, algorithms or multi-line environments.
+    This is a collection of macros that I originally developed while writing my dissertation but which have been through a number of iterations since. They are mostly focused on displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and sub-equation macros are useful in any document which defines and references multiple problems, algorithms or multi-line environments.
 \end{abstract}
 
 
@@ -195,7 +195,8 @@ Subscripts can be placed under the `sense' term via the \verb|vars| option.
   
   \end{Verbatim}
 \tcblower
-  \begin{lpalign*}[vars=\hl{$\scriptstyle\mathbf{x}\in\mathbb{R}_+$}]
+  \begin{lpalign*}%[vars=\hl{$\scriptstyle\mathbf{x}\in\mathbb{R}_+$}]
+  [vars=\mathbf{x}\in\mathbb{R}_+]
   {Maximize}{c_1x_1 + \dots + c_mx_m}
     A\mathbf{x} &\le \mathbf{b}
   \end{lpalign*} 
@@ -322,7 +323,7 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 	 \begin{bmatrix} x_1\\x_2\\\vdots\\x_n \end{bmatrix} \GE
 	 \begin{bmatrix} b_1\\b_2\\\vdots\\b_m \end{bmatrix}
 	@hl~\span\span| \\
-	@gl~\hfill| A\mathbf{x}\GE\mathbf{b} @gl~\span\span\hspace{0pt}|
+	@gl~\hfill| A\mathbf{x}\GE\mathbf{b} @gl~\span\span|
 \end{lpalign}
 
 	\end{Verbatim}
@@ -345,7 +346,7 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 		b_1 \\ b_2 \\ \vdots \\ b_m
 		\end{bmatrix}
 	\span \\
-	\hfill \gl{$A\mathbf{x} \GE \mathbf{b}$}\span\span\hspace{0pt}
+	\hfill \gl{$A\mathbf{x} \GE \mathbf{b}$}\span\span
 	\end{lpalign}
 \end{tcolorbox}
 An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
@@ -1047,8 +1048,8 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 
 \noindent Post-load commands are available for freer global style defaults:
 		\begin{compactitem}
-		\item[\Verb|\setvarsstyle{...}|] -- controls the global default value of \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|.
-		\item[\Verb|\setnamedsubeqstyle{...}|] -- controls the global default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
+		\item[\texttt{\char`\\}\Verb|setvarsstyle|] -- controls the global default value of \verb|vars-style| in \verb|lpalign|. Defaults to \verb|\scriptstyle|. Good options include \verb|\displaystyle| for larger variables and \verb|\scriptscriptstyle| for smaller ones.
+		\item[\texttt{\char`\\}\Verb|setnamedsubeqstyle|] -- controls the global default sub-index style used by \verb|namedsubeqs|. Defaults to \verb|\alph|. Section \ref{sec:subrefs}.
 		\end{compactitem}
 
 
@@ -1057,12 +1058,11 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 \item[$\boxdot$] first optional arg without title is vars.
 \item[$\boxdot$] One-line optimization problems?
 \item[$\boxdot$] Correct the slign off center of IEEEeqnarray from tagging column.
-\item[$\boxdot$] Global free-form namedsubeq style setter via \verb|\setnamedsubeqstyle|.
 \end{compactitem}
 
 \section{Known Bugs}
 \begin{compactitem}	
-	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines.
+	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines. \verb|\downtag| helps move tags out of the way, but isn't very robust.
 	
 	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
 	
