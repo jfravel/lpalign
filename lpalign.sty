@@ -723,7 +723,7 @@
   \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
 }
 \newcommand{\lpalign@storesubreftext}[2]{%
-  \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
+  \expandafter\protected@xdef\csname subeqref@#1\endcsname{#2}%
 }
 \newcommand{\lpalign@getstandardsubcurrent}[1]{%
   \begingroup
@@ -807,26 +807,26 @@
     \ifx\lpalign@manualmaintag\@empty
       \global\let\lpalign@manualtag\@empty
     \else
-      \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+      \protected@xdef\lpalign@manualtag{\lpalign@manualmaintag}%
       \gdef\@currentlabel{\lpalign@manualtag}%
     \fi
   \else
     \ifx\lpalign@subeqcontext\@empty
       \lpalign@warnsubtagoutside{\string\lpsubtag}%
       \ifx\lpalign@manualmaintag\@empty
-        \xdef\lpalign@manualtag{\lpalign@manualsubtag}%
+        \protected@xdef\lpalign@manualtag{\lpalign@manualsubtag}%
       \else
-        \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+        \protected@xdef\lpalign@manualtag{\lpalign@manualmaintag}%
       \fi
       \gdef\@currentlabel{\lpalign@manualtag}%
     \else
       \ifx\lpalign@manualmaintag\@empty
         \lpalign@getcurrentsubeqparent{\lpalign@tmpparent}%
       \else
-        \xdef\lpalign@tmpparent{\lpalign@manualmaintag}%
+        \protected@xdef\lpalign@tmpparent{\lpalign@manualmaintag}%
       \fi
       \lpalign@getcurrentsubeqpunct{\lpalign@tmppunct}%
-      \xdef\lpalign@manualtag{\lpalign@tmpparent\lpalign@tmppunct\lpalign@manualsubtag}%
+      \protected@xdef\lpalign@manualtag{\lpalign@tmpparent\lpalign@tmppunct\lpalign@manualsubtag}%
       \gdef\@currentlabel{\lpalign@manualtag}%
     \fi
   \fi
@@ -903,7 +903,7 @@
     \ifx\lpalign@subeqcontext\lpalign@standardcontext
       \lpalign@getstandardsubcurrent{\lpalign@tmp}%
     \else
-      \xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
+      \protected@xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
     \fi
     \lpalign@setsubtagstate{\lpalign@tmp}\lpalign@subtagdefault{\global\lpalign@rollbackmanualadvancefalse}%
   \fi
@@ -915,7 +915,7 @@
   \ifx\lpalign@manualsubtag\@empty
     \ifx\lpalign@manualmaintag\@empty
       \@ifundefined{lpalign@subeqstoresubcurrent}{%
-        \expandafter\xdef\csname subeqref@#1\endcsname{\@currentlabel}%
+        \expandafter\protected@xdef\csname subeqref@#1\endcsname{\@currentlabel}%
       }{}%
     \else
       \lpalign@storesubreftext{#1}{\lpalign@manualmaintag}%
