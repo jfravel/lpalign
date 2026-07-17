@@ -31,9 +31,9 @@
 	\newcommand{\hl}[1]{\colorbox{SeaGreen!30}{#1}}
 	\newcommand{\gl}[1]{\colorbox{Thistle!30}{#1}}
 	\setlength{\fboxsep}{0.5pt}
-\usepackage{tocloft}
-	\setlength{\cftbeforesecskip}{2pt}
 	
+\usepackage{tocloft}
+	\setlength{\cftbeforesecskip}{5pt}
 \usepackage[toc]{multitoc}
 	\renewcommand*{\multicolumntoc}{2}
 	\setlength{\columnseprule}{0.2pt} 
@@ -1056,9 +1056,7 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 \end{compactitem}
 
 \section{Known Bugs}
-\begin{compactitem}
-	\item[$\boxdot$] \verb|\tag| doesn't work in IEEEeqnarray.
-	
+\begin{compactitem}	
 	\item[$\boxdot$] Very long objective functions may overrun the page. For now, use the embedded \textsf{aligned} environment to display a long function on multiple lines.
 	
 	\item[$\boxtimes$] Spacing macros \verb|\quad| and \verb|\qquad| overwrote default, absolute behavior with font-relative spacing. Fixed by renaming macros to \verb|\Hskp| and \verb|\HSkp|; v1.1.
@@ -1076,6 +1074,8 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 	\item[$\boxtimes$] The public commands \verb|\subref| and \verb|\subeqref| conflicted with packages such as \textsf{subcaption}. Fixed by renaming the package commands to \verb|\lpsubref| and \verb|\lpsubeqref|; v1.3.
 	
 	\item[$\boxtimes$] The objective function did not contribute correctly to the width of the environment. Fixed in v1.4 final.
+	
+	\item[$\boxtimes$] \verb|\tag| doesn't work in IEEEeqnarray. Fixed by adding \verb|\lptag| and \verb|\lpsubtag|; v1.7.
 \end{compactitem}
 
 
