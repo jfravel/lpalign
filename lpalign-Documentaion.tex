@@ -11,9 +11,7 @@
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
 \usepackage{amssymb}
-%\usepackage{enumitem}
-%	\setlist[itemize]{noitemsep, topsep=-0.7em}
-\usepackage{paralist}
+%\usepackage{paralist}
 
 \usepackage{amsmath}
 	\allowdisplaybreaks
@@ -34,7 +32,7 @@
 	\newcommand{\gl}[1]{\colorbox{Thistle!30}{#1}}
 	\setlength{\fboxsep}{0.5pt}
 \usepackage{tocloft}
-	\setlength{\cftbeforesecskip}{4pt}
+	\setlength{\cftbeforesecskip}{2pt}
 
 \title{The \textsf{lpalign} Package}
 \date{Published as \textsf{lpalign} v$1.6$ on July $16^\textrm{th}$ 2026}
@@ -95,7 +93,7 @@ The \textsf{lpalign*} environment is identical without printing equation referen
 
 
 
-\subsection*{Constraint Alignment}
+\subsection{Constraint Alignment}
 The environment defaults to \verb|alignat|-style behavior; the constraint rows will be aligned at the ampersand \verb|&|.
 \begin{tcolorbox}
 	\begin{Verbatim}
@@ -155,7 +153,7 @@ The \verb|flush| argument can be used to adjust global alignment. Options are \v
 
 
 
-\subsection*{Qualified Constraints}
+\subsection{Qualified Constraints}
 Qualified constraints are also possible. Another ampersand \verb|&| will properly space and align a `for-all' ($\forall$) statement.
 \begin{tcolorbox}
  \begin{Verbatim}
@@ -176,7 +174,7 @@ The qualifier column still works with a centered/flushed environment body.
 
 
 
-\subsection*{Variable Ranges}
+\subsection{Variable Ranges}
 Subscripts can be placed under the `sense' term via the \verb|vars| option. 
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -195,7 +193,7 @@ Subscripts can be placed under the `sense' term via the \verb|vars| option.
 
 
 
-\subsection*{Whitespace}
+\subsection{Whitespace}
 The \verb|sep| options can be used to modify the whitespace between elements. Their default values are mutable at package load.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -234,7 +232,7 @@ The \verb|sep| options can be used to modify the whitespace between elements. Th
 \Verb|objective-sep| is added to \verb|row-sep| between the objective and first constraint rows. Remember that additional space can be added between individual rows (or lines of text) via an optional argument on \Verb|\\|.
 
 
-\subsection*{Multiline Objectives}
+\subsection{Multiline Objectives}
 Very long \gl{objective functions} can be expressed in multiple lines by supplying an explicit \textsf{aligned} environment from \textsf{amsmath}. This avoids overflow and keeps the objective aligned with the guttered `sense' term. The same can be done within the \hl{constraints}. Tags and qualifiers will be placed correctly.
 \begin{tcolorbox}
   \begin{Verbatim}
@@ -300,7 +298,7 @@ Note that, for some nested environments like \verb|aligned| from \textsf{amsmath
 
 
 
-\subsection*{Span Formatting}
+\subsection{Spanning Columns}
 The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|) to ignore a column for a particular row. This is useful for letting qualifiers wrap bulky constraints.
 \begin{tcolorbox}
 	\begin{Verbatim}
@@ -343,7 +341,7 @@ The \verb|\span| command tells \verb|IEEEeqnarray| (and therefore \verb|lpalign|
 An \verb|\hfill|, two \verb|\span|'s and one zero-width space will right-flush a row. Be careful when using \verb|span| alongside the \verb|flush| option since there is one fewer column.
 
 
-\subsection*{Taging Long Expressions}
+\subsection{Taging Long Expressions}
 If, in an emergency situation (like a two column journal), tags can be moved down a row with the macro \verb|\downtag| which is really just a combination of \verb|\span|, \verb|\notag| and \verb|\\|. Labeling/referencing should continue to work as expected. An additional \verb|\span| will be required in the objective function of aligned environments. This is not the most robust solution, so don't rely on it too far.
 \begin{tcolorbox}
 \begin{Verbatim}
@@ -446,7 +444,7 @@ The \textsf{lpregion*} environment is identical without printing equation refere
 \end{tcolorbox}
 
 
-\subsection*{Nesting \textsf{lp} Environments}
+\subsection{Nesting \textsf{lp} Environments}
 You may want to use these formatting conventions nested within another environment.  The \verb|lpregionbox| and \verb|lpalignbox| commands can be nested. Maybe you want to define a polyhedron.
 \begin{tcolorbox}
 \begin{Verbatim}
@@ -711,7 +709,40 @@ A single optional argument which does not contain an \verb|=| sign is interprete
   \end{minipage}
 \end{tcolorbox}
 
-
+\begin{equation}
+testing tag number
+\end{equation}
+\begin{tcolorbox}
+\tcblower
+\begin{namedsubeqs}{EM}[punct={},style=\arabic]
+\begin{lpregion}
+A\mathbf{x} &\GE \mathbf{b} \lptag{test}\label{EM:1} \\
+\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:2}\\
+\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:3}
+\end{lpregion}
+\end{namedsubeqs}
+referencing \eqref{EM:1} vs \eqref{EM:2} vs \lpsubeqref{EM:3}.  Just in case... \lpsubeqref{EM:1}
+\end{tcolorbox}
+\begin{tcolorbox}
+\tcblower
+\begin{subequations}
+\begin{lpregion}
+A\mathbf{x} &\GE \mathbf{b} \lptag{test}\label{EN:1} \\
+\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:2}\\
+\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:3}
+\end{lpregion}
+\end{subequations}
+referencing \eqref{EN:1} vs \eqref{EN:2} vs \lpsubeqref{EN:3}. Just in case... \lpsubeqref{EN:1}
+\end{tcolorbox}
+\begin{tcolorbox}
+\tcblower
+\begin{lpregion}
+A\mathbf{x} &\GE \mathbf{b} \lptag{test}\label{EO:1} \\
+\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:2}\\
+\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:3}
+\end{lpregion}
+referencing \eqref{EO:1} vs \eqref{EO:2} vs \lpsubeqref{EO:3}.  Just in case... \lpsubeqref{EO:1}
+\end{tcolorbox}
 
 
 \section{Sub-References}\label{sec:subrefs}
@@ -813,7 +844,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
 
 \section{Spacing Macros}\label{sec:spacing}
-\subsection*{Quick Spacing}
+\subsection{Quick Spacing}
 Also included are font-relative versions of the common spacing commands \verb|\quad| and \verb|\qquad| and a few more for good measure:
     \vtrg\begin{multicols}{2}
     \begin{compactitem}
@@ -877,8 +908,8 @@ These are, I would say, less reliable than using \verb|\vspace| or \verb|\vskip|
 \end{tcolorbox}
 
 
-
-\subsection*{Delimiter Spacing}
+           
+\subsection{Delimiter Spacing}
 
 Some macros for tightening display-style operator spacing when the indexing is over-long. These preserve the usual subscript and superscript syntax while placing long limits in \verb|\mathclap| boxes. They are meant for display math and are not generally useful inline.
 	\vtrg\begin{multicols}{3}
@@ -923,8 +954,7 @@ These operators now use the ordinary \verb|_| and \verb|^| syntax. This spacing 
 \end{tcolorbox}
 
 
-
-\subsection*{Evaluator Spacing}
+\subsection{Evaluator Spacing}
 
 A few binary relations with extra space on either side. I like these for aligned equations or inequality constraints.
     \vtrg\begin{multicols}{4}
