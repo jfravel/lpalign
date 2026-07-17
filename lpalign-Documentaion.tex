@@ -33,7 +33,7 @@
 	\newcommand{\hl}[1]{\colorbox{SeaGreen!30}{#1}}
 	\newcommand{\gl}[1]{\colorbox{Thistle!30}{#1}}
 	\setlength{\fboxsep}{0.5pt}
-	
+
 \usepackage{tocloft}
 	\setlength{\cftbeforesecskip}{5pt}
 \usepackage[toc]{multitoc}
@@ -1029,9 +1029,9 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
-For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject~to| instead.
+For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject|\texttt{\raisebox{-0.6ex}{\textasciitilde}}\verb|to| instead.
 		\begin{compactitem}
-		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
+		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.2em|. Section \ref{sec:lpalign}.
 		\item[\Verb|objective-sep|] -- controls additional spacing between objective function and the first constraint. Defaults to \verb|0em|. 
 		\item[\Verb|qualifier-sep|] -- controls the spacing between constraint body and the qualifier (for-all) term. Defaults to \verb|2em|. 
 		\item[\Verb|gutter-sep|] -- controls the spacing between `sense'/`subject to' terms and the constraint body within \verb|lpalign|. Defaults to \verb|0.75em|. 
@@ -1053,12 +1053,11 @@ For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX befo
 		\end{compactitem}
 
 
-\section{Feature Wishlist}
-\begin{compactitem}
-\item[$\boxdot$] first optional arg without title is vars.
-\item[$\boxdot$] One-line optimization problems?
-\item[$\boxdot$] Correct the slign off center of IEEEeqnarray from tagging column.
-\end{compactitem}
+%\section{Feature Wishlist}
+%\begin{compactitem}
+%\item[$\boxdot$] 
+%\end{compactitem}
+
 
 \section{Known Bugs}
 \begin{compactitem}	
