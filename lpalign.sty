@@ -222,251 +222,6 @@
   { \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text} }
 
 \makeatletter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%  Tag Overrides / Subrefs  %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcounter{lpalignManualTagHref}
-\let\lpalign@orig@theequationdis\theequationdis
-\let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
-\let\lpalign@manualtag\@empty
-\let\lpalign@manualmaintag\@empty
-\let\lpalign@manualsubtag\@empty
-\let\lpalign@subeqcontext\@empty
-\let\lpalign@namedsubeqparent\@empty
-\newif\iflpalign@rollbackmanualadvance
-\lpalign@rollbackmanualadvancetrue
-\def\lpalign@standardcontext{standard}
-\def\lpalign@namedcontext{named}
-\def\lpalign@subtagcustom{custom}
-\def\lpalign@subtagdefault{default}
-\let\lpalign@subtagkind\@empty
-\newcommand{\lpalign@warnsubtagoverride}[2]{%
-  \PackageWarning{lpalign}{#1\space overrides\space #2\space in\space the\space current\space row}%
-}
-\newcommand{\lpalign@warnsubtagoutside}[1]{%
-  \PackageWarning{lpalign}{#1\space used\space outside\space of\space a\space subequation-style\space environment}%
-}
-\newcommand{\lpalign@tagform}[1]{%
-  \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
-}
-\newcommand{\lpalign@storesubreftext}[2]{%
-  \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
-}
-\newcommand{\lpalign@getstandardsubcurrent}[1]{%
-  \begingroup
-  \protected@edef\lpalign@full{\theequation}%
-  \edef\lpalign@prefix{\theparentequation}%
-  \let\lpalign@tmp\@empty
-  \edef\lpalign@tmpdef{%
-    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
-      \def\noexpand\lpalign@tmp{####2}%
-    }%
-  }%
-  \lpalign@tmpdef
-  \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \ifx\lpalign@tmp\@empty
-  \else
-    \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
-      \ifx##1\textbar
-        \def\lpalign@tmp{##2}%
-      \else\ifx##1\vert
-        \def\lpalign@tmp{##2}%
-      \else\ifx##1\mid
-        \def\lpalign@tmp{##2}%
-      \fi\fi\fi
-    }%
-    \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
-  \fi
-  \xdef#1{\lpalign@tmp}%
-  \endgroup
-}
-\newcommand{\lpalign@getstandardsubeqpunct}[1]{%
-  \begingroup
-  \protected@edef\lpalign@full{\theequation}%
-  \edef\lpalign@prefix{\theparentequation}%
-  \lpalign@getstandardsubcurrent{\lpalign@autosub}%
-  \let\lpalign@rest\@empty
-  \let\lpalign@punct\@empty
-  \edef\lpalign@tmpdef{%
-    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
-      \def\noexpand\lpalign@rest{####2}%
-    }%
-  }%
-  \lpalign@tmpdef
-  \expandafter\lpalign@stripaux\lpalign@full\@nil
-  \ifx\lpalign@rest\@empty
-  \else
-    \edef\lpalign@tmpdef{%
-      \def\noexpand\lpalign@stripsub####1\lpalign@autosub\noexpand\@nil{%
-        \def\noexpand\lpalign@punct{####1}%
-      }%
-    }%
-    \lpalign@tmpdef
-    \expandafter\lpalign@stripsub\lpalign@rest\@nil
-  \fi
-  \xdef#1{\lpalign@punct}%
-  \endgroup
-}
-\newcommand{\lpalign@getcurrentsubeqparent}[1]{%
-  \ifx\lpalign@subeqcontext\@empty
-    \xdef#1{}%
-  \else
-    \ifx\lpalign@subeqcontext\lpalign@standardcontext
-      \xdef#1{\theparentequation}%
-    \else
-      \xdef#1{\lpalign@namedsubeqparent}%
-    \fi
-  \fi
-}
-\newcommand{\lpalign@getcurrentsubeqpunct}[1]{%
-  \ifx\lpalign@subeqcontext\@empty
-    \xdef#1{}%
-  \else
-    \ifx\lpalign@subeqcontext\lpalign@standardcontext
-      \expandafter\lpalign@getstandardsubeqpunct\expandafter{\expandafter#1\expandafter}%
-    \else
-      \xdef#1{\lpalign@namedsubeqpunct}%
-    \fi
-  \fi
-}
-\newcommand{\lpalign@synctagstate}{%
-  \ifx\lpalign@manualsubtag\@empty
-    \ifx\lpalign@manualmaintag\@empty
-      \global\let\lpalign@manualtag\@empty
-    \else
-      \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
-      \gdef\@currentlabel{\lpalign@manualtag}%
-    \fi
-  \else
-    \ifx\lpalign@subeqcontext\@empty
-      \lpalign@warnsubtagoutside{\string\lpsubtag}%
-      \ifx\lpalign@manualmaintag\@empty
-        \xdef\lpalign@manualtag{\lpalign@manualsubtag}%
-      \else
-        \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
-      \fi
-      \gdef\@currentlabel{\lpalign@manualtag}%
-    \else
-      \ifx\lpalign@manualmaintag\@empty
-        \lpalign@getcurrentsubeqparent{\lpalign@tmpparent}%
-      \else
-        \xdef\lpalign@tmpparent{\lpalign@manualmaintag}%
-      \fi
-      \lpalign@getcurrentsubeqpunct{\lpalign@tmppunct}%
-      \xdef\lpalign@manualtag{\lpalign@tmpparent\lpalign@tmppunct\lpalign@manualsubtag}%
-      \gdef\@currentlabel{\lpalign@manualtag}%
-    \fi
-  \fi
-}
-\newcommand{\lpalign@clearmanualtag}{%
-  \global\let\lpalign@manualtag\@empty
-  \global\let\lpalign@manualmaintag\@empty
-  \global\let\lpalign@manualsubtag\@empty
-  \global\let\lpalign@subtagkind\@empty
-  \global\lpalign@rollbackmanualadvancetrue
-}
-\newcommand{\lpalign@rollbackmanualtag}{%
-  \ifx\lpalign@manualtag\@empty
-  \else
-    \iflpalign@rollbackmanualadvance
-    \stepcounter{lpalignManualTagHref}%
-    \ifnum\c@IEEEsubequation>0\relax
-      \global\advance\c@IEEEsubequation\m@ne\relax
-      \gdef\@currentlabel{\p@IEEEsubequation\theIEEEsubequation}\relax
-      \@ifundefined{@IEEEtheHrefsubequation}{}%
-        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
-    \else
-      \global\advance\c@equation\m@ne\relax
-      \gdef\@currentlabel{\p@equation\theequation}\relax
-      \@ifundefined{@IEEEtheHrefequation}{}%
-        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
-    \fi
-    \fi
-  \fi
-}
-\newcommand{\lpalign@finalizemanualtag}{%
-  \lpalign@rollbackmanualtag
-  \lpalign@clearmanualtag
-}
-\renewcommand{\theequationdis}{%
-  \ifx\lpalign@manualtag\@empty
-    \lpalign@orig@theequationdis
-  \else
-    \lpalign@tagform{\lpalign@manualtag}%
-  \fi
-}
-\renewcommand{\theIEEEsubequationdis}{%
-  \ifx\lpalign@manualtag\@empty
-    \lpalign@orig@theIEEEsubequationdis
-  \else
-    \lpalign@tagform{\lpalign@manualtag}%
-  \fi
-}
-\newcommand{\lptag}[1]{%
-  \gdef\lpalign@manualmaintag{#1}%
-  \global\lpalign@rollbackmanualadvancetrue
-  \lpalign@synctagstate
-}
-\newcommand{\lpalign@setsubtagstate}[3]{%
-  \gdef\lpalign@manualsubtag{#1}%
-  \global\let\lpalign@subtagkind#2%
-  #3%
-  \lpalign@synctagstate
-}
-\newcommand{\lpsubtag}[1]{%
-  \ifx\lpalign@subtagkind\lpalign@subtagdefault
-    \lpalign@warnsubtagoverride{\string\lpsubtag}{\string\defaultsubtag}%
-  \fi
-  \lpalign@setsubtagstate{#1}\lpalign@subtagcustom{\global\lpalign@rollbackmanualadvancetrue}%
-}
-\newcommand{\defaultsubtag}{%
-  \ifx\lpalign@subtagkind\lpalign@subtagcustom
-    \lpalign@warnsubtagoverride{\string\defaultsubtag}{\string\lpsubtag}%
-  \fi
-  \ifx\lpalign@subeqcontext\@empty
-    \lpalign@warnsubtagoutside{\string\defaultsubtag}%
-    \global\let\lpalign@manualsubtag\@empty
-  \else
-    \ifx\lpalign@subeqcontext\lpalign@standardcontext
-      \lpalign@getstandardsubcurrent{\lpalign@tmp}%
-    \else
-      \xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
-    \fi
-    \lpalign@setsubtagstate{\lpalign@tmp}\lpalign@subtagdefault{\global\lpalign@rollbackmanualadvancefalse}%
-  \fi
-  \ifx\lpalign@subeqcontext\@empty
-    \lpalign@synctagstate
-  \fi
-}
-\newcommand{\lpalign@storeactivesubreftext}[1]{%
-  \ifx\lpalign@manualsubtag\@empty
-    \ifx\lpalign@manualmaintag\@empty
-      \@ifundefined{lpalign@subeqstoresubcurrent}{%
-        \expandafter\xdef\csname subeqref@#1\endcsname{\@currentlabel}%
-      }{}%
-    \else
-      \lpalign@storesubreftext{#1}{\lpalign@manualmaintag}%
-    \fi
-  \else
-    \lpalign@storesubreftext{#1}{\lpalign@manualsubtag}%
-  \fi
-}
-\newcommand{\lpalign@beginlabelcapture}{%
-  \let\lpalign@capturedlabel\label
-  \let\lpalign@capturedltxlabel\ltx@label
-  \def\label##1{%
-    \lpalign@capturedlabel{##1}%
-    \lpalign@storeactivesubreftext{##1}%
-  }%
-  \def\ltx@label##1{%
-    \lpalign@capturedltxlabel{##1}%
-    \lpalign@storeactivesubreftext{##1}%
-  }%
-}
-\newcommand{\lpalign@endlabelcapture}{%
-  \let\label\lpalign@capturedlabel
-  \let\ltx@label\lpalign@capturedltxlabel
-}
 \cs_new_protected:Npn \lpalign_ieee_patch_cr:
   {
     \def\lpalign@IEEEeqnarrayYCR{%
@@ -939,6 +694,252 @@
 \ExplSyntaxOff
 \makeatother
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Tag Overrides / Subrefs  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcounter{lpalignManualTagHref}
+\let\lpalign@orig@theequationdis\theequationdis
+\let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
+\let\lpalign@manualtag\@empty
+\let\lpalign@manualmaintag\@empty
+\let\lpalign@manualsubtag\@empty
+\let\lpalign@subeqcontext\@empty
+\let\lpalign@namedsubeqparent\@empty
+\newif\iflpalign@rollbackmanualadvance
+\lpalign@rollbackmanualadvancetrue
+\def\lpalign@standardcontext{standard}
+\def\lpalign@namedcontext{named}
+\def\lpalign@subtagcustom{custom}
+\def\lpalign@subtagdefault{default}
+\let\lpalign@subtagkind\@empty
+\newcommand{\lpalign@warnsubtagoverride}[2]{%
+  \PackageWarning{lpalign}{#1\space overrides\space #2\space in\space the\space current\space row}%
+}
+\newcommand{\lpalign@warnsubtagoutside}[1]{%
+  \PackageWarning{lpalign}{#1\space used\space outside\space of\space a\space subequation-style\space environment}%
+}
+\newcommand{\lpalign@tagform}[1]{%
+  \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
+}
+\newcommand{\lpalign@storesubreftext}[2]{%
+  \expandafter\xdef\csname subeqref@#1\endcsname{#2}%
+}
+\newcommand{\lpalign@getstandardsubcurrent}[1]{%
+  \begingroup
+  \protected@edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \let\lpalign@tmp\@empty
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \def\noexpand\lpalign@tmp{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \ifx\lpalign@tmp\@empty
+  \else
+    \def\lpalign@stripcontrolsubpunct##1##2\@nil{%
+      \ifx##1\textbar
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\vert
+        \def\lpalign@tmp{##2}%
+      \else\ifx##1\mid
+        \def\lpalign@tmp{##2}%
+      \fi\fi\fi
+    }%
+    \expandafter\lpalign@stripcontrolsubpunct\lpalign@tmp\@nil
+  \fi
+  \xdef#1{\lpalign@tmp}%
+  \endgroup
+}
+\newcommand{\lpalign@getstandardsubeqpunct}[1]{%
+  \begingroup
+  \protected@edef\lpalign@full{\theequation}%
+  \edef\lpalign@prefix{\theparentequation}%
+  \lpalign@getstandardsubcurrent{\lpalign@autosub}%
+  \let\lpalign@rest\@empty
+  \let\lpalign@punct\@empty
+  \edef\lpalign@tmpdef{%
+    \def\noexpand\lpalign@stripaux####1\lpalign@prefix####2\noexpand\@nil{%
+      \def\noexpand\lpalign@rest{####2}%
+    }%
+  }%
+  \lpalign@tmpdef
+  \expandafter\lpalign@stripaux\lpalign@full\@nil
+  \ifx\lpalign@rest\@empty
+  \else
+    \edef\lpalign@tmpdef{%
+      \def\noexpand\lpalign@stripsub####1\lpalign@autosub\noexpand\@nil{%
+        \def\noexpand\lpalign@punct{####1}%
+      }%
+    }%
+    \lpalign@tmpdef
+    \expandafter\lpalign@stripsub\lpalign@rest\@nil
+  \fi
+  \xdef#1{\lpalign@punct}%
+  \endgroup
+}
+\newcommand{\lpalign@getcurrentsubeqparent}[1]{%
+  \ifx\lpalign@subeqcontext\@empty
+    \xdef#1{}%
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \xdef#1{\theparentequation}%
+    \else
+      \xdef#1{\lpalign@namedsubeqparent}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@getcurrentsubeqpunct}[1]{%
+  \ifx\lpalign@subeqcontext\@empty
+    \xdef#1{}%
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \expandafter\lpalign@getstandardsubeqpunct\expandafter{\expandafter#1\expandafter}%
+    \else
+      \xdef#1{\lpalign@namedsubeqpunct}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@synctagstate}{%
+  \ifx\lpalign@manualsubtag\@empty
+    \ifx\lpalign@manualmaintag\@empty
+      \global\let\lpalign@manualtag\@empty
+    \else
+      \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \fi
+  \else
+    \ifx\lpalign@subeqcontext\@empty
+      \lpalign@warnsubtagoutside{\string\lpsubtag}%
+      \ifx\lpalign@manualmaintag\@empty
+        \xdef\lpalign@manualtag{\lpalign@manualsubtag}%
+      \else
+        \xdef\lpalign@manualtag{\lpalign@manualmaintag}%
+      \fi
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \else
+      \ifx\lpalign@manualmaintag\@empty
+        \lpalign@getcurrentsubeqparent{\lpalign@tmpparent}%
+      \else
+        \xdef\lpalign@tmpparent{\lpalign@manualmaintag}%
+      \fi
+      \lpalign@getcurrentsubeqpunct{\lpalign@tmppunct}%
+      \xdef\lpalign@manualtag{\lpalign@tmpparent\lpalign@tmppunct\lpalign@manualsubtag}%
+      \gdef\@currentlabel{\lpalign@manualtag}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@clearmanualtag}{%
+  \global\let\lpalign@manualtag\@empty
+  \global\let\lpalign@manualmaintag\@empty
+  \global\let\lpalign@manualsubtag\@empty
+  \global\let\lpalign@subtagkind\@empty
+  \global\lpalign@rollbackmanualadvancetrue
+}
+\newcommand{\lpalign@rollbackmanualtag}{%
+  \ifx\lpalign@manualtag\@empty
+  \else
+    \iflpalign@rollbackmanualadvance
+    \stepcounter{lpalignManualTagHref}%
+    \ifnum\c@IEEEsubequation>0\relax
+      \global\advance\c@IEEEsubequation\m@ne\relax
+      \gdef\@currentlabel{\p@IEEEsubequation\theIEEEsubequation}\relax
+      \@ifundefined{@IEEEtheHrefsubequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \else
+      \global\advance\c@equation\m@ne\relax
+      \gdef\@currentlabel{\p@equation\theequation}\relax
+      \@ifundefined{@IEEEtheHrefequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \fi
+    \fi
+  \fi
+}
+\newcommand{\lpalign@finalizemanualtag}{%
+  \lpalign@rollbackmanualtag
+  \lpalign@clearmanualtag
+}
+\renewcommand{\theequationdis}{%
+  \ifx\lpalign@manualtag\@empty
+    \lpalign@orig@theequationdis
+  \else
+    \lpalign@tagform{\lpalign@manualtag}%
+  \fi
+}
+\renewcommand{\theIEEEsubequationdis}{%
+  \ifx\lpalign@manualtag\@empty
+    \lpalign@orig@theIEEEsubequationdis
+  \else
+    \lpalign@tagform{\lpalign@manualtag}%
+  \fi
+}
+\newcommand{\lptag}[1]{%
+  \gdef\lpalign@manualmaintag{#1}%
+  \global\lpalign@rollbackmanualadvancetrue
+  \lpalign@synctagstate
+}
+\newcommand{\lpalign@setsubtagstate}[3]{%
+  \gdef\lpalign@manualsubtag{#1}%
+  \global\let\lpalign@subtagkind#2%
+  #3%
+  \lpalign@synctagstate
+}
+\newcommand{\lpsubtag}[1]{%
+  \ifx\lpalign@subtagkind\lpalign@subtagdefault
+    \lpalign@warnsubtagoverride{\string\lpsubtag}{\string\defaultsubtag}%
+  \fi
+  \lpalign@setsubtagstate{#1}\lpalign@subtagcustom{\global\lpalign@rollbackmanualadvancetrue}%
+}
+\newcommand{\defaultsubtag}{%
+  \ifx\lpalign@subtagkind\lpalign@subtagcustom
+    \lpalign@warnsubtagoverride{\string\defaultsubtag}{\string\lpsubtag}%
+  \fi
+  \ifx\lpalign@subeqcontext\@empty
+    \lpalign@warnsubtagoutside{\string\defaultsubtag}%
+    \global\let\lpalign@manualsubtag\@empty
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \lpalign@getstandardsubcurrent{\lpalign@tmp}%
+    \else
+      \xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
+    \fi
+    \lpalign@setsubtagstate{\lpalign@tmp}\lpalign@subtagdefault{\global\lpalign@rollbackmanualadvancefalse}%
+  \fi
+  \ifx\lpalign@subeqcontext\@empty
+    \lpalign@synctagstate
+  \fi
+}
+\newcommand{\lpalign@storeactivesubreftext}[1]{%
+  \ifx\lpalign@manualsubtag\@empty
+    \ifx\lpalign@manualmaintag\@empty
+      \@ifundefined{lpalign@subeqstoresubcurrent}{%
+        \expandafter\xdef\csname subeqref@#1\endcsname{\@currentlabel}%
+      }{}%
+    \else
+      \lpalign@storesubreftext{#1}{\lpalign@manualmaintag}%
+    \fi
+  \else
+    \lpalign@storesubreftext{#1}{\lpalign@manualsubtag}%
+  \fi
+}
+\newcommand{\lpalign@beginlabelcapture}{%
+  \let\lpalign@capturedlabel\label
+  \let\lpalign@capturedltxlabel\ltx@label
+  \def\label##1{%
+    \lpalign@capturedlabel{##1}%
+    \lpalign@storeactivesubreftext{##1}%
+  }%
+  \def\ltx@label##1{%
+    \lpalign@capturedltxlabel{##1}%
+    \lpalign@storeactivesubreftext{##1}%
+  }%
+}
+\newcommand{\lpalign@endlabelcapture}{%
+  \let\label\lpalign@capturedlabel
+  \let\ltx@label\lpalign@capturedltxlabel
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%  Named SubEquations  %%%%%%%%%
