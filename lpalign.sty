@@ -221,8 +221,10 @@
 \cs_new:Npn \lpalign_print_st:
   { \raisebox{\dim_use:N \lpalign_st_shift}{\tl_use:N \lpalign_st_text} }
 
-
 \makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%  Tag Overrides / Subrefs  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcounter{lpalignManualTagHref}
 \let\lpalign@orig@theequationdis\theequationdis
 \let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
@@ -391,6 +393,19 @@
 }
 \newcommand{\lpsubtag}[1]{%
   \gdef\lpalign@manualsubtag{#1}%
+  \lpalign@synctagstate
+}
+\newcommand{\defaultsubtag}{%
+  \ifx\lpalign@subeqcontext\@empty
+    \PackageWarning{lpalign}{\string\defaultsubtag\space used outside a subequation-style environment}%
+    \global\let\lpalign@manualsubtag\@empty
+  \else
+    \ifx\lpalign@subeqcontext\lpalign@standardcontext
+      \lpalign@getstandardsubcurrent{\lpalign@manualsubtag}%
+    \else
+      \xdef\lpalign@manualsubtag{\lpalign@namedsubeqstyle{equation}}%
+    \fi
+  \fi
   \lpalign@synctagstate
 }
 \newcommand{\lpalign@storeactivesubreftext}[1]{%
