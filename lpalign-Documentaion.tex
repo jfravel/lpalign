@@ -2,7 +2,8 @@
 
 % Build from the repository root with:
 % pdflatex lpalign-Documentaion.tex
-\usepackage{lpalign}\newsavebox{\mydebugbox}
+\usepackage[namedsubeqs-style={\itshape\roman}]{lpalign}
+\newsavebox{\mydebugbox}
 
 
 \usepackage{parskip}
@@ -852,7 +853,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
   \end{Verbatim}
 \tcblower
   \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
-  \begin{namedsubeqs}{NLP}[style=\itshape\roman]
+  \begin{namedsubeqs}{NLP}%[style=\itshape\roman]
   \begin{lpalign}{Minimize}{f(\mathbf{x})   \lpsubtag{\textsc{obj}}\label{NLP.0} }
       g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
       h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\

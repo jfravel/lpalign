@@ -142,7 +142,7 @@
 		objective-sep .dim_gset:N = \g_lpalign_default_objective_sep,
 		objective-sep .initial:n = 0em,
 		row-sep .dim_gset:N = \g_lpalign_default_row_sep,
-		row-sep .initial:n = 0.5em,
+		row-sep .initial:n = 0.2em,
 		qualifier-sep .dim_gset:N = \g_lpalign_default_qualifier_sep,
 		qualifier-sep .initial:n = 2em,
 		gutter-sep .dim_gset:N = \g_lpalign_default_gutter_sep,
@@ -150,13 +150,13 @@
 		vars-style .choices:nn =
 		  { scriptstyle, scriptscriptstyle, textstyle, displaystyle }
 		  {
-		    \str_case:Vn \l_keys_choice_tl
-	     {
+    	\str_case:Vn \l_keys_choice_tl
+  			{
 	      {scriptstyle}       { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptstyle } }
 	      {scriptscriptstyle} { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \scriptscriptstyle } }
 	      {textstyle}         { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \textstyle } }
-		      {displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
-		     }
+      	{displaystyle}      { \tl_gset:Nn \g_lpalign_default_vars_style_tl { \displaystyle } }
+    		}
 		  },
 		vars-style .initial:n = scriptstyle,
 		st .tl_gset:N = \g_lpalign_default_st_tl,
