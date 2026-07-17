@@ -985,8 +985,12 @@
 \tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
 \keys_define:nn { lpalign/package }
  {
-  namedsubeqs-style .tl_gset:N = \g_lpalign_namedsubeq_default_style_tl,
-  namedsubeqs-style .initial:n = \alph,
+  namedsubeqs-style .code:n =
+   {
+    \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl {#1}
+    \lpalign_unbrace_tl:N \g_lpalign_namedsubeq_default_style_tl
+   },
+  namedsubeqs-style .initial:n = {\alph},
   namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
   namedsubeqs-punct .initial:n = .,
  }
