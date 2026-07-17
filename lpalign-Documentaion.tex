@@ -11,7 +11,7 @@
 \usepackage[bookmarks=false]{hyperref}
     \hypersetup{colorlinks=true, linkcolor=blue!70!black}
 \usepackage{amssymb}
-%\usepackage{paralist}
+\usepackage{paralist}
 
 \usepackage{amsmath}
 	\allowdisplaybreaks
@@ -714,9 +714,9 @@ testing tag number
 \end{equation}
 \begin{tcolorbox}
 \tcblower
-\begin{namedsubeqs}{EM}[punct={},style=\arabic]
+\begin{namedsubeqs}{EM}[punct=., style=\arabic]
 \begin{lpregion}
-A\mathbf{x} &\GE \mathbf{b} \lptag{test}\label{EM:1} \\
+A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\label{EM:1} \\
 \mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:2}\\
 \sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:3}
 \end{lpregion}
@@ -737,7 +737,7 @@ referencing \eqref{EN:1} vs \eqref{EN:2} vs \lpsubeqref{EN:3}. Just in case... \
 \begin{tcolorbox}
 \tcblower
 \begin{lpregion}
-A\mathbf{x} &\GE \mathbf{b} \lptag{test}\label{EO:1} \\
+A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\label{EO:1} \\
 \mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:2}\\
 \sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:3}
 \end{lpregion}
