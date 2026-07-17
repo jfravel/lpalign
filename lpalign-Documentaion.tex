@@ -33,6 +33,10 @@
 	\setlength{\fboxsep}{0.5pt}
 \usepackage{tocloft}
 	\setlength{\cftbeforesecskip}{2pt}
+	
+\usepackage[toc]{multitoc}
+	\renewcommand*{\multicolumntoc}{2}
+	\setlength{\columnseprule}{0.2pt} 
 
 \title{The \textsf{lpalign} Package}
 \date{Published as \textsf{lpalign} v$1.6$ on July $16^\textrm{th}$ 2026}
@@ -48,6 +52,7 @@
 \begin{abstract}
     This is a collection of macros that I developed while writing my dissertation. They are mostly focused on displaying, naming and referencing mathematical programming problems. The \textsf{lpalign} environment macro formats math programs for legibility in both code and display. The named paragraph and sub-equation macros are useful in any document which defines and references multiple problems, algorithms or multi-line environments.
 \end{abstract}
+
 
 \tableofcontents
 \newpage
@@ -831,10 +836,11 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
   \begin{Verbatim}
 \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
 \begin{namedsubeqs}{NLP}[style=\itshape\roman]
-\begin{lpalign}{Minimize}{f(\mathbf{x})    \label{NLP.0}}
-  g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
-  h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
-      \mathbf{x}  &\GE 0                \label{NLP.3}
+\begin{lpalign}{Minimize}
+	{f(\mathbf{x})   \lpsubtag{\textsc{obj}} \label{NLP.0}}
+  g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I  \label{NLP.1} \\
+  h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J  \label{NLP.2} \\
+      \mathbf{x}  &\GE 0                   \label{NLP.3}
 \end{lpalign}
 \end{namedsubeqs}
 
@@ -847,7 +853,7 @@ Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 \tcblower
   \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
   \begin{namedsubeqs}{NLP}[style=\itshape\roman]
-  \begin{lpalign}{Minimize}{f(\mathbf{x})   \label{NLP.0} \lpsubtag{\textsc{obj}}}
+  \begin{lpalign}{Minimize}{f(\mathbf{x})   \lpsubtag{\textsc{obj}}\label{NLP.0} }
       g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
       h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
           \mathbf{x}  &\GE 0                \label{NLP.3}
