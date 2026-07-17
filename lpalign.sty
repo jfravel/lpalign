@@ -240,6 +240,12 @@
 \def\lpalign@subtagcustom{custom}
 \def\lpalign@subtagdefault{default}
 \let\lpalign@subtagkind\@empty
+\newcommand{\lpalign@warnsubtagoverride}[2]{%
+  \PackageWarning{lpalign}{#1\space overrides\space #2\space in\space the\space current\space row}%
+}
+\newcommand{\lpalign@warnsubtagoutside}[1]{%
+  \PackageWarning{lpalign}{#1\space used\space outside\space of\space a\space subequation-style\space environment}%
+}
 \newcommand{\lpalign@tagform}[1]{%
   \@ifundefined{tagform@}{(#1)}{\tagform@{#1}}%
 }
@@ -333,7 +339,7 @@
     \fi
   \else
     \ifx\lpalign@subeqcontext\@empty
-      \PackageWarning{lpalign}{\string\lpsubtag\space used\space outside\space of\space a\space subequation-style\space environment}%
+      \lpalign@warnsubtagoutside{\string\lpsubtag}%
       \ifx\lpalign@manualmaintag\@empty
         \xdef\lpalign@manualtag{\lpalign@manualsubtag}%
       \else
@@ -401,32 +407,36 @@
   \global\lpalign@rollbackmanualadvancetrue
   \lpalign@synctagstate
 }
+\newcommand{\lpalign@setsubtagstate}[3]{%
+  \gdef\lpalign@manualsubtag{#1}%
+  \global\let\lpalign@subtagkind#2%
+  #3%
+  \lpalign@synctagstate
+}
 \newcommand{\lpsubtag}[1]{%
   \ifx\lpalign@subtagkind\lpalign@subtagdefault
-    \PackageWarning{lpalign}{\string\lpsubtag\space overrides \string\defaultsubtag\space in\space the\space current\space row}%
+    \lpalign@warnsubtagoverride{\string\lpsubtag}{\string\defaultsubtag}%
   \fi
-  \gdef\lpalign@manualsubtag{#1}%
-  \global\let\lpalign@subtagkind\lpalign@subtagcustom
-  \global\lpalign@rollbackmanualadvancetrue
-  \lpalign@synctagstate
+  \lpalign@setsubtagstate{#1}\lpalign@subtagcustom{\global\lpalign@rollbackmanualadvancetrue}%
 }
 \newcommand{\defaultsubtag}{%
   \ifx\lpalign@subtagkind\lpalign@subtagcustom
-    \PackageWarning{lpalign}{\string\defaultsubtag\space overrides\space \string\lpsubtag\space in\space the\space current\space row}%
+    \lpalign@warnsubtagoverride{\string\defaultsubtag}{\string\lpsubtag}%
   \fi
   \ifx\lpalign@subeqcontext\@empty
-    \PackageWarning{lpalign}{\string\defaultsubtag\space used\space outside\space of\space a\space subequation-style\space environment}%
+    \lpalign@warnsubtagoutside{\string\defaultsubtag}%
     \global\let\lpalign@manualsubtag\@empty
   \else
     \ifx\lpalign@subeqcontext\lpalign@standardcontext
-      \lpalign@getstandardsubcurrent{\lpalign@manualsubtag}%
+      \lpalign@getstandardsubcurrent{\lpalign@tmp}%
     \else
-      \xdef\lpalign@manualsubtag{\lpalign@namedsubeqstyle{equation}}%
+      \xdef\lpalign@tmp{\lpalign@namedsubeqstyle{equation}}%
     \fi
-    \global\let\lpalign@subtagkind\lpalign@subtagdefault
-    \global\lpalign@rollbackmanualadvancefalse
+    \lpalign@setsubtagstate{\lpalign@tmp}\lpalign@subtagdefault{\global\lpalign@rollbackmanualadvancefalse}%
   \fi
-  \lpalign@synctagstate
+  \ifx\lpalign@subeqcontext\@empty
+    \lpalign@synctagstate
+  \fi
 }
 \newcommand{\lpalign@storeactivesubreftext}[1]{%
   \ifx\lpalign@manualsubtag\@empty
