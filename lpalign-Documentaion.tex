@@ -717,12 +717,32 @@ A single optional argument which does not contain an \verb|=| sign is interprete
 \subsection*{Tag/Subtag Overrides}\addcontentsline{toc}{subsection}{Tag/Subtag Overrides}
 The \textsf{amsmath} command \verb|\tag| does not work in our \textsf{IEEE}-based \verb|lp| environments. Instead, we have a few tag override commands: \verb|\lptag| adjusts overrides the tag, \verb|\lpsubtag| adjusts the subtag in a \verb|namedsubeqs| environment and \verb|\defaultsubtag| adds the default subtag format to a custom \verb|\lptag|.
 	\begin{tcolorbox}
+	\begin{Verbatim}
+\begin{namedsubeqs}{EM}[\ttfamily\Alph]
+\begin{lpregion}[qualifier-sep=0.2em]
+	A\mathbf{x} &\GE \mathbf{b} 
+											 @hl~\lptag{m}\lpsubtag{1}| \label{EM:1} \\
+	\mathbf{a}_i^\top\mathbf{x} &\GE b_i 
+		&\forall\ i\in[\![n]\!] 
+																						 \label{EM:2} \\
+	\sum_{j=1}^ma_{ij}x_j &\GE b_i 
+		&\forall\ i\in[\![n]\!] 
+										 @gl~\lptag{s}\defaultsubtag| \label{EM:3} \\
+\begin{bmatrix} ... \end{bmatrix} 					 \label{EM:4}
+\end{lpregion} \end{namedsubeqs}
+
+Referencing \eqref{EM:1} vs \eqref{EM:2} vs \eqref{EM:3} 
+vs \eqref{EM:4}.
+	\end{Verbatim}
 	\tcblower
-	\begin{namedsubeqs}{EM}[\itshape\Alph]
+	\begin{namedsubeqs}{EM}[\ttfamily\Alph]
 	\begin{lpregion}[qualifier-sep=0.2em]
-	A\mathbf{x} &\GE \mathbf{b} \lptag{m}\lpsubtag{1} \label{EM:1} \\
-	\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EM:2}\\
-	\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \lptag{s}\defaultsubtag\label{EM:3} \\
+	A\mathbf{x} &\GE \mathbf{b} 
+				  \lptag{\hl{m}}\lpsubtag{\hl{1}} \label{EM:1} \\
+	\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] 
+																\label{EM:2} \\
+	\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] 
+				\lptag{\gl{s}}\defaultsubtag \label{EM:3} \\
 	\begin{bmatrix} 
 		a_{11} & a_{12} & \dots  & a_{1n} \\
 		a_{21} & a_{22} & \dots  & a_{2n} \\
@@ -739,28 +759,9 @@ The \textsf{amsmath} command \verb|\tag| does not work in our \textsf{IEEE}-base
 		\label{EM:4}
 	\end{lpregion}
 	\end{namedsubeqs}
-	Referencing \eqref{EM:1} vs \eqref{EM:2} vs \eqref{EM:3} vs \eqref{EM:4}.  
+	Referencing \eqref{EM:1} vs \eqref{EM:2} vs \eqref{EM:3} vs \eqref{EM:4}.
 	\end{tcolorbox}
-%\begin{tcolorbox}
-%\tcblower
-%\begin{subequations}
-%\begin{lpregion}
-%A\mathbf{x} &\GE \mathbf{b} \lptag{test}\defaultsubtag\label{EN:1} \\
-%\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:2}\\
-%\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EN:3}
-%\end{lpregion}
-%\end{subequations}
-%referencing \eqref{EN:1} vs \eqref{EN:2} vs \lpsubeqref{EN:3}. Just in case... \lpsubeqref{EN:1}
-%\end{tcolorbox}
-%\begin{tcolorbox}
-%\tcblower
-%\begin{lpregion}
-%A\mathbf{x} &\GE \mathbf{b} \lptag{test}\lpsubtag{a}\defaultsubtag\label{EO:1} \\
-%\mathbf{a}_i^\top\mathbf{x} &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:2}\\
-%\sum_{j=1}^ma_{ij}x_j &\GE b_i &\forall\ i\in[\![n]\!] \label{EO:3}
-%\end{lpregion}
-%referencing \eqref{EO:1} vs \eqref{EO:2} vs \lpsubeqref{EO:3}.  Just in case... \lpsubeqref{EO:1}
-%\end{tcolorbox}
+
 
 
 \section{Sub-References}\label{sec:subrefs}
@@ -837,23 +838,23 @@ Each of these macros may be combined for a nicely named, labeled, formatted and 
 \end{lpalign}
 \end{namedsubeqs}
 
-Problem \eqref{para:NLP} is a nonlinear program.
+Problem \ref{para:NLP} is a nonlinear program.
 Equation \eqref{NLP.0} is the objective function.
 Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints. 
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
 
   \end{Verbatim}
 \tcblower
-    \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
-    \begin{namedsubeqs}{NLP}[style=\itshape\roman]
-    \begin{lpalign}{Minimize}{f(\mathbf{x})   \label{NLP.0}}
-        g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
-        h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
-            \mathbf{x}  &\GE 0                \label{NLP.3}
-    \end{lpalign}
-    \end{namedsubeqs}
+  \paratitle{Non-Linear Program}[NLP]\label{para:NLP}
+  \begin{namedsubeqs}{NLP}[style=\itshape\roman]
+  \begin{lpalign}{Minimize}{f(\mathbf{x})   \label{NLP.0} \lpsubtag{\textsc{obj}}}
+      g_i(\mathbf{x}) &\GE 0 &\forall\ i\in I \label{NLP.1} \\
+      h_j(\mathbf{x}) &\EQ 0 &\forall\ j\in J \label{NLP.2} \\
+          \mathbf{x}  &\GE 0                \label{NLP.3}
+  \end{lpalign}
+  \end{namedsubeqs}
     
-Problem \eqref{para:NLP} is a nonlinear program.
+Problem \ref{para:NLP} is a nonlinear program.
 Equation \eqref{NLP.0} is the objective function.
 Equations (\ref{NLP.1}-\lpsubref{NLP.3}) are the constraints. 
 Non-negativity is enforced by constraint \lpsubeqref{NLP.3}.
