@@ -985,18 +985,8 @@
 \tl_gset:Nn \g_lpalign_namedsubeq_default_punct_tl { . }
 \keys_define:nn { lpalign/package }
  {
-  namedsubeqs-style .choices:nn = { alph, Alph, arabic, roman, Roman }
-   {
-    \str_case:Vn \l_keys_choice_tl
-     {
-      {alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \alph } }
-      {Alph}   { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Alph } }
-      {arabic} { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \arabic } }
-      {roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \roman } }
-      {Roman}  { \tl_gset:Nn \g_lpalign_namedsubeq_default_style_tl { \Roman } }
-     }
-   },
-  namedsubeqs-style .initial:n = alph,
+  namedsubeqs-style .tl_gset:N = \g_lpalign_namedsubeq_default_style_tl,
+  namedsubeqs-style .initial:n = \alph,
   namedsubeqs-punct .tl_gset:N = \g_lpalign_namedsubeq_default_punct_tl,
   namedsubeqs-punct .initial:n = .,
  }

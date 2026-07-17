@@ -1026,7 +1026,7 @@ The spacing defaults to 0.25em and is controlled by the package option \\\verb|e
 
 \section{Package Options}\label{sec:options}
 Default behaviors of many features can be changed with package-load options. Use the following keys in \verb|\usepackage[<key>=<value>]{lpalign}|.
-For package-load style defaults, use style names rather than raw control sequences. Thus \verb|vars-style=scriptstyle| and \verb|namedsubeqs-style=roman| are valid package options.
+For package-load style defaults, \verb|vars-style| still uses style names such as \verb|scriptstyle|. By contrast, \verb|namedsubeqs-style| may use freer control-sequence combinations such as \verb|\roman| or \verb|\itshape\roman|.
 For \verb|st|, bare spaces in \verb|\usepackage[...]| are stripped by LaTeX before this package sees the option value. Use \verb|st={subject to}| or \verb|st=subject~to| instead.
 		\begin{compactitem}
 		\item[\Verb|row-sep|] -- controls the spacing between the rows. Defaults to \verb|0.5em|. Section \ref{sec:lpalign}.
