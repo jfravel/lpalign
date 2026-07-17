@@ -223,6 +223,7 @@
 
 
 \makeatletter
+\newcounter{lpalignManualTagHref}
 \let\lpalign@orig@theequationdis\theequationdis
 \let\lpalign@orig@theIEEEsubequationdis\theIEEEsubequationdis
 \let\lpalign@manualtag\@empty
@@ -231,6 +232,27 @@
 }
 \newcommand{\lpalign@clearmanualtag}{%
   \global\let\lpalign@manualtag\@empty
+}
+\newcommand{\lpalign@rollbackmanualtag}{%
+  \ifx\lpalign@manualtag\@empty
+  \else
+    \stepcounter{lpalignManualTagHref}%
+    \ifnum\c@IEEEsubequation>0\relax
+      \global\advance\c@IEEEsubequation\m@ne\relax
+      \gdef\@currentlabel{\p@IEEEsubequation\theIEEEsubequation}\relax
+      \@ifundefined{@IEEEtheHrefsubequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \else
+      \global\advance\c@equation\m@ne\relax
+      \gdef\@currentlabel{\p@equation\theequation}\relax
+      \@ifundefined{@IEEEtheHrefequation}{}%
+        {\xdef\@currentHref{lpalign.manualtag.\arabic{lpalignManualTagHref}}}%
+    \fi
+  \fi
+}
+\newcommand{\lpalign@finalizemanualtag}{%
+  \lpalign@rollbackmanualtag
+  \lpalign@clearmanualtag
 }
 \renewcommand{\theequationdis}{%
   \ifx\lpalign@manualtag\@empty
@@ -263,7 +285,7 @@
         \vskip\jot
         \vskip ##1
         \vskip \dim_use:N \lpalign_row_sep\relax
-        \lpalign@clearmanualtag
+        \lpalign@finalizemanualtag
       }%
       &%
     }
@@ -295,7 +317,7 @@
 		\begin{IEEEeqnarray}{u1rL2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {l}
@@ -303,7 +325,7 @@
 		\begin{IEEEeqnarray}{u1l2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {c}
@@ -311,7 +333,7 @@
 		\begin{IEEEeqnarray}{u1c2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {r}
@@ -319,7 +341,7 @@
 		\begin{IEEEeqnarray}{u1r2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	}
@@ -345,7 +367,7 @@
 		\begin{IEEEeqnarray*}{u1rL2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {l}
@@ -353,7 +375,7 @@
 		\begin{IEEEeqnarray*}{u1l2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {c}
@@ -361,7 +383,7 @@
 		\begin{IEEEeqnarray*}{u1c2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	\tl_if_eq:NnT \lpalign_flush {r}
@@ -369,7 +391,7 @@
 		\begin{IEEEeqnarray*}{u1r2l}
 		\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 		& #3 \span\hfill
-		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+		\lpalign@orig@IEEEeqnarraycr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 		\lpalign_print_st: & 
 		}
 	}
@@ -391,7 +413,7 @@
         \if@IEEEeqnarrayboxnojot\else\vskip\jot\fi
         \vskip ##1
         \vskip \dim_use:N \lpalign_row_sep\relax
-        \lpalign@clearmanualtag
+        \lpalign@finalizemanualtag
       }%
       &%
     }
@@ -419,7 +441,7 @@
 			\begin{IEEEeqnarraybox}[\relax][c]{u1rL2l}
 			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 			& #3 \span\span\hfill
-			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 			\lpalign_print_st: & 
 			}
 	\tl_if_eq:NnT \lpalign_flush {l}
@@ -427,7 +449,7 @@
 			\begin{IEEEeqnarraybox}[\relax][c]{u1l2l}
 			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 			& #3 \span\hfill
-			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 			\lpalign_print_st: & 
 			}
 	\tl_if_eq:NnT \lpalign_flush {c}
@@ -435,7 +457,7 @@
 			\begin{IEEEeqnarraybox}[\relax][c]{u1c2l}
 			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 			& #3 \span\hfill
-			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 			\lpalign_print_st: & 
 			}
 	\tl_if_eq:NnT \lpalign_flush {r}
@@ -443,7 +465,7 @@
 			\begin{IEEEeqnarraybox}[\relax][c]{u1r2l}
 			\lpalign_print_sense:n { \tl_use:N \l_lpalign_sense_text_tl }
 			& #3 \span\hfill
-			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@clearmanualtag
+			\lpalign@orig@IEEEeqnarrayboxcr[\dim_use:N \lpalign_objective_sep]\lpalign@finalizemanualtag
 			\lpalign_print_st: & 
 			}
 		}
@@ -508,7 +530,7 @@
         \vskip\jot
         \vskip ##1
         \vskip \dim_use:N \lpalign_row_sep\relax
-        \lpalign@clearmanualtag
+        \lpalign@finalizemanualtag
       }%
     }
   }
@@ -521,7 +543,7 @@
         \if@IEEEeqnarrayboxnojot\else\vskip\jot\fi
         \vskip ##1
         \vskip \dim_use:N \lpalign_row_sep\relax
-        \lpalign@clearmanualtag
+        \lpalign@finalizemanualtag
       }%
     }
   }
