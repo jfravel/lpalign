@@ -3,8 +3,8 @@
 `lpalign` is a small LaTeX package for formatting mathematical programs and for naming or referencing related displayed objects.
 
 Current release:
-- `v1.6`
-- published July 16, 2026
+- `v1.7`
+- published July 17, 2026
 
 The package currently provides:
 - `lpalign`, `lpalign*` and `lpalignbox` environments for writing mathematical programs with an `IEEEeqnarray` backend,
@@ -212,4 +212,4 @@ Post-load commands are available for freer global style defaults:
 The full package documentation is in [`lpalign-Documentaion.pdf`](/repos/lpalign/lpalign-Documentaion.pdf).
 
 ## Contributions
-This package was, from versions 1.2-1.6, developed with assistance of OpenAI Codex.
+This package was, from versions 1.2-1.7, developed with assistance of OpenAI Codex.
