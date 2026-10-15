@@ -1,0 +1,24 @@
+\contentsline {section}{\numberline {1}Installation}{1}{section.1}%
+\contentsline {section}{\numberline {2}The \textsf {lpalign} Environment}{1}{section.2}%
+\contentsline {subsection}{Constraint Alignment}{2}{section*.1}%
+\contentsline {subsection}{Qualified Constraints}{3}{section*.2}%
+\contentsline {subsection}{Variable Ranges}{3}{section*.3}%
+\contentsline {subsection}{Whitespace}{3}{section*.4}%
+\contentsline {subsection}{Multiline Objectives}{4}{section*.5}%
+\contentsline {subsection}{Spanning Columns}{6}{section*.6}%
+\contentsline {subsection}{Taging Long Expressions}{6}{section*.7}%
+\contentsline {section}{\numberline {3}The \textsf {lpregion} Environment}{7}{section.3}%
+\contentsline {subsection}{Nesting \textsf {lp} Environments}{8}{section*.8}%
+\contentsline {section}{\numberline {4}Named Paragraphs}{10}{section.4}%
+\contentsline {section}{\numberline {5}Named Sub-equations}{11}{section.5}%
+\contentsline {subsection}{Subtag Formatting}{11}{section*.9}%
+\contentsline {subsection}{Tag/Subtag Overrides}{13}{section*.26}%
+\contentsline {section}{\numberline {6}Sub-References}{14}{section.6}%
+\contentsline {section}{\numberline {7}Combining Macros}{15}{section.7}%
+\contentsline {section}{\numberline {8}Spacing Macros}{16}{section.8}%
+\contentsline {subsection}{Quick Spacing}{16}{section*.27}%
+\contentsline {subsection}{Delimiter Spacing}{17}{section*.28}%
+\contentsline {subsection}{Evaluator Spacing}{17}{section*.29}%
+\contentsline {section}{\numberline {9}Package Options}{18}{section.9}%
+\contentsline {section}{\numberline {10}Version History}{19}{section.10}%
+\contentsline {paragraph}{Contributions}{19}{section*.30}%
